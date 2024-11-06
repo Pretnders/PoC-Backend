@@ -11,7 +11,6 @@ create table if not exists pretenders (
                                      password_verification_code varchar(100),
                                      password_verification_timestamp TIMESTAMP,
                                      account_verified boolean DEFAULT false not null,
-                                     profile_pic_url varchar(200),
                                      constraint pretenders_pk
                                          primary key (id),
                                      constraint uq_pretenders_mail
@@ -33,7 +32,7 @@ CREATE SEQUENCE IF NOT EXISTS pretenders_seq
 CREATE TABLE IF NOT EXISTS profile_pics (
                        id bigint NOT NULL ,
                        pretenders_id INT NOT NULL REFERENCES pretenders(id) ON DELETE CASCADE,
-                       profile_pic_url varchar(200) NOT NULL,
+                       url varchar(200) NOT NULL,
                        pic_order SMALLINT NOT NULL ,
                        constraint profile_pics_pk
                            primary key (id)
