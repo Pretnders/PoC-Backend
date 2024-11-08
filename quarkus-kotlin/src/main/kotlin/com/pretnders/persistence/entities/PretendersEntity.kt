@@ -7,8 +7,8 @@ import java.sql.Timestamp
 @Table(name = "pretenders")
 class PretendersEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
-    @SequenceGenerator(name = "users_generator", sequenceName = "users_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretenders_generator")
+    @SequenceGenerator(name = "pretenders_generator", sequenceName = "pretenders_seq", allocationSize = 1)
     @Column(name = "id", updatable = false)
     var id: Long? = null
     @Column(name = "first_name", columnDefinition = "varchar(30)", nullable = false)
@@ -21,6 +21,8 @@ class PretendersEntity {
     var password: String? = null
     @Column(name = "reference", columnDefinition = "bpchar(32)", nullable = false, unique = true, updatable = false)
     var reference: String? = null
+    @Column(name = "device", columnDefinition = "varchar(200)", nullable = false, unique = true, updatable = false)
+    var device: String? = "DEVICE"
     @Column(name = "phone_number", columnDefinition = "bpchar(10)", unique = true, nullable = false)
     var phoneNumber: String? = null
     @Column(name = "verification_code", columnDefinition = "varchar(100)")
@@ -31,12 +33,10 @@ class PretendersEntity {
     var passwordVerificationCode: String? = null
     @Column(name = "password_verification_timestamp", columnDefinition = "TIMESTAMP")
     var passwordVerificationTimestamp: Timestamp? = null
-    @Column(name = "profile_pic_url", columnDefinition = "varchar(200)")
-    var profilePicture: String? = null
     @Column(name = "account_verified", columnDefinition = "boolean DEFAULT false", nullable = false)
     var accountVerifiedStatus: Boolean? = false
     override fun toString(): String {
-        return "UsersEntity(id=$id, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, profilePicture=$profilePicture, accountVerifiedStatus=$accountVerifiedStatus)"
+        return "PretendersEntity(id=$id, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus)"
     }
 
 

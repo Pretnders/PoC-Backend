@@ -41,12 +41,12 @@
 				<br/>
 			</div>
 			<div class="row">
-				<div class="col-md-8" id="chat"></div>
+				<div class="col-md-8" id="chat" style="white-space: pre-line"></div>
 			</div>
 			<div class="row">
 				<label for="msg"></label>
 				<textarea class="col-md-6 fixed-size" id="msg" placeholder="enter your message"
-				          oninput="test(event)" ></textarea>
+				></textarea>
 				<button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send</button>
 			</div>
 
@@ -57,11 +57,21 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/js/patternfly.min.js"></script>
 
 		<script type="text/javascript">
-			const test = (event) => {
+			const reportMessage = (metadata) => {
 				console.log(document.getElementById("msg").value)
+				const toSend = {
+					from: $("#name").val(), //123456789
+					to: $("#other_name").val(), // 456789123
+					content : "",
+					action:"REPORT_MESSAGE",
+					metadata: metadata
+				}
+				socket.send(JSON.stringify(toSend))
 			}
 			let connected = false;
 			let socket;
+
+			const messages = []
 
 			$( document ).ready(function() {
 				$("#connect").click(connect);
@@ -80,6 +90,7 @@
 				$("#name").focus();
 			});
 
+
 			const connect = function() {
 				if (! connected) {
 					const name = $("#name").val();
@@ -95,12 +106,16 @@
 						$("#msg").focus();
 					};
 					socket.onmessage =function(m) {
+						console.log(m)
 						const toJson = JSON.parse(m.data)
 						console.log(toJson)
 						if(toJson.action === "SEND_MESSAGE"){
-							$("#chat").append(`from: ${toJson.from} <br/> ${toJson.message} <br/><br/>`);
+							$("#chat").append(`from: <button onclick="reportMessage('${toJson.metadata}')" >Reportt </button> ${toJson.from} <br/> ${toJson.content} <br/><br/>`);
+							messages.push(toJson)
+						} else if (toJson.action === "SEND_MESSAGE_RESPONSE"){
+							messages.find(m => m.content === toJson.content ).reference = toJson.metadata
+							console.log(messages)
 						}
-
 						scrollToBottom();
 					};
 				}
@@ -114,12 +129,13 @@
 					const toSend = {
 						from: name, //123456789
 						to: recipient, // 456789123
-						message : value,
+						content : value,
 						action:"SEND_MESSAGE",
 						metadata: ""
 					}
+					messages.push(toSend)
 					socket.send(JSON.stringify(toSend));
-					$("#chat").append(`from: ${toSend.from} <br/> ${toSend.message} <br/><br/>`);
+					$("#chat").append(`from: ${toSend.from} <br/> ${toSend.content} <br/><br/>`);
 					$("#msg").val("");
 				}
 			};

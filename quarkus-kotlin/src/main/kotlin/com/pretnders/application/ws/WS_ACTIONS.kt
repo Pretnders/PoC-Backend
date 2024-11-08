@@ -2,8 +2,9 @@ package com.pretnders.application.ws
 
 enum class WS_ACTIONS {
     SEND_MESSAGE,
-    JOIN_WS,
+    SEND_MESSAGE_RESPONSE,
     DISCONNECT,
     GET_MESSAGE_METADATA,
-    REPORT_MESSAGE
+    REPORT_MESSAGE,
+    REPORT_MESSAGE_RESPONSE
 }
