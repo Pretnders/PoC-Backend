@@ -8,24 +8,23 @@ import io.agroal.api.security.NamePrincipal
 import io.agroal.api.security.SimplePassword
 import io.agroal.api.transaction.TransactionIntegration
 import io.agroal.narayana.NarayanaTransactionIntegration
-import io.quarkus.hibernate.orm.PersistenceUnitExtension
 import io.quarkus.hibernate.orm.runtime.customized.QuarkusConnectionProvider
 import io.quarkus.hibernate.orm.runtime.tenant.TenantConnectionResolver
+import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
+import jakarta.inject.Inject
 import jakarta.transaction.TransactionManager
 import jakarta.transaction.TransactionSynchronizationRegistry
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
-import io.quarkus.logging.Log;
 import java.sql.SQLException
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 @ApplicationScoped
-@PersistenceUnitExtension
-class DatasourceConfigurator(
-    var transactionManager: TransactionManager,
-    var transactionSynchronizationRegistry: TransactionSynchronizationRegistry
+class DatasourceConfigurator @Inject constructor(
+    private val transactionManager: TransactionManager,
+    private val transactionSynchronizationRegistry: TransactionSynchronizationRegistry
 ) :
     TenantConnectionResolver {
     @field:ConfigProperty(name = "azure.tenant-id")
@@ -39,6 +38,8 @@ class DatasourceConfigurator(
 
     @field:ConfigProperty(name = "azure.vault.url")
     private lateinit  var keyVaultUrl: String
+
+    private val dataSourceCache = mutableMapOf<String, ConnectionProvider>()
 
     private fun createDatasource(): AgroalDataSource {
         val secretClient = SecretClientBuilder()
@@ -81,18 +82,14 @@ class DatasourceConfigurator(
             .jdbcUrl(String.format("jdbc:postgresql://%s", url))
             .credential(NamePrincipal((secretClient.getSecret("DB-ADMIN").value)))
             .credential(SimplePassword((secretClient.getSecret("DB-PASSWORD").value)))
-        try {
-            Log.debug("Building Datasource from secrets")
-            return AgroalDataSource.from(dataSourceConfiguration.get())
+        return try {
+            AgroalDataSource.from(dataSourceConfiguration.get())
         } catch (ex: SQLException) {
-            throw IllegalStateException(
-                "Failed to create a new data source based on the existing datasource configuration",
-                ex
-            )
+            throw IllegalStateException("Failed to create a new data source", ex)
         }
     }
 
     override fun resolve(tenantId: String): ConnectionProvider {
-        return QuarkusConnectionProvider(createDatasource())
+        return dataSourceCache.computeIfAbsent(tenantId) { QuarkusConnectionProvider(createDatasource())}
     }
 }

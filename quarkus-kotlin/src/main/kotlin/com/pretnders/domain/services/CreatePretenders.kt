@@ -45,7 +45,7 @@ class CreatePretenders : CreatePretendersIn {
         val userReference = setUpUserDataAndCheckInputs(user, userType)
         val userToken = jwtTokenGenerator.getToken(user.mail,userType)
         createPretendersOut.addPretender(user)
-        azureStorageIn.createContainerForUser(user.phoneNumber)
+        //azureStorageIn.createContainerForUser(user.phoneNumber)
         Log.info("OTP verification Mail sent to user")
        return UserBasicInformations(userType, userReference, userToken, false)
     }

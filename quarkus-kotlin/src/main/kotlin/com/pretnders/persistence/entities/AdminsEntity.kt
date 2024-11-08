@@ -5,11 +5,10 @@ import java.sql.Timestamp
 
 @Entity
 @Table(name = "admins")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 class AdminsEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
-    @SequenceGenerator(name = "users_generator", sequenceName = "users_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admins_generator")
+    @SequenceGenerator(name = "admins_generator", sequenceName = "admins_seq", allocationSize = 1)
     @Column(name = "id", updatable = false)
     var id: Long? = null
     @Column(name = "nickname", columnDefinition = "varchar(90)", nullable = false, unique = true)

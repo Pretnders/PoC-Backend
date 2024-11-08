@@ -5,6 +5,7 @@ create table if not exists pretenders (
                                      mail varchar(90) not null,
                                      password bpchar(60) not null,
                                      reference bpchar(32) not null,
+                                     device varchar(200) not null,
                                      phone_number bpchar(10) not null,
                                      verification_code varchar(100),
                                      verification_code_timestamp TIMESTAMP,
@@ -83,10 +84,11 @@ CREATE SEQUENCE IF NOT EXISTS matches_seq
 
 CREATE TABLE IF NOT EXISTS messages (
                           message_id SERIAL PRIMARY KEY,
-                          sender_id INT NOT NULL REFERENCES pretenders(id) ON DELETE CASCADE,
-                          receiver_id INT NOT NULL REFERENCES pretenders(id) ON DELETE CASCADE,
                           match_id INT NOT NULL REFERENCES matches(id) ON DELETE CASCADE,
                           content TEXT NOT NULL,
+                          reported BOOLEAN NOT NULL DEFAULT false,
+                          reported_treated BOOLEAN NOT NULL DEFAULT false,
+
                           sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

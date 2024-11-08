@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Quarkus Chat!</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly.min.css">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/css/patternfly-additions.min.css">
+
+		<style>
+			#chat {
+				resize: none;
+				overflow: hidden;
+				min-height: 300px;
+				max-height: 300px;
+			}
+			.fixed-size {
+				width: 300px;        /* Set the fixed width */
+				height: 150px;       /* Set the fixed height */
+				resize: none;        /* Prevents resizing */
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-pf" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">
+					<p><strong>>> Quarkus Chat!</strong></p>
+				</a>
+			</div>
+		</nav>
+		<div class="container">
+			<br/>
+			<div class="row">
+				<input id="name" class="col-md-4" type="text" placeholder="your name">
+				<input id="other_name" class="col-md-4" type="text" placeholder="recipient">
+
+				<button id="connect" class="col-md-1 btn btn-primary" type="button">connect</button>
+				<br/>
+				<br/>
+			</div>
+			<div class="row">
+				<div class="col-md-8" id="chat"></div>
+			</div>
+			<div class="row">
+				<label for="msg"></label>
+				<textarea class="col-md-6 fixed-size" id="msg" placeholder="enter your message"
+				          oninput="test(event)" ></textarea>
+				<button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send</button>
+			</div>
+
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/patternfly/3.24.0/js/patternfly.min.js"></script>
+
+		<script type="text/javascript">
+			const test = (event) => {
+				console.log(document.getElementById("msg").value)
+			}
+			let connected = false;
+			let socket;
+
+			$( document ).ready(function() {
+				$("#connect").click(connect);
+				$("#send").click(sendMessage);
+
+				$("#name").keypress(function(event){
+					if(event.keyCode == 13 || event.which == 13) {
+						connect();
+					}
+				});
+
+				$("#chat").change(function() {
+					scrollToBottom();
+				});
+
+				$("#name").focus();
+			});
+
+			const connect = function() {
+				if (! connected) {
+					const name = $("#name").val();
+
+					console.log("Val: " + name);
+					socket = new WebSocket("ws://" + location.host + "/api/messages/" + name);
+					socket.onopen = function() {
+						connected = true;
+						console.log("Connected to the web socket");
+						$("#send").attr("disabled", false);
+						$("#connect").attr("disabled", true);
+						$("#name").attr("disabled", true);
+						$("#msg").focus();
+					};
+					socket.onmessage =function(m) {
+						const toJson = JSON.parse(m.data)
+						console.log(toJson)
+						if(toJson.action === "SEND_MESSAGE"){
+							$("#chat").append(`from: ${toJson.from} <br/> ${toJson.message} <br/><br/>`);
+						}
+
+						scrollToBottom();
+					};
+				}
+			};
+
+			const sendMessage = function() {
+				if (connected) {
+					const name = $("#name").val();
+					const recipient = $("#other_name").val();
+					const value = $("#msg").val();
+					const toSend = {
+						from: name, //123456789
+						to: recipient, // 456789123
+						message : value,
+						action:"SEND_MESSAGE",
+						metadata: ""
+					}
+					socket.send(JSON.stringify(toSend));
+					$("#chat").append(`from: ${toSend.from} <br/> ${toSend.message} <br/><br/>`);
+					$("#msg").val("");
+				}
+			};
+
+			const scrollToBottom = function () {
+				$('#chat').scrollTop($('#chat')[0].scrollHeight);
+			};
+
+		</script>
+	</body>
+
+</html>
