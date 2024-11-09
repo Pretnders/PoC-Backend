@@ -16,11 +16,15 @@ interface UsersDtoMappers {
     @Mapping(target = "reference", ignore = true)
     @Mapping(target = "verificationCode", ignore = true)
     @Mapping(target = "verificationCodeTimestamp", ignore = true)
+
+    @Mapping(target = "accountVerified", ignore = true)
+
     fun fromCreationRequest(createPretenderRequest: CreatePretenderRequest):CreatePretenderCommand
 
     @Mapping(target = "reference", ignore = true)
     @Mapping(target = "verificationCode", ignore = true)
     @Mapping(target = "verificationCodeTimestamp", ignore = true)
+    @Mapping(target = "accountVerified", ignore = true)
     fun fromCreationRequest(createAdminRequest: CreateAdminRequest):CreatePretenderCommand
 
     fun toCreationResponse(userBasicInformations: UserBasicInformations):CreatePretendersResponse

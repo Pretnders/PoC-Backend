@@ -134,3 +134,28 @@ CREATE SEQUENCE IF NOT EXISTS admins_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+CREATE TABLE IF NOT EXISTS pretender_details (
+                                          id BIGINT NOT NULL ,
+                                          height CHAR(3) NOT NULL,
+                                          body_type VARCHAR(12) NOT NULL,
+                                          diet VARCHAR(20) NOT NULL,
+                                          beliefs VARCHAR(20) NOT NULL,
+                                          smokes VARCHAR(12) NOT NULL,
+                                          drinks VARCHAR(12) NOT NULL,
+                                          social_status VARCHAR(12) NOT NULL,
+                                          biography TEXT NOT NULL,
+                                          city VARCHAR(45) NOT NULL,
+                                          country VARCHAR(20) NOT NULL,
+                                            pretender_id  BIGINT NOT NULL,
+                                          constraint pret_det_pk
+                                              primary key (id),
+                                          constraint pret_fk
+                                              FOREIGN KEY (pretender_id) REFERENCES pretenders(id)
+);
+CREATE SEQUENCE IF NOT EXISTS pretenders_details_seq
+    START 1
+    INCREMENT 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;

@@ -1,9 +1,9 @@
 package com.pretnders.domain.ports.out
 
-import com.pretnders.domain.models.users.User
+import com.pretnders.domain.models.users.Pretnder
 
 interface FindClientsOut {
-    fun findByIdentifier(identifier: String) : User
-    fun findByPasswordVerificationCode(passwordVerificationCode: String) : User
+    fun findByIdentifier(identifier: String) : Pretnder
+    fun findByPasswordVerificationCode(passwordVerificationCode: String) : Pretnder
 
 }

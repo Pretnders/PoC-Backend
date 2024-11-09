@@ -9,6 +9,9 @@
     <properties>
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <kotlin.version>2.0.10</kotlin.version>
+        <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -217,19 +220,32 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.5.5.Final</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <compilerArgs>
+                        <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                    <excludes>
+                        <exclude>target/generated-sources/kapt/compile</exclude>
+                        <exclude>target/generated-sources/kaptKotlin</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>
                 <configuration>
+                    <argLine>-XX:ReservedCodeCacheSize=256m</argLine>
                     <argLine>-XX:+EnableDynamicAgentLoading</argLine>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
@@ -261,7 +277,6 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
-
                 <executions>
                     <execution>
                         <id>kapt</id>
@@ -269,6 +284,7 @@
                             <goal>kapt</goal>
                         </goals>
                         <configuration>
+
                             <annotationProcessorPaths>
                                 <annotationProcessorPath>
                                     <groupId>org.mapstruct</groupId>
@@ -276,6 +292,7 @@
                                     <version>1.5.5.Final</version>
                                 </annotationProcessorPath>
                             </annotationProcessorPaths>
+
                         </configuration>
                     </execution>
                     <execution>

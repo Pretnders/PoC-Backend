@@ -4,7 +4,7 @@ import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.models.commands.users.CreatePretenderCommand
 import com.pretnders.domain.ports.out.CreatePretendersOut
-import com.pretnders.persistence.mappers.users.UsersEntityMapper
+import com.pretnders.persistence.mappers.users.PretndersEntityMapper
 import com.pretnders.persistence.repositories.PretendersRepository
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
@@ -29,14 +29,13 @@ class CreatePretendersSpi : CreatePretendersOut {
 
     @Inject
     @field:Default
-    private lateinit var usersEntityMapper: UsersEntityMapper
+    private lateinit var pretndersEntityMapper: PretndersEntityMapper
 
     override fun addPretender(pretender: CreatePretenderCommand) {
-        val userEntity = usersEntityMapper.fromCreateUserToEntity(pretender)
+        val userEntity = pretndersEntityMapper.fromCreatePretnderToEntity(pretender)
         try {
             Log.debug(userEntity.toString())
-            pretendersRepository.persist(userEntity)
-            pretendersRepository.flush()
+            pretendersRepository.persistAndFlush(userEntity)
         } catch (e: ConstraintViolationException) {
             handleExceptions(e)
         }

@@ -8,10 +8,9 @@ class UserLoggedIn(
     val reference: String,
     val type: String,
     val jwToken:String,
-    val profilePicture:String?=null,
     val accountVerifiedStatus:Boolean
 ){
     override fun toString(): String {
-        return "UserLoggedIn(firstName='$firstName', lastName='$lastName', mail='$mail', phoneNumber='$phoneNumber', reference='$reference', type='$type', jwToken='$jwToken', profilePicture='$profilePicture', accountVerifiedStatus=$accountVerifiedStatus)"
+        return "UserLoggedIn(firstName='$firstName', lastName='$lastName', mail='$mail', phoneNumber='$phoneNumber', reference='$reference', type='$type', jwToken='$jwToken', accountVerifiedStatus=$accountVerifiedStatus)"
     }
 }
