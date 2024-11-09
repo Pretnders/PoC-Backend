@@ -3,7 +3,7 @@ package com.pretnders.endpoints
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pretnders.application.controllers.CookieUtils
 import com.pretnders.application.dto.requests.CreatePretenderRequest
-import com.pretnders.application.dto.responses.CreatePretendersResponse
+import com.pretnders.application.dto.responses.CreateAccountResponse
 import com.pretnders.application.mappers.UsersDtoMappers
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
@@ -108,7 +108,7 @@ class CreatePretendersResourceTest {
         verify(createPretendersIn).createPretender(createPretenderCommandCaptor.capture())
 
         commonAsserts(createPretenderCommandCaptor)
-        val responseBody = res.body().`as`(CreatePretendersResponse::class.java)
+        val responseBody = res.body().`as`(CreateAccountResponse::class.java)
         assertTrue(responseBody.reference == userBasicInformations.reference)
         assertEquals(res.statusCode(), 200)
         assertEquals(res.cookie("csrf-token"), csrfToken)

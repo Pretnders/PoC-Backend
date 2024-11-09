@@ -53,23 +53,24 @@ class ProfilePicturesResource {
     @Path("/{phoneNumber}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @ResponseStatus(ACCEPTED)
-    @RolesAllowed("PRETENDER","ADMIN")
+    @RolesAllowed("ADMIN")
     @SecurityRequirement(name = "bearer")
-    @Operation(summary = "Update user profile picture", description = "Modifies the user profile picture, update the " +
+    @Operation(summary = "Update admin profile picture", description = "Modifies the admin profile picture, update " +
+            "the" +
+            " " +
             "link in db, returns the new url")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "text/plain",
             schema = Schema(implementation = String::class)
         )]),
     )
-    fun updateClientProfilePicture(phoneNumber:String, @Schema(type = SchemaType.STRING,
+    fun updateAdminProfilePicture(phoneNumber:String, @Schema(type = SchemaType.STRING,
     format = "binary") @RestForm
         ("image")  image:
                                     FileUpload
     ): Response {
         val userMail = jwt.name
-        val userType = jwt.groups.stream().findFirst().orElseThrow { ApplicationException(ApplicationExceptionsEnum.ERROR)}
-        val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.updateProfilePicture(userMail,userType,
+        val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.updateAdminProfilePicture(
             phoneNumber,
             image))
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)

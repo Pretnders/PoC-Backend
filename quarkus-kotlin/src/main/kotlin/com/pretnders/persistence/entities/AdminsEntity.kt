@@ -21,9 +21,10 @@ class AdminsEntity {
     var reference: String? = null
     @Column(name = "phone_number", columnDefinition = "bpchar(10)", unique = true, nullable = false)
     var phoneNumber: String? = null
+    @Column(name = "profile_pic_url", columnDefinition = "bpchar(10)", unique = true, nullable = false)
+    var profilePic: String? = null
     override fun toString(): String {
-        return "AdminsEntity(id=$id, nickname=$nickname, mail=$mail, password=$password, reference=$reference, phoneNumber=$phoneNumber)"
+        return "AdminsEntity(id=$id, nickname=$nickname, mail=$mail, password=$password, reference=$reference, phoneNumber=$phoneNumber, profilePic=$profilePic)"
     }
-
 
 }

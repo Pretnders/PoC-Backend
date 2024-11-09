@@ -53,8 +53,10 @@ class AdminCodeResource {
     fun getAdminCode(): Response {
         Log.info("Retrieving new admin code")
         val mail = jwt.name
-        val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
-        val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(adminCodeIn.getCurrentCode()).cookie(csrfCookie).build()
+//        val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
+  //      val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
+        return Response.ok(adminCodeIn.getCurrentCode())
+            //.cookie(csrfCookie)
+            .build()
     }
 }

@@ -1,8 +1,10 @@
 package com.pretnders.application.controllers
 
+import com.pretnders.application.dto.requests.CreateAdminRequest
 import com.pretnders.application.dto.requests.CreatePretenderRequest
 import com.pretnders.application.dto.responses.CreateAccountResponse
 import com.pretnders.application.mappers.UsersDtoMappers
+import com.pretnders.domain.ports.`in`.CreateAdminIn
 import com.pretnders.domain.ports.`in`.CreatePretendersIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import io.quarkus.logging.Log
@@ -24,14 +26,13 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED
 
-
-@Path("/create-pretender")
+@Path("/admin-creation")
 @RequestScoped
-class CreatePretendersResource {
+class AdminCreationResource {
 
     @Inject
     @field: Default
-    private lateinit var createPretendersIn: CreatePretendersIn
+    private lateinit var createAdminIn: CreateAdminIn
 
     @Inject
     @field: Default
@@ -52,21 +53,20 @@ class CreatePretendersResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(CREATED)
     @PermitAll
-    @Operation(summary = "Create a client", description = "Create a client")
+    @Operation(summary = "Create an admin", description = "Create an admin")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
             schema = Schema(implementation = CreateAccountResponse::class)
         )]),
     )
-    fun createPretender(creationRequest: CreatePretenderRequest): Response {
+    fun createPretender(creationRequest: CreateAdminRequest): Response {
         Log.info("Creating client")
         val mappedRequest = usersDtoMappers.fromCreationRequest(creationRequest)
-        Log.debug(String.format("Creating user %s %s", mappedRequest.firstName, mappedRequest.lastName))
-        val userCreationInformations = createPretendersIn.createPretender(mappedRequest)
+        Log.debug("Creating admin ${mappedRequest.nickname}")
+        val userCreationInformations = createAdminIn.createAdmin(mappedRequest)
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mappedRequest.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         return Response.ok(usersDtoMappers.toCreationResponse(userCreationInformations)).cookie(bearerCookie).cookie(csrfCookie).build()
     }
-
 }

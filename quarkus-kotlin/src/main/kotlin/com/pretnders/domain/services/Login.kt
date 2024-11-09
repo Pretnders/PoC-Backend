@@ -3,6 +3,7 @@ package com.pretnders.domain.services
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.mappers.UsersMappers
+import com.pretnders.domain.models.UserTypes
 import com.pretnders.domain.models.users.UserLoggedIn
 import com.pretnders.domain.ports.`in`.LoginIn
 import com.pretnders.domain.ports.out.FindPretendersOut
@@ -30,7 +31,7 @@ class Login(@field:Inject var jwtTokenGenerator: JwtTokenGenerator) : LoginIn {
         Log.info(user.toString())
         if(verifyPassword(password, user.password)) {
             Log.info("Login successful")
-            val jwToken = jwtTokenGenerator.getToken(user.mail, "Pretender")
+            val jwToken = jwtTokenGenerator.getToken(user.mail, UserTypes.PRETENDER.name)
             return usersMappers.fromUsersToUsersLoggedIn(user, jwToken)
         } else {
             throw ApplicationException(ApplicationExceptionsEnum.ERROR_VALIDATING_PASSWORD_HASH)

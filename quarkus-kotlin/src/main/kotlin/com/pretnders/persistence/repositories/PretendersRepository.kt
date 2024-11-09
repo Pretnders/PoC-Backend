@@ -14,4 +14,13 @@ class PretendersRepository : PanacheRepository<PretendersEntity?> {
             .firstResultOptional<PretendersEntity>()
 
     }
+
+
+    fun findIDByReference(reference: String): Long {
+        return find("id WHERE reference = :reference ", mapOf(
+            "reference" to reference
+        )).project(
+            Long::class.java
+        ).firstResult()
+    }
 }

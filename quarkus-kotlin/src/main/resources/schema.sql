@@ -115,6 +115,7 @@ create table if not exists admins
     password     bpchar(60)  not null,
     reference    bpchar(32)  not null,
     phone_number bpchar(10)  not null,
+    profile_pic_url varchar(200),
     constraint admins_pk
         primary key (id),
     constraint uq_admins_mail

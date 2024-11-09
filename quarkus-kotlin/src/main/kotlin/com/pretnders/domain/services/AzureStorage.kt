@@ -23,7 +23,9 @@ import io.quarkus.logging.Log;
 @ApplicationScoped
 class AzureStorage : AzureStorageIn {
     companion object {
-        const val FORMATTER: String = "user-%s"
+        const val FORMATTER: String = "pretender-%s"
+        const val ADMIN_FORMATTER: String = "admin-%s"
+
     }
 
 
@@ -62,9 +64,9 @@ class AzureStorage : AzureStorageIn {
             .buildClient()
     }
 
-    override fun updateProfilePicture(mail: String, role:String, phoneNumber:String, file: FileUpload): String {
-        val containerName = String.format(FORMATTER, phoneNumber)
-        val fileName = "profile-picture${file.name().substringAfterLast(".")}"
+    override fun updateAdminProfilePicture(phoneNumber:String, file: FileUpload): String {
+        val containerName = String.format(ADMIN_FORMATTER, phoneNumber)
+        val fileName = file.name()
         try {
             val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
             containerClient.listBlobs().forEach{ blob ->
@@ -75,7 +77,7 @@ class AzureStorage : AzureStorageIn {
                 file.filePath().toString()
             )
             val profilePictureUrl = client.blobUrl
-            updatePretendersOut.updateProfilePicture(mail, profilePictureUrl)
+            updateAdminsOut.updateProfilePicture(phoneNumber, profilePictureUrl)
             Log.info("Profile picture updated : $profilePictureUrl")
             return profilePictureUrl
         } catch (e: Exception) {
@@ -86,6 +88,15 @@ class AzureStorage : AzureStorageIn {
 
     override fun createContainerForUser(phoneNumber: String) {
         val containerName = String.format(FORMATTER, phoneNumber)
+        createContainerWithPublicAccessPolicy(containerName, phoneNumber)
+    }
+
+    override fun createContainerForAdmin(phoneNumber: String) {
+        val containerName = String.format(ADMIN_FORMATTER, phoneNumber)
+        createContainerWithPublicAccessPolicy(containerName, phoneNumber)
+    }
+
+    private fun createContainerWithPublicAccessPolicy(containerName: String, phoneNumber: String) {
         try {
             blobServiceClient!!.createBlobContainer(containerName)
             val blobServiceCLient = blobServiceClient!!.getBlobContainerClient(containerName)

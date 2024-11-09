@@ -13,6 +13,8 @@ import jakarta.inject.Inject
 @ApplicationScoped
 class FindPretendersSpi:FindPretendersOut {
 
+    //TODO Unit test this shit
+
     @Inject
     @field:Default
     private lateinit var pretendersRepository: PretendersRepository
@@ -26,5 +28,9 @@ class FindPretendersSpi:FindPretendersOut {
             ApplicationExceptionsEnum.LOGIN_USER_NOT_FOUND) }
         val user = pretndersEntityMapper.fromEntityToPretnder(userInDb)
         return user
+    }
+
+    override fun findIDByReference(reference: String): Long {
+        return pretendersRepository.findIDByReference(reference)
     }
 }

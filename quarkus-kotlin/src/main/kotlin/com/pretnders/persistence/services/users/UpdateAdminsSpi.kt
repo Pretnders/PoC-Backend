@@ -33,6 +33,18 @@ class UpdateAdminsSpi:UpdateAdminsOut {
         }
 
     }
+    override fun updateProfilePicture(phoneNumber: String, profilePictureUrl:String) {
+        try {
+            adminsRepository.update("profilePicture = :profilePictureUrl WHERE phone = :phoneNumber",
+                mapOf(
+                    "phoneNumber" to phoneNumber,
+                    "profilePictureUrl" to profilePictureUrl
+                ))
+            Log.debug(String.format("User %s profile picture was updated", phoneNumber))
+        } catch (e: SQLException) {
+            handleExceptions(e)
+        }
+    }
 
     private fun handleExceptions(e: SQLException) {
         Log.debug(e.message)

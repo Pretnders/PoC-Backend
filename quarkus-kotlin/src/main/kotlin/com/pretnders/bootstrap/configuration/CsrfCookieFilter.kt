@@ -25,7 +25,7 @@ private const val PASSWORD_RECOVERY_INIT_RESET_PATH = "/password-recovery/init-r
 
 private const val PASSWORD_RECOVERY_RESET_PATH = "/password-recovery/reset-password"
 
-private const val WEBSOCKETS_PATH = "/password-recovery/reset-password"
+private const val ADMIN_CREATION_PATH = "/admin-creation"
 
 
 @Provider
@@ -50,7 +50,9 @@ class CsrfCookieFilter:ContainerRequestFilter {
                 (CREATE_PRETENDER_PATH)|| requestContext.uriInfo.path.startsWith
                 (HEALTHCHECK_PATH)||  requestContext.uriInfo.path == PASSWORD_RECOVERY_INIT_RESET_PATH
             || requestContext.uriInfo.path ==
-            PASSWORD_RECOVERY_RESET_PATH){
+            PASSWORD_RECOVERY_RESET_PATH
+            || requestContext.uriInfo.path ==
+            ADMIN_CREATION_PATH){
             return
         }
         if (csrfCookie == null || csrfCookie.value.isEmpty() || csrfCookie.value != csrfTokenCache

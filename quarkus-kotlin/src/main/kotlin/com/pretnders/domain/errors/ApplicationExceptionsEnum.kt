@@ -30,6 +30,19 @@ enum class ApplicationExceptionsEnum(val message: String,val errorCode: Int,val 
     CREATE_USER_DUPLICATE_REFERENCE("Mail address is already registered", StatusCode.BAD_REQUEST, ErrorOriginEnum.PERSISTENCE
         .name),
     LOGIN_USER_NOT_FOUND("User not found", StatusCode.NOT_FOUND, ErrorOriginEnum.PERSISTENCE.name),
+    CREATE_ADMIN_DUPLICATE_REFERENCE("Reference is already used", StatusCode.BAD_REQUEST, ErrorOriginEnum
+        .PERSISTENCE
+        .name),
+    CREATE_ADMIN_DUPLICATE_NICKNAME("Nickname is already taken", StatusCode.BAD_REQUEST, ErrorOriginEnum
+        .PERSISTENCE
+        .name),
+    CREATE_ADMIN_DUPLICATE_PHONE("Phone number is already registered", StatusCode.BAD_REQUEST, ErrorOriginEnum
+        .PERSISTENCE
+        .name),
+
+    CREATE_ADMIN_DUPLICATE_MAIL("Mail address is already registered", StatusCode.BAD_REQUEST, ErrorOriginEnum
+        .PERSISTENCE
+        .name),
     OTP_TIMESTAMP_EXCEEDED("Le code OTP n'est plus valide, veuillez en générer un nouveau", StatusCode.BAD_REQUEST,
         ErrorOriginEnum.DOMAIN.name),
     OTP_CODES_NO_MATCH("Échec de la vérification du compte, vérifiez votre code", StatusCode.BAD_REQUEST,
