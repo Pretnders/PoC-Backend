@@ -25,7 +25,7 @@ import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED
 
 
-@Path("/create-pretender")
+@Path("/create-pretnder")
 @RequestScoped
 class CreatePretendersResource {
 

@@ -1,7 +1,6 @@
 package com.pretnders.persistence.repositories
 
 import com.pretnders.persistence.entities.AdminsEntity
-import com.pretnders.persistence.entities.PretendersEntity
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 import io.quarkus.panache.common.Parameters
 import jakarta.enterprise.context.ApplicationScoped

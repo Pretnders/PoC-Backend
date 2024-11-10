@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreatePretenderRequest(
+    val nickname: String,
     val firstName: String,
     val lastName: String,
     val mail: String,

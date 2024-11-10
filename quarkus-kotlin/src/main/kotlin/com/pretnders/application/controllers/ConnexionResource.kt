@@ -27,7 +27,7 @@ import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.OK
 
 
-@Path("/connection")
+@Path("/login")
 @RequestScoped
 class ConnexionResource {
     @Inject
@@ -45,13 +45,14 @@ class ConnexionResource {
     @Inject
     @field: Default
     private lateinit var cookieUtils: CookieUtils
+
     @POST
-    @Path("/login")
+    @Path("/admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(OK)
     @PermitAll
-    @Operation(summary = "Logs a user", description = "Logs in a user")
+    @Operation(summary = "Logs an admin", description = "Logs in an admin")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
             schema = Schema(implementation = UserLoginResponse::class)
@@ -59,7 +60,6 @@ class ConnexionResource {
     )
     fun login(loginRequest: LoginRequest): Response {
         Log.debug(String.format("Logging user %s", loginRequest.identifier))
-
         val loggedIn = loginIn.login(loginRequest.identifier, loginRequest.password)
         val bearerCookie = cookieUtils.setUpCookie("Bearer", loggedIn.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(loggedIn.mail)
@@ -69,7 +69,7 @@ class ConnexionResource {
 
     @POST
     @Path("/logout")
-    @RolesAllowed("PRETENDER")
+    @RolesAllowed("PRETNDER")
     fun logout(): Response {
         val cookie = cookieUtils.setUpCookie("Bearer", "")
         return Response.ok("Logged out").cookie(cookie).build()

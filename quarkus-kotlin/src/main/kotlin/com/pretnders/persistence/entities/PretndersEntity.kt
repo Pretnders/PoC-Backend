@@ -1,17 +1,18 @@
 package com.pretnders.persistence.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.sql.Timestamp
 
 @Entity
 @Table(name = "pretenders")
-class PretendersEntity {
+class PretndersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretenders_generator")
     @SequenceGenerator(name = "pretenders_generator", sequenceName = "pretenders_seq", allocationSize = 1)
     @Column(name = "id", updatable = false)
     var id: Long? = null
+    @Column(name = "nickname", columnDefinition = "varchar(30)", nullable = false)
+    var nickname: String? = null
     @Column(name = "first_name", columnDefinition = "varchar(30)", nullable = false)
     var firstName: String? = null
     @Column(name = "last_name", columnDefinition = "varchar(30)", nullable = false)
@@ -36,17 +37,18 @@ class PretendersEntity {
     var passwordVerificationTimestamp: Timestamp? = null
     @Column(name = "account_verified", columnDefinition = "boolean DEFAULT false", nullable = false)
     var accountVerifiedStatus: Boolean? = false
-    @OneToOne(mappedBy = "pretendersEntity", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pretndersEntity", fetch = FetchType.LAZY)
     var pretenderDetails: PretendersDetailsEntity? = null
     override fun toString(): String {
-        return "PretendersEntity(id=$id, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretenderDetails)"
+        return "PretndersEntity(id=$id, nickname=$nickname, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretenderDetails)"
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is PretendersEntity) return false
+        if (other !is PretndersEntity) return false
 
         if (id != other.id) return false
+        if (nickname != other.nickname) return false
         if (firstName != other.firstName) return false
         if (lastName != other.lastName) return false
         if (mail != other.mail) return false
@@ -66,6 +68,7 @@ class PretendersEntity {
 
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
+        result = 31 * result + (nickname?.hashCode() ?: 0)
         result = 31 * result + (firstName?.hashCode() ?: 0)
         result = 31 * result + (lastName?.hashCode() ?: 0)
         result = 31 * result + (mail?.hashCode() ?: 0)

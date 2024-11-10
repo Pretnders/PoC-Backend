@@ -25,7 +25,7 @@ class HealthCheckResource {
     @Path("/secured")
     @Produces(MediaType.TEXT_PLAIN)
     @ResponseStatus(OK)
-    @RolesAllowed( "PRETENDER" )
+    @RolesAllowed( "PRETNDER" )
     @SecurityRequirement(name = "bearer")
     fun healthCheckNotAllowed() = "$healthCheckResponse hahaha"
 }

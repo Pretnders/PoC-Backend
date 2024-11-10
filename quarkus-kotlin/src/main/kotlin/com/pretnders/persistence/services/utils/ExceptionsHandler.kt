@@ -7,9 +7,9 @@ import org.hibernate.exception.ConstraintViolationException
 import kotlin.jvm.Throws
 
 object ExceptionsHandler {
-    private const val PRETENDERS_MAIL_KEY = "uq_user_mail"
-    private const val PRETENDERS_PHONE_KEY = "uq_user_phone"
-    private const val PRETENDERS_REFERENCE_KEY = "uq_user_reference"
+    private const val PRETENDERS_MAIL_KEY = "uq_pretenders_mail"
+    private const val PRETENDERS_PHONE_KEY = "uq_pretenders_phone"
+    private const val PRETENDERS_REFERENCE_KEY = "uq_pretenders_reference"
     private const val ADMINS_MAIL_KEY = "uq_admins_mail"
     private const val ADMINS_PHONE_KEY = "uq_admins_phone"
     private const val ADMINS_REFERENCE_KEY = "uq_admins_reference"

@@ -34,7 +34,7 @@ class PretendersDetailsEntity {
     @OneToOne(cascade = arrayOf(CascadeType.PERSIST))
     @JoinColumn(name = "pretender_id", referencedColumnName = "id", nullable = false, updatable = false)
     @JsonIgnore
-    private val pretendersEntity: PretendersEntity? = null
+    private val pretndersEntity: PretndersEntity? = null
     override fun toString(): String {
         return "PretendersDetailsEntity(id=$id, height=$height, bodyType=$bodyType, diet=$diet, beliefs=$beliefs, smokes=$smokes, drinks=$drinks, socialStatus=$socialStatus, biography=$biography, city=$city, country=$country)"
     }

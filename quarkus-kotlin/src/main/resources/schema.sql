@@ -1,6 +1,7 @@
 create table if not exists pretenders
 (
     id                              bigint                not null,
+    nickname  varchar(30) not null,
     first_name                      varchar(30)           not null,
     last_name                       varchar(30)           not null,
     mail                            varchar(90)           not null,
@@ -155,6 +156,20 @@ CREATE TABLE IF NOT EXISTS pretender_details (
                                               FOREIGN KEY (pretender_id) REFERENCES pretenders(id)
 );
 CREATE SEQUENCE IF NOT EXISTS pretenders_details_seq
+    START 1
+    INCREMENT 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE IF NOT EXISTS trait_pairs (
+                             id SERIAL PRIMARY KEY,
+                             trait_1 VARCHAR(50) NOT NULL,
+                             trait_2 VARCHAR(50) NOT NULL,
+                             description VARCHAR(255)
+);
+
+CREATE SEQUENCE IF NOT EXISTS trait_pairs_seq
     START 1
     INCREMENT 1
     NO MINVALUE

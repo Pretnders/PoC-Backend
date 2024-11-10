@@ -3,6 +3,7 @@ package com.pretnders.domain.models.commands.users
 import java.sql.Timestamp
 
 class CreatePretenderCommand(
+    val nickname: String,
     val firstName: String,
     val lastName: String,
     val mail: String,
@@ -14,6 +15,6 @@ class CreatePretenderCommand(
     var accountVerified: Boolean = false,
 ) {
     override fun toString(): String {
-        return "CreatePretenderCommand(firstName='$firstName', lastName='$lastName', mail='$mail', password='$password', phoneNumber='$phoneNumber', reference=$reference, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, accountVerified=$accountVerified)"
+        return "CreatePretenderCommand(nickname='$nickname', firstName='$firstName', lastName='$lastName', mail='$mail', password='$password', phoneNumber='$phoneNumber', reference=$reference, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, accountVerified=$accountVerified)"
     }
 }

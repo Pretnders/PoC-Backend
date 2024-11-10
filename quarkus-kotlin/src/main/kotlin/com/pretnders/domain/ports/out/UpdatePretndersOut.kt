@@ -3,7 +3,7 @@ package com.pretnders.domain.ports.out
 import java.sql.Timestamp
 
 
-interface UpdatePretendersOut {
+interface UpdatePretndersOut {
     fun updateProfilePicture(mail: String, profilePictureUrl: String)
     fun approveAccount(mail: String)
     fun changeOtpCode(mail: String, newOtp: String, newOtpTimestamp: Timestamp)

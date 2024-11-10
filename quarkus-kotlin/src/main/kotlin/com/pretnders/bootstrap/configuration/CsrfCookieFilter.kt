@@ -14,9 +14,9 @@ private const val ADMIN_CODE_PATH = "/admin-code"
 
 private const val CSRF_TOKEN_PATH = "/csrf-token"
 
-private const val CONNEXION_PATH = "/connection"
+private const val CONNEXION_PATH = "/login"
 
-private const val CREATE_PRETENDER_PATH = "/create-pretender"
+private const val CREATE_PRETENDER_PATH = "/create-pretnder"
 
 private const val HEALTHCHECK_PATH = "/healthcheck"
 

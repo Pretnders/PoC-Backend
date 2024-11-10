@@ -3,9 +3,8 @@ package com.pretnders.domain.services
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.`in`.VerifyAccountsIn
-import com.pretnders.domain.ports.out.FindClientsOut
 import com.pretnders.domain.ports.out.FindPretendersOut
-import com.pretnders.domain.ports.out.UpdatePretendersOut
+import com.pretnders.domain.ports.out.UpdatePretndersOut
 import com.pretnders.domain.services.PasswordUtils.hashWithBCrypt
 import com.pretnders.domain.services.PasswordUtils.verifyPassword
 import com.pretnders.domain.utils.InputsValidator.hasTimestampExceededTwentyMinutes
@@ -25,7 +24,7 @@ class VerifyAccounts:VerifyAccountsIn {
 
     @Inject
     @field:Default
-    private lateinit var updatePretendersOut: UpdatePretendersOut
+    private lateinit var updatePretndersOut: UpdatePretndersOut
 
     @Inject
     @field:Default
@@ -37,7 +36,7 @@ class VerifyAccounts:VerifyAccountsIn {
         val otpTimestamp = user.verificationCodeTimestamp!!
         if(verifyPassword(otp, user.verificationCode!!)){
             hasTimestampExceededTwentyMinutes(otpTimestamp, Timestamp.from(Instant.now()))
-            updatePretendersOut.approveAccount(mail)
+            updatePretndersOut.approveAccount(mail)
         } else {
             throw  ApplicationException(ApplicationExceptionsEnum.OTP_CODES_NO_MATCH)
         }
@@ -49,7 +48,7 @@ class VerifyAccounts:VerifyAccountsIn {
         val newTimestamp = Timestamp.from(Instant.now())
         val content = mailer.newOtpEmail(newCode)
         mailer.sendHtmlEmail(mail, "Mise à jour du code OTP", content)
-        updatePretendersOut.changeOtpCode(mail, hashedOtp, newTimestamp)
+        updatePretndersOut.changeOtpCode(mail, hashedOtp, newTimestamp)
     }
 
 }

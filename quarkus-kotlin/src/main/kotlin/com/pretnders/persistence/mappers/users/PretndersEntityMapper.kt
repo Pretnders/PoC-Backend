@@ -2,7 +2,7 @@ package com.pretnders.persistence.mappers.users
 
 import com.pretnders.domain.models.commands.users.CreatePretenderCommand
 import com.pretnders.domain.models.users.Pretnder
-import com.pretnders.persistence.entities.PretendersEntity
+import com.pretnders.persistence.entities.PretndersEntity
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
@@ -15,9 +15,9 @@ interface PretndersEntityMapper {
     @Mapping(target = "passwordVerificationCode", ignore = true)
     @Mapping(target = "passwordVerificationTimestamp", ignore = true)
     @Mapping(target = "accountVerifiedStatus", ignore = true)
-    fun fromCreatePretnderToEntity(createPretenderCommand: CreatePretenderCommand): PretendersEntity
-    fun fromEntityToPretnder(pretendersEntity: PretendersEntity): Pretnder
+    fun fromCreatePretnderToEntity(createPretenderCommand: CreatePretenderCommand): PretndersEntity
+    fun fromEntityToPretnder(pretndersEntity: PretndersEntity): Pretnder
     @Mapping(target = "device", ignore = true)
     @Mapping(target = "pretenderDetails", ignore = true)
-    fun fromUserToEntity(pretnder: Pretnder): PretendersEntity
+    fun fromUserToEntity(pretnder: Pretnder): PretndersEntity
 }

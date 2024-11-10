@@ -10,7 +10,7 @@ import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.out.UpdateAdminsOut
-import com.pretnders.domain.ports.out.UpdatePretendersOut
+import com.pretnders.domain.ports.out.UpdatePretndersOut
 import jakarta.annotation.PostConstruct
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
@@ -43,7 +43,7 @@ class AzureStorage : AzureStorageIn {
 
     @Inject
     @field:Default
-    private lateinit var updatePretendersOut: UpdatePretendersOut
+    private lateinit var updatePretndersOut: UpdatePretndersOut
 
     @Inject
     @field:Default
@@ -86,7 +86,7 @@ class AzureStorage : AzureStorageIn {
         }
     }
 
-    override fun createContainerForUser(phoneNumber: String) {
+    override fun createContainerForPretnder(phoneNumber: String) {
         val containerName = String.format(FORMATTER, phoneNumber)
         createContainerWithPublicAccessPolicy(containerName, phoneNumber)
     }

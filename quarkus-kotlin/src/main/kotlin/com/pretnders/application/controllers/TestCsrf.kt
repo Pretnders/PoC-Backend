@@ -39,7 +39,7 @@ class TestCsrf {
     @GET
     @Path("/test-csrf")
     @ResponseStatus(OK)
-    @RolesAllowed("PRETENDER","ADMIN")
+    @RolesAllowed("PRETNDER","ADMIN")
     @SecurityRequirement(name = "bearer")
     @Operation(summary = "Get CSRF Token", description = "TEst CSRF token")
     @APIResponses(

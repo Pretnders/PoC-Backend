@@ -1,9 +1,8 @@
 package com.pretnders.domain.services
 
 import com.pretnders.domain.ports.`in`.PasswordManagementIn
-import com.pretnders.domain.ports.out.FindClientsOut
 import com.pretnders.domain.ports.out.FindPretendersOut
-import com.pretnders.domain.ports.out.UpdatePretendersOut
+import com.pretnders.domain.ports.out.UpdatePretndersOut
 import com.pretnders.domain.services.PasswordUtils.hashWithBCrypt
 import com.pretnders.domain.utils.AdminCodeGenerator.generateAdminCode
 import com.pretnders.domain.utils.InputsValidator.hasTimestampExceededTwentyMinutes
@@ -26,7 +25,7 @@ class PasswordManagement : PasswordManagementIn {
 
     @Inject
     @field:Default
-    private lateinit var updatePretendersOut: UpdatePretendersOut
+    private lateinit var updatePretndersOut: UpdatePretndersOut
 
     @Inject
     @field:Default
@@ -41,7 +40,7 @@ class PasswordManagement : PasswordManagementIn {
         val safeToken = hashWithBCrypt(token).result
         val tokenTimestamp = Timestamp.from(Instant.now())
         mailer.sendHtmlEmail(mail, "Récupération de mot de passe", mailContent)
-        updatePretendersOut.initPasswordRecovery(mail, safeToken, tokenTimestamp)
+        updatePretndersOut.initPasswordRecovery(mail, safeToken, tokenTimestamp)
     }
 
     override fun recoverPassword( mail:String,token: String, password: String, passwordConfirmation: String) {
@@ -53,7 +52,7 @@ class PasswordManagement : PasswordManagementIn {
         validatePasswordHash(token, hashedToken)
         hasTimestampExceededTwentyMinutes(currentTimestamp, Timestamp.from(Instant.now()))
         val hashedPw = hashWithBCrypt(password).result
-        updatePretendersOut.changePassword(user.mail, hashedPw)
+        updatePretndersOut.changePassword(user.mail, hashedPw)
     }
 
 
@@ -61,7 +60,7 @@ class PasswordManagement : PasswordManagementIn {
         validatePasswordFormat(password)
         validatePasswordConfirmation(password, passwordConfirmation)
         val hashedPw = hashWithBCrypt(password).result
-        updatePretendersOut.changePassword(mail, hashedPw)
+        updatePretndersOut.changePassword(mail, hashedPw)
     }
 
 

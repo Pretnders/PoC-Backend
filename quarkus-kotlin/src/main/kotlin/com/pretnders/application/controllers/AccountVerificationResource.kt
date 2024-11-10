@@ -44,7 +44,7 @@ class AccountVerificationResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(NO_CONTENT)
-    @RolesAllowed("PRETENDER")
+    @RolesAllowed("PRETNDER")
     fun verifyClientAccount(otpRequest: OtpRequest):Response {
         Log.info("Vérifying user account")
         val mail = jwt.name

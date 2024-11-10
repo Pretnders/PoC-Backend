@@ -71,7 +71,7 @@ class PasswordRecoveryResource {
     @Path("/change-password")
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(NO_CONTENT)
-    @RolesAllowed("PRETENDER","ADMIN")
+    @RolesAllowed("PRETNDER","ADMIN")
     fun changePassword(passwordChangeRequest: PasswordChangeRequest): Response {
         Log.info("Starting update password")
         val mail = jwt.name

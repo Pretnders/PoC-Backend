@@ -48,6 +48,7 @@ class CreatePretendersResourceTest {
 
     companion object {
         val adminRequest = CreatePretenderRequest(
+            "Nick",
             "Sid",
             "Bennaceur",
             "test@test.com",
@@ -55,6 +56,7 @@ class CreatePretendersResourceTest {
             "0613511351"
         )
         val mappedRequest: CreatePretenderCommand = CreatePretenderCommand(
+            adminRequest.nickname,
             adminRequest.firstName,
             adminRequest.lastName,
             adminRequest.mail,
@@ -102,7 +104,7 @@ class CreatePretendersResourceTest {
             .header("Content-Type", "application/json")
             .body(json)
             .`when`()
-            .post("/create-pretender")
+            .post("/create-pretnder")
             .then().extract()
 
         verify(createPretendersIn).createPretender(createPretenderCommandCaptor.capture())
@@ -132,7 +134,7 @@ class CreatePretendersResourceTest {
             .header("Content-Type", "application/json")
             .body(json)
             .`when`()
-            .post("/create-pretender")
+            .post("/create-pretnder")
             .then().extract()
 
         verify(createPretendersIn).createPretender(createPretenderCommandCaptor.capture())

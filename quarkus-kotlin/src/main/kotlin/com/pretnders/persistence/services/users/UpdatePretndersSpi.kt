@@ -2,7 +2,7 @@ package com.pretnders.persistence.services.users
 
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
-import com.pretnders.domain.ports.out.UpdatePretendersOut
+import com.pretnders.domain.ports.out.UpdatePretndersOut
 import com.pretnders.persistence.repositories.PretendersRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
@@ -14,7 +14,7 @@ import java.sql.Timestamp
 
 @ApplicationScoped
 @Transactional
-class UpdatePretendersSpi:UpdatePretendersOut {
+class UpdatePretndersSpi:UpdatePretndersOut {
 
     @Inject
     @field:Default
