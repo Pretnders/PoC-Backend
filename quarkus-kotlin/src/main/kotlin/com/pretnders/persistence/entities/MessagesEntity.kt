@@ -16,9 +16,9 @@ class MessagesEntity {
     var match: Long? = null
     @Column(name = "content", columnDefinition = "TEXT", nullable = false, updatable = false)
     var content: String? = null
-    @Column(name = "sender_reference", columnDefinition = "varchar(40)", nullable = false, updatable = false)
+    @Column(name = "sender_reference", columnDefinition = "bpchar(32)", nullable = false, updatable = false)
     var senderReference: String? = null
-    @Column(name = "reference", columnDefinition = "varchar(40)", nullable = false, updatable = false)
+    @Column(name = "reference", columnDefinition = "bpchar(32)", nullable = false, updatable = false)
     var reference: String? = null
     @Column(name = "reported", columnDefinition = "BOOLEAN DEFAULT false", nullable = false)
     var reported: Boolean? = false

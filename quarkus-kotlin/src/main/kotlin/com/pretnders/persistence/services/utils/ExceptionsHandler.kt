@@ -16,8 +16,8 @@ object ExceptionsHandler {
     private const val ADMINS_NICKNAME_KEY = "uq_admins_nickname"
 
     fun handlePersistenceExceptions(e: ConstraintViolationException): Throws {
-        Log.error(String.format("Error while adding admin : %s", e.message))
-        Log.error(String.format("Error while adding admin : %s", e.constraintName))
+        Log.error(String.format("Error while adding entity : %s", e.message))
+        Log.error(String.format("Error while adding entity : %s", e.constraintName))
         when {
             e.constraintName.equals(PRETENDERS_MAIL_KEY) -> {
                 throw ApplicationException(ApplicationExceptionsEnum.CREATE_USER_DUPLICATE_MAIL)

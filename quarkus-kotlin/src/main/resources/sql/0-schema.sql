@@ -71,6 +71,7 @@ CREATE SEQUENCE IF NOT EXISTS likes_seq
 CREATE TABLE IF NOT EXISTS matches
 (
     id             BIGINT NOT NULL,
+    reference bpchar(32) NOT NULL,
     pretenders1_id INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
     pretenders2_id INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
     matched_at     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
@@ -93,8 +94,8 @@ CREATE TABLE IF NOT EXISTS messages
     id     BIGINT PRIMARY KEY,
     match_id       BIGINT         NOT NULL REFERENCES matches (id) ON DELETE CASCADE,
     content        TEXT        NOT NULL,
-    reference      varchar(40) NOT NULL,
-    sender_reference      varchar(40) NOT NULL,
+    reference      bpchar(32) NOT NULL,
+    sender_reference      bpchar(32) NOT NULL,
     reported       BOOLEAN     NOT NULL DEFAULT false,
     report_treated BOOLEAN     NOT NULL DEFAULT false,
     sent_at        TIMESTAMP            DEFAULT CURRENT_TIMESTAMP
@@ -139,6 +140,7 @@ CREATE SEQUENCE IF NOT EXISTS admins_seq
 
 CREATE TABLE IF NOT EXISTS pretender_details (
                                           id BIGINT NOT NULL ,
+                                         reference bpchar(32) NOT NULL,
                                           height CHAR(3) NOT NULL,
                                           body_type VARCHAR(12) NOT NULL,
                                           diet VARCHAR(20) NOT NULL,
@@ -163,10 +165,11 @@ CREATE SEQUENCE IF NOT EXISTS pretenders_details_seq
     CACHE 1;
 
 CREATE TABLE IF NOT EXISTS trait_pairs (
-                             id SERIAL PRIMARY KEY,
+                             id BIGINT PRIMARY KEY,
                              trait_1 VARCHAR(50) NOT NULL,
                              trait_2 VARCHAR(50) NOT NULL,
-                             description VARCHAR(255)
+                             description VARCHAR(255),
+    constraint uq_trait_pairs UNIQUE(trait_1,trait_2)
 );
 
 CREATE SEQUENCE IF NOT EXISTS trait_pairs_seq
@@ -175,3 +178,107 @@ CREATE SEQUENCE IF NOT EXISTS trait_pairs_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+CREATE TABLE IF NOT EXISTS pretender_trait_pairs(
+                                                    id BIGINT NOT NULL,
+                                                    reference bpchar(32) NOT NULL,
+                                                    trait_pairs_id BIGINT NOT NULL,
+                                                    pretnder_id BIGINT NOT NULL,
+                                                    score SMALLINT CHECK (score BETWEEN 0 AND 100) DEFAULT 50,
+                                                    PRIMARY KEY(id),
+                                                    constraint trait_pairs_fk
+                                                        FOREIGN KEY(trait_pairs_id) references trait_pairs(id),
+                                                    constraint pretnder_trait_pairs_fk
+                                                        FOREIGN KEY(pretnder_id) references pretenders(id)
+);
+
+CREATE SEQUENCE IF NOT EXISTS pretnder_trait_pairs_seq
+    START 1
+    INCREMENT 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE OR REPLACE FUNCTION create_pretender_trait_pairs()
+    RETURNS TRIGGER AS $$
+BEGIN
+    -- Insert one entry for each trait pair for the new pretender
+    INSERT INTO pretender_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
+    SELECT nextval('pretnder_trait_pairs_seq'), REPLACE(uuid_generate_v4()::text, '-', ''), id, NEW.id, 50  -- Set
+    -- default score to 50
+    FROM trait_pairs;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER after_pretender_insert
+    AFTER INSERT ON pretenders
+    FOR EACH ROW
+EXECUTE FUNCTION create_pretender_trait_pairs();
+
+CREATE OR REPLACE FUNCTION check_and_create_match() RETURNS trigger AS
+$$
+DECLARE
+    v_liker_id INT;
+    v_liked_id INT;
+    v_reverse_like_exists BOOLEAN;
+BEGIN
+    -- Get the liker_id and liked_id from the inserted row
+    v_liker_id := NEW.liker_id;
+    v_liked_id := NEW.liked_id;
+
+    -- Check if the reverse like exists (i.e., the liked_id has liked back the liker_id)
+    SELECT EXISTS(
+        SELECT 1
+        FROM likes
+        WHERE liker_id = v_liked_id AND liked_id = v_liker_id
+    ) INTO v_reverse_like_exists;
+
+    -- If a mutual like exists, create a match if it doesn't already exist
+    IF v_reverse_like_exists THEN
+        -- Insert a match only if it does not already exist
+        INSERT INTO matches (id,reference, pretenders1_id, pretenders2_id, status)
+        SELECT nextval('matches_seq'), REPLACE(uuid_generate_v4()::text, '-', ''), v_liker_id, v_liked_id, 'ACTIVE'
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM matches
+            WHERE (pretenders1_id = v_liker_id AND pretenders2_id = v_liked_id)
+               OR (pretenders1_id = v_liked_id AND pretenders2_id = v_liker_id)
+        );
+    END IF;
+
+    RETURN NEW;
+END;
+$$
+    LANGUAGE plpgsql;
+
+CREATE TRIGGER after_like_insert
+    AFTER INSERT ON likes
+    FOR EACH ROW
+EXECUTE FUNCTION check_and_create_match();
+
+alter table matches
+    add constraint uq_reference_match
+        unique (reference);
+
+alter table messages
+    add constraint uq_reference_message
+        unique (reference);
+
+alter table pretender_details
+    add constraint uq_reference_pd
+        unique (reference);
+
+alter table pretender_details
+    ADD COLUMN gender VARCHAR(20) NOT NULL DEFAULT 'NC';
+
+alter table profile_pics
+    ADD COLUMN reference bpchar(32) NOT NULL DEFAULT REPLACE(uuid_generate_v4()::text, '-', '');
+alter table profile_pics
+    add constraint uq_reference_pp
+        unique (reference);
+
+ALTER TABLE profile_pics
+ADD CHECK (pic_order BETWEEN 0 AND 8);
