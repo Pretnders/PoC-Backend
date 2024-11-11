@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import io.quarkus.logging.Log;
+import org.eclipse.microprofile.jwt.Claims
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED
 
@@ -30,7 +31,7 @@ class FindUsersResource {
     @RolesAllowed("LOVER")
     @SecurityRequirement(name = "bearer")
     fun getMe() {
-        val userMail = jwt.name
+        val userMail = jwt.claim<String>(Claims.email.name).get()
         Log.debug(userMail)
     }
 }

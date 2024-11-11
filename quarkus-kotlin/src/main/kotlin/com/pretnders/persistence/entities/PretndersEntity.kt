@@ -39,9 +39,10 @@ class PretndersEntity {
     var accountVerifiedStatus: Boolean? = false
     @OneToOne(mappedBy = "pretndersEntity", fetch = FetchType.LAZY)
     var pretenderDetails: PretendersDetailsEntity? = null
-    override fun toString(): String {
-        return "PretndersEntity(id=$id, nickname=$nickname, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretenderDetails)"
-    }
+    @OneToMany(mappedBy = "pretnders", fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST])
+    var profilePics: MutableList<ProfilePicsEntity>? = null
+
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -83,6 +84,10 @@ class PretndersEntity {
         result = 31 * result + (accountVerifiedStatus?.hashCode() ?: 0)
         result = 31 * result + (pretenderDetails?.hashCode() ?: 0)
         return result
+    }
+
+    override fun toString(): String {
+        return "PretndersEntity(id=$id, nickname=$nickname, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretenderDetails, profilePics=$profilePics)"
     }
 
 

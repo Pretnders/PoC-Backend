@@ -35,7 +35,7 @@ CREATE SEQUENCE IF NOT EXISTS pretenders_seq
 CREATE TABLE IF NOT EXISTS profile_pics
 (
     id            bigint       NOT NULL,
-    pretenders_id INT          NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
+    pretenders_id BIGINT          NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
     url           varchar(200) NOT NULL,
     pic_order     SMALLINT     NOT NULL,
     constraint profile_pics_pk

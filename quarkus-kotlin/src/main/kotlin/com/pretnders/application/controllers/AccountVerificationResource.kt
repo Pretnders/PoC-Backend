@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.JsonWebToken
 import io.quarkus.logging.Log;
+import org.eclipse.microprofile.jwt.Claims
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
@@ -47,7 +48,7 @@ class AccountVerificationResource {
     @RolesAllowed("PRETNDER")
     fun verifyClientAccount(otpRequest: OtpRequest):Response {
         Log.info("Vérifying user account")
-        val mail = jwt.name
+        val mail = jwt.claim<String>(Claims.email.name).get()
         verifyAccountsIn.verifyClientAccount(mail, otpRequest.otpCode)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
@@ -62,7 +63,7 @@ class AccountVerificationResource {
     fun generateNewOtpCode():Response {
         Log.info("Initiating new OTP")
 
-        val mail = jwt.name
+        val mail = jwt.claim<String>(Claims.email.name).get()
         verifyAccountsIn.generateNewOtpCode(mail)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)

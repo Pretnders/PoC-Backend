@@ -11,6 +11,7 @@ import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
@@ -52,7 +53,7 @@ class AdminCodeResource {
     @PermitAll
     fun getAdminCode(): Response {
         Log.info("Retrieving new admin code")
-        val mail = jwt.name
+        val mail = jwt.claim<String>(Claims.email.name).get()
 //        val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
   //      val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         return Response.ok(adminCodeIn.getCurrentCode())

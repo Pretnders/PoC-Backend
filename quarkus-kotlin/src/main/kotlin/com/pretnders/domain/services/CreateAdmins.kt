@@ -40,7 +40,9 @@ class CreateAdmins:CreateAdminIn {
         if(createAdminCommand.adminCode == secretsClientOut.getCurrentAdminCreationCode() ){
             val reference = getNewUUID()
             secretsClientOut.updateAdminCode(generateAdminCode())
-            val jwToken = jwtTokenGenerator.getToken(createAdminCommand.mail, UserTypes.ADMIN.name)
+            val jwToken = jwtTokenGenerator.getToken(reference, createAdminCommand.phoneNumber, createAdminCommand
+                .mail, UserTypes
+                .ADMIN.name)
             createAdminCommand.reference = reference
             createAdminCommand.password = hashWithBCrypt(createAdminCommand.password).result
             mailer.sendHtmlEmail(createAdminCommand.mail, "Welcome",mailer.generateOtpEmail(createAdminCommand

@@ -9,6 +9,7 @@ import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.Operation
 import org.eclipse.microprofile.openapi.annotations.media.Content
@@ -48,7 +49,7 @@ class TestCsrf {
         )]),
     )
     fun ttt(): Response {
-        val userMail = jwt.name
+        val userMail = jwt.claim<String>(Claims.email.name).get()
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         return Response.ok("LOL").cookie(csrfCookie).build()

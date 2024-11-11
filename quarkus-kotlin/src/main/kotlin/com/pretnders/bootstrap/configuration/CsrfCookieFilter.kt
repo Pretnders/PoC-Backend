@@ -8,7 +8,9 @@ import jakarta.ws.rs.container.ContainerRequestContext
 import jakarta.ws.rs.container.ContainerRequestFilter
 import jakarta.ws.rs.core.Response
 import jakarta.ws.rs.ext.Provider
+import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
+import kotlin.jvm.optionals.getOrNull
 
 private const val ADMIN_CODE_PATH = "/admin-code"
 
@@ -26,6 +28,7 @@ private const val PASSWORD_RECOVERY_INIT_RESET_PATH = "/password-recovery/init-r
 private const val PASSWORD_RECOVERY_RESET_PATH = "/password-recovery/reset-password"
 
 private const val ADMIN_CREATION_PATH = "/admin-creation"
+private const val PP_PATH = "/profile-pictures"
 
 
 @Provider
@@ -42,8 +45,8 @@ class CsrfCookieFilter:ContainerRequestFilter {
 
     override fun filter(requestContext: ContainerRequestContext) {
         val csrfCookie = requestContext.cookies["csrf-token"]
-        val mail = jwt.name
         if(requestContext.uriInfo.path.startsWith
+                (PP_PATH)||requestContext.uriInfo.path.startsWith
                 (ADMIN_CODE_PATH)|| requestContext.uriInfo.path.startsWith
                 (CSRF_TOKEN_PATH) || requestContext.uriInfo.path.startsWith
                 (CONNEXION_PATH) || requestContext.uriInfo.path.startsWith
@@ -55,6 +58,7 @@ class CsrfCookieFilter:ContainerRequestFilter {
             ADMIN_CREATION_PATH){
             return
         }
+        val mail = jwt.claim<String>(Claims.email.name).get()
         if (csrfCookie == null || csrfCookie.value.isEmpty() || csrfCookie.value != csrfTokenCache
             .getUserToken(mail)) {
             requestContext.abortWith(

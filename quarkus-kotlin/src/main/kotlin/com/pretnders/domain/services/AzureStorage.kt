@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.`in`.AzureStorageIn
+import com.pretnders.domain.ports.`in`.ProfilePicturesIn
 import com.pretnders.domain.ports.out.UpdateAdminsOut
 import com.pretnders.domain.ports.out.UpdatePretndersOut
 import jakarta.annotation.PostConstruct
@@ -49,6 +50,10 @@ class AzureStorage : AzureStorageIn {
     @field:Default
     private lateinit var updateAdminsOut: UpdateAdminsOut
 
+    @Inject
+    @field:Default
+    private lateinit var profilePicturesIn: ProfilePicturesIn
+
     var blobServiceClient: BlobServiceClient? = null
 
     @PostConstruct
@@ -78,6 +83,24 @@ class AzureStorage : AzureStorageIn {
             )
             val profilePictureUrl = client.blobUrl
             updateAdminsOut.updateProfilePicture(phoneNumber, profilePictureUrl)
+            Log.info("Profile picture updated : $profilePictureUrl")
+            return profilePictureUrl
+        } catch (e: Exception) {
+            Log.debug(e.toString())
+            throw ApplicationException(ApplicationExceptionsEnum.ERROR)
+        }
+    }
+
+    override fun addPretnderProfilePicture(reference:String, phoneNumber: String, file: FileUpload): String {
+        val containerName = String.format(FORMATTER, phoneNumber)
+        val fileName = file.name()
+        try {
+            val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
+           containerClient.getBlobClient(fileName).uploadFromFile(
+                file.filePath().toString()
+            )
+            val profilePictureUrl = containerClient.getBlobClient(fileName).blobUrl
+            profilePicturesIn.addProfilePicture(reference, profilePictureUrl)
             Log.info("Profile picture updated : $profilePictureUrl")
             return profilePictureUrl
         } catch (e: Exception) {

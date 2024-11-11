@@ -4,6 +4,10 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode
 
 enum class ApplicationExceptionsEnum(val message: String,val errorCode: Int,val origin: String) {
     ERROR("An error occurred", StatusCode.BAD_REQUEST, ErrorOriginEnum.BOOTSTRAP.name),
+    PICTURE_ORDER_OUT_OF_BOUND("Picture order out of bound, max pictures reached", StatusCode.BAD_REQUEST,
+        ErrorOriginEnum.BOOTSTRAP
+        .name),
+
     INVALID_TOKEN("Invalid token", StatusCode.BAD_REQUEST, ErrorOriginEnum.DOMAIN.name),
     PASSWORDS_NO_MATCH("Les mots de passe ne correspondent pas", StatusCode.BAD_REQUEST, ErrorOriginEnum.DOMAIN
         .name),

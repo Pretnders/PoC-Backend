@@ -22,7 +22,7 @@ class HealthCheckResourceTest {
 
     @BeforeEach
     fun before() {
-        val token = jwtTokenGenerator.getToken("sae.benn@gmail.com", UserTypes.PRETNDER.name)
+        val token = jwtTokenGenerator.getToken("123456","0712121212","sae.benn@gmail.com", UserTypes.PRETNDER.name)
         cookie = Cookie.Builder("Bearer", token)
             .setSecured(true) // Sets cookie to secure (optional)
             .setPath("/") // Defines the path (optional)

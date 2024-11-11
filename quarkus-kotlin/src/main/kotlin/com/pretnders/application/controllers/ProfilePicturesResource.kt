@@ -1,8 +1,6 @@
 package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.responses.UpdateProfilePictureResponse
-import com.pretnders.domain.errors.ApplicationException
-import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import jakarta.annotation.security.RolesAllowed
@@ -10,11 +8,12 @@ import jakarta.enterprise.context.RequestScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.ws.rs.Consumes
-import jakarta.ws.rs.PUT
+import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.Operation
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType
@@ -49,8 +48,7 @@ class ProfilePicturesResource {
     @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
     private lateinit var csrfCookieName: String
 
-    @PUT
-    @Path("/{phoneNumber}")
+    @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @ResponseStatus(ACCEPTED)
     @RolesAllowed("ADMIN")
@@ -64,13 +62,45 @@ class ProfilePicturesResource {
             schema = Schema(implementation = String::class)
         )]),
     )
-    fun updateAdminProfilePicture(phoneNumber:String, @Schema(type = SchemaType.STRING,
+    fun updateAdminProfilePicture(@Schema(type = SchemaType.STRING,
     format = "binary") @RestForm
         ("image")  image:
                                     FileUpload
     ): Response {
-        val userMail = jwt.name
+        val userMail = jwt.claim<String>(Claims.email.name).get()
+        val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
         val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.updateAdminProfilePicture(
+            phoneNumber,
+            image))
+        val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
+        val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
+        return Response.ok(profilePicUrl).cookie(csrfCookie).build()
+    }
+
+    @POST
+    @Path("/pretnders")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @ResponseStatus(ACCEPTED)
+    @RolesAllowed("PRETNDER")
+    @SecurityRequirement(name = "bearer")
+    @Operation(summary = "Add pretnder profile picture", description = "Add pretnder profile picture, update " +
+            "the" +
+            " " +
+            "link in db, returns the new url")
+    @APIResponses(
+        APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "text/plain",
+            schema = Schema(implementation = String::class)
+        )]),
+    )
+    fun addPretnderProfilePicture( @Schema(type = SchemaType.STRING,
+        format = "binary") @RestForm
+        ("image")  image:
+    FileUpload
+    ): Response {
+        val reference = jwt.name
+        val userMail = jwt.claim<String>(Claims.email.name).get()
+        val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
+        val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.addPretnderProfilePicture(reference,
             phoneNumber,
             image))
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)

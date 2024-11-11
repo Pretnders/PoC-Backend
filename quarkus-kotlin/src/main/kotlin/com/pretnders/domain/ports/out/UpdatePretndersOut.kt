@@ -4,7 +4,6 @@ import java.sql.Timestamp
 
 
 interface UpdatePretndersOut {
-    fun updateProfilePicture(mail: String, profilePictureUrl: String)
     fun approveAccount(mail: String)
     fun changeOtpCode(mail: String, newOtp: String, newOtpTimestamp: Timestamp)
     fun initPasswordRecovery(identifier: String, passwordVerificationCode: String, passwordVerificationTimestamp:

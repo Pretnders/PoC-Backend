@@ -24,4 +24,19 @@ class AdminsRepository : PanacheRepository<AdminsEntity?> {
             Long::class.java
         ).firstResult()
     }
+    fun updateNickname(mail: String, newNickname: String){
+        update("nickname = :newNickname WHERE mail = :mail",
+            mapOf(
+                "mail" to mail,
+                "newNickname" to newNickname
+            ))
+    }
+
+    fun updateProfilePicture(phoneNumber: String, newProfilePicture: String) {
+        update("profilePicture = :profilePictureUrl WHERE phone = :phoneNumber",
+            mapOf(
+                "phoneNumber" to phoneNumber,
+                "profilePictureUrl" to newProfilePicture
+            ))
+    }
 }

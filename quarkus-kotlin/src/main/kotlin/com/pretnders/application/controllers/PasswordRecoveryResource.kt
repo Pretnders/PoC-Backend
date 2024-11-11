@@ -17,6 +17,7 @@ import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
@@ -74,7 +75,7 @@ class PasswordRecoveryResource {
     @RolesAllowed("PRETNDER","ADMIN")
     fun changePassword(passwordChangeRequest: PasswordChangeRequest): Response {
         Log.info("Starting update password")
-        val mail = jwt.name
+        val mail = jwt.claim<String>(Claims.email.name).get()
         passwordManagementIn.changePassword(mail, passwordChangeRequest.password, passwordChangeRequest.passwordConfirmation)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)

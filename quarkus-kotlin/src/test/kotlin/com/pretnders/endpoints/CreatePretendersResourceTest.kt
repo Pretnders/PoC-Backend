@@ -74,7 +74,7 @@ class CreatePretendersResourceTest {
     @DisplayName("Should create pretender")
     fun testCreateAdminOkRequest() {
         val csrfToken = "ATOKEN"
-        val jwtToken = jwtTokenGenerator.getToken(adminRequest.mail, UserTypes.ADMIN.name)
+        val jwtToken = jwtTokenGenerator.getToken("123456","0712121212", adminRequest.mail, UserTypes.ADMIN.name)
         val userBasicInformations = UserBasicInformations(
             UserTypes.ADMIN.name,
             "ABCDEF",

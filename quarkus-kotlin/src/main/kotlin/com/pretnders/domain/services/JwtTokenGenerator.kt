@@ -15,12 +15,14 @@ class JwtTokenGenerator {
     @field:ConfigProperty(name = "claims.origin")
     private lateinit var origin: String
 
-    fun getToken(mail: String?, userType: String): String {
+    fun getToken(reference:String, phoneNumber:String, mail: String, userType: String): String {
         return Jwt.issuer(issuer)
-            .upn(mail)
+            .upn(reference)
             .groups(HashSet(listOf(userType)))
             .expiresAt(Instant.now().plus(14, ChronoUnit.DAYS))
             .claim(Claims.address.name, origin)
+            .claim(Claims.email.name, mail)
+            .claim(Claims.phone_number.name, phoneNumber)
             .sign()
     }
 }

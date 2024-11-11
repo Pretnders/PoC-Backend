@@ -20,20 +20,6 @@ class UpdatePretndersSpi:UpdatePretndersOut {
     @field:Default
     private lateinit var pretendersRepository: PretendersRepository
 
-    override fun updateProfilePicture(mail: String, profilePictureUrl:String) {
-        try {
-            pretendersRepository.update("profilePicture = :profilePictureUrl WHERE mail = :mail",
-                mapOf(
-                "mail" to mail,
-                "profilePictureUrl" to profilePictureUrl
-            ))
-            Log.debug(String.format("User %s profile picture was updated", mail))
-        } catch (e: SQLException) {
-            handleExceptions(e)
-        }
-
-    }
-
     override fun approveAccount(mail: String) {
         try {
             pretendersRepository.update("accountVerifiedStatus = true WHERE mail =:mail",  mapOf(
