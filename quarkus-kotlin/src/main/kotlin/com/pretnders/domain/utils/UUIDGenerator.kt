@@ -1,5 +1,5 @@
 package com.pretnders.domain.utils
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import java.util.*
 
 object UUIDGenerator {

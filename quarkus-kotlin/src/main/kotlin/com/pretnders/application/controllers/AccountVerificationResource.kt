@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.JsonWebToken
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import org.eclipse.microprofile.jwt.Claims
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
@@ -32,11 +32,9 @@ class AccountVerificationResource {
     private lateinit var verifyAccountsIn: VerifyAccountsIn
 
     @Inject
-    @field:Default
     private lateinit var jwt: JsonWebToken
 
     @Inject
-    @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
     @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")

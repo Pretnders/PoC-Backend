@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "pretender_details")
-class PretendersDetailsEntity {
+class PretndersDetailsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretenders_details_generator")
     @SequenceGenerator(name = "pretenders_details_generator", sequenceName = "pretenders_details_seq", allocationSize = 1)
@@ -31,7 +31,7 @@ class PretendersDetailsEntity {
     var city: String? = null
     @Column(name="country", columnDefinition = "varchar(20)", nullable = false)
     var country: String? = null
-    @OneToOne(cascade = arrayOf(CascadeType.PERSIST))
+    @OneToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "pretender_id", referencedColumnName = "id", nullable = false, updatable = false)
     @JsonIgnore
     private val pretndersEntity: PretndersEntity? = null

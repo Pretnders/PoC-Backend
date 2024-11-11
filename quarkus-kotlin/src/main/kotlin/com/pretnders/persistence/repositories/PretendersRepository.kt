@@ -10,7 +10,9 @@ import java.util.*
 class PretendersRepository : PanacheRepository<PretndersEntity?> {
 
     fun findByIdentifier(identifier: String): Optional<PretndersEntity> {
-        return find("SELECT u from UsersEntity u WHERE (u.mail =:mail OR u.phoneNumber = :phoneNumber)", Parameters.with("mail", identifier).and("phoneNumber", identifier))
+        return find("SELECT u from PretndersEntity u WHERE (u.mail =:mail OR u.phoneNumber = :phoneNumber)", Parameters
+            .with
+            ("mail", identifier).and("phoneNumber", identifier))
             .firstResultOptional<PretndersEntity>()
 
     }

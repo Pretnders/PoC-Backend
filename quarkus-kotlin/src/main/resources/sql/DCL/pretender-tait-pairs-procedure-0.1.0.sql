@@ -2,8 +2,9 @@ CREATE OR REPLACE FUNCTION create_pretender_trait_pairs()
     RETURNS TRIGGER AS $$
 BEGIN
     -- Insert one entry for each trait pair for the new pretender
-    INSERT INTO pretender_trait_pairs (id, trait_pairs_id, pretnder_id, score)
-    SELECT nextval('pretender_trait_pairs_seq'), id, NEW.id, 50  -- Set default score to 50
+    INSERT INTO pretender_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
+    SELECT nextval('pretender_trait_pairs_seq'), REPLACE(uuid_generate_v4()::text, '-', ''), id, NEW.id, 50  -- Set
+    -- default score to 50
     FROM trait_pairs;
 
     RETURN NEW;

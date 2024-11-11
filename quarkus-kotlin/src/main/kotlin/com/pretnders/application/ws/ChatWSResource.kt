@@ -33,15 +33,13 @@ class ChatWSResource {
     }
 
     @OnClose
-    fun onClose(session: Session?, @PathParam("reference") reference: String) {
+    fun onClose(@PathParam("reference") reference: String) {
         Log.info("onClose> $reference")
-
-
         sessions.remove(reference)
     }
 
     @OnError
-    fun onError(session: Session?, @PathParam("reference") reference: String, throwable: Throwable) {
+    fun onError(@PathParam("reference") reference: String, throwable: Throwable) {
         Log.info("onError> $reference: $throwable")
     }
 
@@ -51,14 +49,14 @@ class ChatWSResource {
             val wsMessage = decodeFromString<WsMessage>(message)
             Log.info("onMessage> $reference: ${wsMessage.content}")
             when (wsMessage.action) {
-                WS_ACTIONS.SEND_MESSAGE -> {
+                WsActions.SEND_MESSAGE -> {
                     if (wsMessage.content.length >= 2) {
                         val messageReference = getNewUUID()
                         val wsMessageResponse = WsMessage(
                             wsMessage.from,
                             wsMessage.to,
                             wsMessage.content,
-                            WS_ACTIONS.SEND_MESSAGE_RESPONSE,
+                            WsActions.SEND_MESSAGE_RESPONSE,
                             messageReference
                         )
                         wsMessage.metadata = messageReference
@@ -71,21 +69,19 @@ class ChatWSResource {
                             messagesRepository.add(entity)
                         }
                         broadcast(wsMessage.to, Json.encodeToString(wsMessage))
-                        wsMessage.action = WS_ACTIONS.SEND_MESSAGE_RESPONSE
+                        wsMessage.action = WsActions.SEND_MESSAGE_RESPONSE
                         broadcast(wsMessage.from, Json.encodeToString(wsMessageResponse))
-                        Log.info("done")
-
                     }
                 }
-                WS_ACTIONS.DISCONNECT -> {
+                WsActions.DISCONNECT -> {
                     sessions[reference]?.close()
                 }
-                WS_ACTIONS.REPORT_MESSAGE -> {
+                WsActions.REPORT_MESSAGE -> {
                     Log.info("Reporting message ${wsMessage.metadata}")
                     CompletableFuture.runAsync {
                         messagesRepository.reportMessage(wsMessage.metadata)
                     }
-                    wsMessage.action = WS_ACTIONS.REPORT_MESSAGE_RESPONSE
+                    wsMessage.action = WsActions.REPORT_MESSAGE_RESPONSE
                     wsMessage.content = "Message reported"
                     broadcast(wsMessage.from, Json.encodeToString(wsMessage))
                 }

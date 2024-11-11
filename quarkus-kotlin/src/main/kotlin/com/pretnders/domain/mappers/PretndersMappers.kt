@@ -1,14 +1,11 @@
 package com.pretnders.domain.mappers
 
-import com.pretnders.domain.models.users.Pretnder
-import com.pretnders.domain.models.users.UserLoggedIn
+import com.pretnders.domain.models.pretnders.Pretnder
+import com.pretnders.domain.models.pretnders.UserLoggedIn
 import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
 
 @Mapper(componentModel = MappingConstants.ComponentModel.JAKARTA)
-interface UsersMappers {
-    @Mapping(target = "type", ignore = true)
-
+interface PretndersMappers {
     fun fromUsersToUsersLoggedIn(pretnder: Pretnder, jwToken: String): UserLoggedIn
 }

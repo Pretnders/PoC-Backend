@@ -199,6 +199,54 @@ CREATE SEQUENCE IF NOT EXISTS pretnder_trait_pairs_seq
     NO MAXVALUE
     CACHE 1;
 
+
+alter table matches
+    add constraint uq_reference_match
+        unique (reference);
+
+alter table messages
+    add constraint uq_reference_message
+        unique (reference);
+
+alter table pretender_details
+    add constraint uq_reference_pd
+        unique (reference);
+
+alter table pretender_details
+    ADD COLUMN gender VARCHAR(20) NOT NULL DEFAULT 'NC';
+
+alter table pretender_details
+    ADD COLUMN sexual_orientation VARCHAR(35) NOT NULL DEFAULT 'NC';
+
+alter table profile_pics
+    ADD COLUMN reference bpchar(32) NOT NULL DEFAULT REPLACE(uuid_generate_v4()::text, '-', '');
+alter table profile_pics
+    add constraint uq_reference_pp
+        unique (reference);
+
+ALTER TABLE profile_pics
+ADD CHECK (pic_order BETWEEN 0 AND 8);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Stored procedures
+
+
 CREATE OR REPLACE FUNCTION create_pretender_trait_pairs()
     RETURNS TRIGGER AS $$
 BEGIN
@@ -258,27 +306,3 @@ CREATE TRIGGER after_like_insert
     AFTER INSERT ON likes
     FOR EACH ROW
 EXECUTE FUNCTION check_and_create_match();
-
-alter table matches
-    add constraint uq_reference_match
-        unique (reference);
-
-alter table messages
-    add constraint uq_reference_message
-        unique (reference);
-
-alter table pretender_details
-    add constraint uq_reference_pd
-        unique (reference);
-
-alter table pretender_details
-    ADD COLUMN gender VARCHAR(20) NOT NULL DEFAULT 'NC';
-
-alter table profile_pics
-    ADD COLUMN reference bpchar(32) NOT NULL DEFAULT REPLACE(uuid_generate_v4()::text, '-', '');
-alter table profile_pics
-    add constraint uq_reference_pp
-        unique (reference);
-
-ALTER TABLE profile_pics
-ADD CHECK (pic_order BETWEEN 0 AND 8);

@@ -1,4 +1,4 @@
-package com.pretnders.domain.models.users
+package com.pretnders.domain.models.pretnders
 
 data class UserBasicInformations(val type:String, val reference: String, val jwToken:String, val
 accountVerifiedStatus:Boolean){

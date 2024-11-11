@@ -1,9 +1,9 @@
 package com.pretnders.domain.ports.`in`
 
-import com.pretnders.domain.models.commands.users.CreatePretenderCommand
-import com.pretnders.domain.models.users.UserBasicInformations
+import com.pretnders.domain.models.pretnders.CreatePretenderCommand
+import com.pretnders.domain.models.pretnders.UserBasicInformations
 
 interface CreatePretendersIn {
-    fun createPretender(user:CreatePretenderCommand): UserBasicInformations
+    fun createPretender(user: CreatePretenderCommand): UserBasicInformations
 
 }

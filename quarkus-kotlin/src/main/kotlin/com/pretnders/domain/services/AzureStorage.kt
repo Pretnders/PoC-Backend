@@ -18,7 +18,7 @@ import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.jboss.resteasy.reactive.multipart.FileUpload
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 
 
 @ApplicationScoped
@@ -90,8 +90,14 @@ class AzureStorage : AzureStorageIn {
             throw ApplicationException(ApplicationExceptionsEnum.ERROR)
         }
     }
+    override fun deleteBlobFromContainer(phoneNumber:String, fileName:String) {
+        val containerName = String.format(FORMATTER, phoneNumber)
+        val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
+        Log.debug("Deleting file $fileName from container $containerName")
+        containerClient.getBlobClient(fileName).deleteIfExists()
+    }
 
-    override fun addPretnderProfilePicture(reference:String, phoneNumber: String, file: FileUpload): String {
+    override fun addPretnderProfilePicture(phoneNumber: String, file: FileUpload): String {
         val containerName = String.format(FORMATTER, phoneNumber)
         val fileName = file.name()
         try {
@@ -100,7 +106,6 @@ class AzureStorage : AzureStorageIn {
                 file.filePath().toString()
             )
             val profilePictureUrl = containerClient.getBlobClient(fileName).blobUrl
-            profilePicturesIn.addProfilePicture(reference, profilePictureUrl)
             Log.info("Profile picture updated : $profilePictureUrl")
             return profilePictureUrl
         } catch (e: Exception) {

@@ -1,8 +1,8 @@
 package com.pretnders.persistence.services.users
 
-import com.pretnders.domain.models.commands.users.CreatePretenderCommand
+import com.pretnders.domain.models.pretnders.CreatePretenderCommand
 import com.pretnders.domain.ports.out.CreatePretendersOut
-import com.pretnders.persistence.mappers.users.PretndersEntityMapper
+import com.pretnders.persistence.mappers.pretnders.PretndersEntityMapper
 import com.pretnders.persistence.repositories.PretendersRepository
 import com.pretnders.persistence.services.utils.ExceptionsHandler
 import io.quarkus.logging.Log
@@ -26,7 +26,7 @@ class CreatePretendersSpi : CreatePretendersOut {
     private lateinit var pretndersEntityMapper: PretndersEntityMapper
 
     override fun addPretender(pretender: CreatePretenderCommand) {
-        val userEntity = pretndersEntityMapper.fromCreatePretnderToEntity(pretender)
+        val userEntity = pretndersEntityMapper.fromCreateCommandToEntity(pretender)
         try {
             Log.debug(userEntity.toString())
             pretendersRepository.persistAndFlush(userEntity)

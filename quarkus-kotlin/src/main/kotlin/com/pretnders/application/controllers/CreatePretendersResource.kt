@@ -52,7 +52,7 @@ class CreatePretendersResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(CREATED)
     @PermitAll
-    @Operation(summary = "Create a client", description = "Create a client")
+    @Operation(summary = "Create a pretnder", description = "Create a pretnder")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
             schema = Schema(implementation = CreateAccountResponse::class)
@@ -66,7 +66,7 @@ class CreatePretendersResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mappedRequest.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(usersDtoMappers.toCreationResponse(userCreationInformations)).cookie(bearerCookie).cookie(csrfCookie).build()
+        return Response.ok().cookie(bearerCookie).cookie(csrfCookie).build()
     }
 
 }

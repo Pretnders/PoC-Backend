@@ -1,11 +1,11 @@
 package com.pretnders.persistence
 
 import com.pretnders.domain.errors.ApplicationException
-import com.pretnders.domain.models.commands.users.CreatePretenderCommand
+import com.pretnders.domain.models.pretnders.CreatePretenderCommand
 import com.pretnders.domain.ports.out.CreatePretendersOut
 import com.pretnders.domain.utils.UUIDGenerator.getNewUUID
 import com.pretnders.persistence.entities.PretndersEntity
-import com.pretnders.persistence.mappers.users.PretndersEntityMapper
+import com.pretnders.persistence.mappers.pretnders.PretndersEntityMapper
 import com.pretnders.persistence.repositories.PretendersRepository
 import io.quarkus.logging.Log
 import io.quarkus.test.InjectMock
@@ -15,10 +15,7 @@ import jakarta.inject.Inject
 import org.hibernate.exception.ConstraintViolationException
 import org.junit.jupiter.api.*
 import org.mockito.Mockito
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import java.sql.SQLException
 import java.sql.Timestamp
 import java.time.Instant
@@ -92,7 +89,7 @@ class CreatePretndersUnitTest {
         /**
          * Arrange
          */
-        whenever(pretndersEntityMapper.fromCreatePretnderToEntity(createPretenderCommand)).thenReturn(entityToSave)
+        whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
         whenever(pretendersRepository.persistAndFlush(entityToSave)).thenCallRealMethod()
         createPretendersOut.addPretender(createPretenderCommand)
         /**
@@ -119,7 +116,7 @@ class CreatePretndersUnitTest {
         /**
          * Arrange
          */
-        whenever(pretndersEntityMapper.fromCreatePretnderToEntity(createPretenderCommand)).thenReturn(entityToSave)
+        whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
         whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), MAIL_KEY))
         Log.info(createPretenderCommand.toString())
@@ -142,7 +139,7 @@ class CreatePretndersUnitTest {
          */  Log.info(createPretenderCommand.toString())
 
         Log.info(entityToSave.toString())
-        whenever(pretndersEntityMapper.fromCreatePretnderToEntity(createPretenderCommand)).thenReturn(entityToSave)
+        whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
         whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), REFERENCE_KEY))
         /**
@@ -161,7 +158,7 @@ class CreatePretndersUnitTest {
          */  Log.info(createPretenderCommand.toString())
 
         Log.info(entityToSave.toString())
-        whenever(pretndersEntityMapper.fromCreatePretnderToEntity(createPretenderCommand)).thenReturn(entityToSave)
+        whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
         whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), PHONE_KEY))
 

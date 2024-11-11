@@ -1,4 +1,4 @@
-package com.pretnders.domain.models.commands.users
+package com.pretnders.domain.models.admins
 
 class CreateAdminCommand(
     val nickname: String,

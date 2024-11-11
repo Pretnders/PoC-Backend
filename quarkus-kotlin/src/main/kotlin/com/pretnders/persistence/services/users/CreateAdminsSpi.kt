@@ -1,8 +1,8 @@
 package com.pretnders.persistence.services.users
 
-import com.pretnders.domain.models.commands.users.CreateAdminCommand
+import com.pretnders.domain.models.admins.CreateAdminCommand
 import com.pretnders.domain.ports.out.CreateAdminOut
-import com.pretnders.persistence.mappers.users.AdminsEntityMapper
+import com.pretnders.persistence.mappers.pretnders.AdminsEntityMapper
 import com.pretnders.persistence.repositories.AdminsRepository
 import com.pretnders.persistence.services.utils.ExceptionsHandler.handlePersistenceExceptions
 import io.quarkus.logging.Log

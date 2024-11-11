@@ -3,6 +3,7 @@ package com.pretnders.application.controllers
 import com.pretnders.application.dto.responses.UpdateProfilePictureResponse
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
+import com.pretnders.domain.ports.`in`.ProfilePicturesIn
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped
 import jakarta.enterprise.inject.Default
@@ -40,6 +41,10 @@ class ProfilePicturesResource {
     @Inject
     @field:Default
     private lateinit var azureStorageIn: AzureStorageIn
+
+    @Inject
+    @field:Default
+    private lateinit var profilePicturesIn: ProfilePicturesIn
 
     @Inject
     @field:Default
@@ -100,11 +105,12 @@ class ProfilePicturesResource {
         val reference = jwt.name
         val userMail = jwt.claim<String>(Claims.email.name).get()
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
-        val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.addPretnderProfilePicture(reference,
+        val response = profilePicturesIn.addProfilePicture(reference,
             phoneNumber,
-            image))
+            image)
+        val addProfilePicResponse = UpdateProfilePictureResponse(response.profilePictureUrl, response.picReference)
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(profilePicUrl).cookie(csrfCookie).build()
+        return Response.ok(addProfilePicResponse).cookie(csrfCookie).build()
     }
 }

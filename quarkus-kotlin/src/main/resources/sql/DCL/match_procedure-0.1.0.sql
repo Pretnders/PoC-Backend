@@ -19,8 +19,8 @@ BEGIN
     -- If a mutual like exists, create a match if it doesn't already exist
     IF v_reverse_like_exists THEN
         -- Insert a match only if it does not already exist
-        INSERT INTO matches (id, pretenders1_id, pretenders2_id, status)
-        SELECT nextval('matches_seq'), v_liker_id, v_liked_id, 'ACTIVE'
+        INSERT INTO matches (id, reference, pretenders1_id, pretenders2_id, status)
+        SELECT nextval('matches_seq'),REPLACE(uuid_generate_v4()::text, '-', ''), v_liker_id, v_liked_id, 'ACTIVE'
         WHERE NOT EXISTS (
             SELECT 1
             FROM matches

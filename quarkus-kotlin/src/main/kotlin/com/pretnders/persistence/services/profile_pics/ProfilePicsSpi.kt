@@ -15,16 +15,19 @@ class ProfilePicsSpi:ProfilePicturesOut {
 
     @Inject
     private lateinit var findPretendersRepository: PretendersRepository
+
+
     override fun getNextPicOrder(reference:String): Short {
         return profilePicsRepository.findNextPicOrder(reference)
     }
 
-    override fun addPic(pretnderReference: String, pictureReference: String, profilePicUrl: String, picOrder: Short) {
+    override fun addPic(pretnderReference: String, pictureReference: String, profilePicUrl: String) {
         val pretndersEntity = PretndersEntity()
         pretndersEntity.id =findPretendersRepository.findIDByReference(pretnderReference)
         val newProfilePicEntity = ProfilePicsEntity()
-        newProfilePicEntity.url = profilePicUrl
         newProfilePicEntity.reference = pictureReference
+        newProfilePicEntity.order = getNextPicOrder(pretnderReference)
+        newProfilePicEntity.url = profilePicUrl
         newProfilePicEntity.pretnders = pretndersEntity
         profilePicsRepository.persistAndFlush(newProfilePicEntity)
     }

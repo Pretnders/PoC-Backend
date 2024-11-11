@@ -1,7 +1,7 @@
 package com.pretnders.domain.utils
 
 import jakarta.validation.constraints.NotNull
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import java.util.*
 
 object UUIDFormatter {

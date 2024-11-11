@@ -3,8 +3,8 @@ package com.pretnders.domain.services
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.models.UserTypes
-import com.pretnders.domain.models.commands.users.CreateAdminCommand
-import com.pretnders.domain.models.users.UserBasicInformations
+import com.pretnders.domain.models.admins.CreateAdminCommand
+import com.pretnders.domain.models.pretnders.UserBasicInformations
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CreateAdminIn
 import com.pretnders.domain.ports.out.CreateAdminOut
@@ -15,7 +15,6 @@ import com.pretnders.domain.utils.InputsValidator
 import com.pretnders.domain.utils.UUIDGenerator.getNewUUID
 import jakarta.enterprise.context.RequestScoped
 import jakarta.inject.Inject
-import java.util.concurrent.CompletableFuture
 
 @RequestScoped
 class CreateAdmins:CreateAdminIn {

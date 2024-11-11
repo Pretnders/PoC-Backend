@@ -12,7 +12,7 @@ import com.pretnders.domain.utils.InputsValidator.validatePasswordHash
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import java.sql.Timestamp
 import java.time.Instant
 

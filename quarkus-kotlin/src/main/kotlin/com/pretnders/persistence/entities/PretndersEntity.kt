@@ -37,8 +37,8 @@ class PretndersEntity {
     var passwordVerificationTimestamp: Timestamp? = null
     @Column(name = "account_verified", columnDefinition = "boolean DEFAULT false", nullable = false)
     var accountVerifiedStatus: Boolean? = false
-    @OneToOne(mappedBy = "pretndersEntity", fetch = FetchType.LAZY)
-    var pretenderDetails: PretendersDetailsEntity? = null
+    @OneToOne(mappedBy = "pretndersEntity", fetch = FetchType.EAGER)
+    var pretenderDetails: PretndersDetailsEntity? = null
     @OneToMany(mappedBy = "pretnders", fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST])
     var profilePics: MutableList<ProfilePicsEntity>? = null
 

@@ -17,7 +17,7 @@ class ProfilePicsRepository : PanacheRepository<ProfilePicsEntity?> {
                     "reference" to reference
                 )
         ).project(Short::class.java).firstResult<Short>()
-        if(res >= 9L || res < 0L){
+        if(res >= 9 || res < 0){
             throw ApplicationException(ApplicationExceptionsEnum.PICTURE_ORDER_OUT_OF_BOUND)
         }
         return res

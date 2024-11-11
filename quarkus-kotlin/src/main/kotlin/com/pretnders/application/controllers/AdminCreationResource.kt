@@ -1,11 +1,9 @@
 package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.requests.CreateAdminRequest
-import com.pretnders.application.dto.requests.CreatePretenderRequest
 import com.pretnders.application.dto.responses.CreateAccountResponse
-import com.pretnders.application.mappers.UsersDtoMappers
+import com.pretnders.application.mappers.AdminDtoMapper
 import com.pretnders.domain.ports.`in`.CreateAdminIn
-import com.pretnders.domain.ports.`in`.CreatePretendersIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import io.quarkus.logging.Log
 import jakarta.annotation.security.PermitAll
@@ -40,7 +38,7 @@ class AdminCreationResource {
 
     @Inject
     @field: Default
-    private lateinit var usersDtoMappers: UsersDtoMappers
+    private lateinit var adminDtoMapper: AdminDtoMapper
 
     @Inject
     @field:Default
@@ -61,12 +59,12 @@ class AdminCreationResource {
     )
     fun createPretender(creationRequest: CreateAdminRequest): Response {
         Log.info("Creating client")
-        val mappedRequest = usersDtoMappers.fromCreationRequest(creationRequest)
+        val mappedRequest = adminDtoMapper.fromCreationRequest(creationRequest)
         Log.debug("Creating admin ${mappedRequest.nickname}")
         val userCreationInformations = createAdminIn.createAdmin(mappedRequest)
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mappedRequest.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(usersDtoMappers.toCreationResponse(userCreationInformations)).cookie(bearerCookie).cookie(csrfCookie).build()
+        return Response.ok().cookie(bearerCookie).cookie(csrfCookie).build()
     }
 }

@@ -3,8 +3,8 @@ package com.pretnders.domain.services
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.models.UserTypes
-import com.pretnders.domain.models.commands.users.CreatePretenderCommand
-import com.pretnders.domain.models.users.UserBasicInformations
+import com.pretnders.domain.models.pretnders.CreatePretenderCommand
+import com.pretnders.domain.models.pretnders.UserBasicInformations
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CreatePretendersIn
 import com.pretnders.domain.ports.out.CreatePretendersOut
@@ -42,7 +42,7 @@ class CreatePretenders : CreatePretendersIn {
     override fun createPretender(user: CreatePretenderCommand):UserBasicInformations {
         Log.info("Creating user")
         val userType = UserTypes.PRETNDER.name
-        val userReference = setUpUserDataAndCheckInputs(user, userType)
+        val userReference = setUpUserDataAndCheckInputs(user)
         val userToken = jwtTokenGenerator.getToken(userReference, user.phoneNumber, user.mail,userType)
         createPretendersOut.addPretender(user)
         azureStorageIn.createContainerForPretnder(user.phoneNumber)
@@ -54,8 +54,7 @@ class CreatePretenders : CreatePretendersIn {
 
 
     fun setUpUserDataAndCheckInputs(
-        user: CreatePretenderCommand,
-        userType: String
+        user: CreatePretenderCommand
     ): String {
         val userReference = getNewUUID()
         val preHashPW = user.password

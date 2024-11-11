@@ -1,5 +1,7 @@
 package com.pretnders.bootstrap.configuration
 
+import com.pretnders.domain.errors.ApplicationException
+import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.services.CsrfTokenCache
 import jakarta.annotation.Priority
 import jakarta.enterprise.inject.Default
@@ -10,7 +12,7 @@ import jakarta.ws.rs.core.Response
 import jakarta.ws.rs.ext.Provider
 import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
-import kotlin.jvm.optionals.getOrNull
+import kotlin.jvm.optionals.getOrElse
 
 private const val ADMIN_CODE_PATH = "/admin-code"
 
@@ -58,7 +60,7 @@ class CsrfCookieFilter:ContainerRequestFilter {
             ADMIN_CREATION_PATH){
             return
         }
-        val mail = jwt.claim<String>(Claims.email.name).get()
+        val mail = jwt.claim<String>(Claims.email.name).getOrElse { throw ApplicationException(ApplicationExceptionsEnum.INVALID_TOKEN) }
         if (csrfCookie == null || csrfCookie.value.isEmpty() || csrfCookie.value != csrfTokenCache
             .getUserToken(mail)) {
             requestContext.abortWith(

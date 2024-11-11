@@ -10,7 +10,7 @@ import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import org.eclipse.microprofile.jwt.Claims
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED

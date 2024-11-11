@@ -1,7 +1,6 @@
 package com.pretnders.persistence.entities
 
 import jakarta.persistence.*
-import java.sql.Timestamp
 
 @Entity
 @Table(name = "admins")

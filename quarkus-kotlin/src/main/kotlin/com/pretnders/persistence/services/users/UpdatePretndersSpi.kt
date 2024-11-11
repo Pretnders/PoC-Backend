@@ -8,7 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
-import io.quarkus.logging.Log;
+import io.quarkus.logging.Log
 import java.sql.SQLException
 import java.sql.Timestamp
 

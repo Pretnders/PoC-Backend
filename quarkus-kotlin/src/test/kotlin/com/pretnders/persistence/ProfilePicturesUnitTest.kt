@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 
 val reference = getNewUUID()
@@ -29,7 +30,7 @@ class ProfilePicturesUnitTest {
     @ValueSource(shorts = [1,0,8,2])
     @Order(1)
     fun shouldRetrieveValidPicOrder(returnValue:Short) {
-        whenever(profilePicsRepository.findNextPicOrder(reference)).thenReturn(returnValue)
+        whenever(profilePicsRepository.findNextPicOrder(reference)).doReturn(returnValue)
         assert(profilePicsRepository.findNextPicOrder(reference) == returnValue)
     }
 
