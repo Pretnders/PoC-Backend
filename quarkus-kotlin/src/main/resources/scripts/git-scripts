@@ -1,0 +1,7 @@
+find all sql files between 2 tags
+
+git diff --name-only 0.1.0 0.2.0 -- '*.sql'
+
+find all sql files marked with a tag
+
+git ls-tree -r --name-only 0.1.0 | grep '\.sql$'
