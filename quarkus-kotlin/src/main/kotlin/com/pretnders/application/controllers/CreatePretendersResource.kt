@@ -2,7 +2,7 @@ package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.requests.CreatePretenderRequest
 import com.pretnders.application.dto.responses.CreateAccountResponse
-import com.pretnders.application.mappers.UsersDtoMappers
+import com.pretnders.application.mappers.PretndersDtoMappers
 import com.pretnders.domain.ports.`in`.CreatePretendersIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import io.quarkus.logging.Log
@@ -39,7 +39,7 @@ class CreatePretendersResource {
 
     @Inject
     @field: Default
-    private lateinit var usersDtoMappers: UsersDtoMappers
+    private lateinit var pretndersDtoMappers: PretndersDtoMappers
 
     @Inject
     @field:Default
@@ -60,7 +60,7 @@ class CreatePretendersResource {
     )
     fun createPretender(creationRequest: CreatePretenderRequest): Response {
         Log.info("Creating client")
-        val mappedRequest = usersDtoMappers.fromCreationRequest(creationRequest)
+        val mappedRequest = pretndersDtoMappers.fromCreationRequest(creationRequest)
         Log.debug(String.format("Creating user %s %s", mappedRequest.firstName, mappedRequest.lastName))
         val userCreationInformations = createPretendersIn.createPretender(mappedRequest)
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)

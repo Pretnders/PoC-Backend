@@ -3,7 +3,7 @@ package com.pretnders.endpoints
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.pretnders.application.controllers.CookieUtils
 import com.pretnders.application.dto.requests.CreatePretenderRequest
-import com.pretnders.application.mappers.UsersDtoMappers
+import com.pretnders.application.mappers.PretndersDtoMappers
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.models.UserTypes
@@ -40,7 +40,7 @@ class CreatePretendersResourceTest {
     @Inject
     private lateinit var jwtTokenGenerator: JwtTokenGenerator
 
-    private val usersDtoMappers: UsersDtoMappers = Mockito.mock(UsersDtoMappers::class.java)
+    private val pretndersDtoMappers: PretndersDtoMappers = Mockito.mock(PretndersDtoMappers::class.java)
 
     @InjectMock
     private lateinit var createPretendersIn: CreatePretendersIn
@@ -82,7 +82,7 @@ class CreatePretendersResourceTest {
         )
         val createPretenderCommandCaptor = argumentCaptor<CreatePretenderCommand>()
 
-        whenever(usersDtoMappers.fromCreationRequest(adminRequest)).doReturn(mappedRequest)
+        whenever(pretndersDtoMappers.fromCreationRequest(adminRequest)).doReturn(mappedRequest)
         whenever(
             createPretendersIn.createPretender(
                 mappedRequest
@@ -138,7 +138,7 @@ class CreatePretendersResourceTest {
             null,
             null
         )
-        whenever(usersDtoMappers.fromCreationRequest(pretenderRequest)).doReturn(mappedRequest)
+        whenever(pretndersDtoMappers.fromCreationRequest(pretenderRequest)).doReturn(mappedRequest)
         whenever(
             createPretendersIn.createPretender(
                 mappedRequest

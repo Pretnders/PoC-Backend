@@ -1,9 +1,9 @@
 package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.requests.LoginRequest
-import com.pretnders.application.dto.responses.UserLoginResponse
+import com.pretnders.application.dto.responses.PretnderLoginResponse
 import com.pretnders.application.mappers.AdminDtoMapper
-import com.pretnders.application.mappers.UsersDtoMappers
+import com.pretnders.application.mappers.PretndersDtoMappers
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import com.pretnders.domain.ports.`in`.LoginIn
 import io.quarkus.logging.Log
@@ -36,7 +36,7 @@ class ConnexionResource {
     private lateinit var loginIn: LoginIn
     @Inject
     @field:Default
-    private lateinit var usersDtoMappers: UsersDtoMappers
+    private lateinit var pretndersDtoMappers: PretndersDtoMappers
     @Inject
     @field:Default
     private lateinit var adminDtoMapper: AdminDtoMapper
@@ -59,7 +59,7 @@ class ConnexionResource {
     @Operation(summary = "Logs an admin", description = "Logs in an admin")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
-            schema = Schema(implementation = UserLoginResponse::class)
+            schema = Schema(implementation = PretnderLoginResponse::class)
         )]),
     )
     fun adminLogin(loginRequest: LoginRequest): Response {
@@ -80,7 +80,7 @@ class ConnexionResource {
     @Operation(summary = "Logs a pretnder", description = "Logs in a pretnder")
     @APIResponses(
         APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
-            schema = Schema(implementation = UserLoginResponse::class)
+            schema = Schema(implementation = PretnderLoginResponse::class)
         )]),
     )
     fun pretenderLogin(loginRequest: LoginRequest): Response {
@@ -89,7 +89,7 @@ class ConnexionResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", loggedIn.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(loggedIn.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return  Response.ok(usersDtoMappers.toLoginResponse(loggedIn)).cookie(bearerCookie).cookie(csrfCookie).build()
+        return  Response.ok(pretndersDtoMappers.toLoginResponse(loggedIn)).cookie(bearerCookie).cookie(csrfCookie).build()
     }
 
     @POST

@@ -6,7 +6,7 @@ import com.pretnders.domain.mappers.AdminMapper
 import com.pretnders.domain.mappers.PretndersMappers
 import com.pretnders.domain.models.UserTypes
 import com.pretnders.domain.models.admins.AdminLoggedIn
-import com.pretnders.domain.models.pretnders.UserLoggedIn
+import com.pretnders.domain.models.pretnders.PretnderLoggedIn
 import com.pretnders.domain.ports.`in`.LoginIn
 import com.pretnders.domain.ports.out.FindAdminsOut
 import com.pretnders.domain.ports.out.FindPretendersOut
@@ -46,7 +46,7 @@ class Login(@field:Inject var jwtTokenGenerator: JwtTokenGenerator) : LoginIn {
         }
     }
 
-    override fun loginPretnder(identifier: String, password: String): UserLoggedIn {
+    override fun loginPretnder(identifier: String, password: String): PretnderLoggedIn {
         val user = findPretendersOut.findByIdentifier(identifier)
         if(verifyPassword(password, user.password)) {
             Log.info("Pretnder login successful")

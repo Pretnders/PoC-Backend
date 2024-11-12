@@ -2,8 +2,8 @@ package com.pretnders.domain.models.pretnders
 
 
 class PretnderDetails {
-    var height: Int? = null
-    var bodyType: Int? = null
+    var height: String? = null
+    var bodyType: String? = null
     var diet: String? = null
     var beliefs: String? = null
     var smokes: String? = null

@@ -1,5 +1,6 @@
 package com.pretnders.domain.models.pretnders
 
+import com.pretnders.domain.models.profile_pics.ProfilePicture
 import java.sql.Timestamp
 
 class Pretnder(
@@ -15,9 +16,10 @@ class Pretnder(
     var accountVerifiedStatus: Boolean? = false,
     var passwordVerificationCode: String? = null,
     var passwordVerificationTimestamp: Timestamp? = null,
-    val pretnderDetails: PretnderDetails? = null
+    val pretnderDetails: PretnderDetails? = null,
+    var profilePictures: List<ProfilePicture>? = ArrayList(),
 ){
     override fun toString(): String {
-        return "Pretnder(nickname='$nickname', firstName='$firstName', lastName='$lastName', mail='$mail', password='$password', phoneNumber='$phoneNumber', reference='$reference', verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, accountVerifiedStatus=$accountVerifiedStatus, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, pretnderDetails=$pretnderDetails)"
+        return "Pretnder(nickname='$nickname', firstName='$firstName', lastName='$lastName', mail='$mail', password='$password', phoneNumber='$phoneNumber', reference='$reference', verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, accountVerifiedStatus=$accountVerifiedStatus, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, pretnderDetails=$pretnderDetails, profilePictures=$profilePictures)"
     }
 }

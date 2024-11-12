@@ -45,7 +45,7 @@ class AccountVerificationResource {
     @ResponseStatus(NO_CONTENT)
     @RolesAllowed("PRETNDER")
     fun verifyClientAccount(otpRequest: OtpRequest):Response {
-        Log.info("Vérifying user account")
+        Log.info("Verifying user account")
         val mail = jwt.claim<String>(Claims.email.name).get()
         verifyAccountsIn.verifyClientAccount(mail, otpRequest.otpCode)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
@@ -57,7 +57,7 @@ class AccountVerificationResource {
     @Path("/new-otp")
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(NO_CONTENT)
-    @RolesAllowed("CLIENT")
+    @RolesAllowed("PRETNDER")
     fun generateNewOtpCode():Response {
         Log.info("Initiating new OTP")
 

@@ -1,4 +1,4 @@
-package com.pretnders.application.ws
+package com.pretnders.ws
 
 import com.pretnders.domain.utils.UUIDGenerator.getNewUUID
 import com.pretnders.persistence.entities.MessagesEntity
@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @ApplicationScoped
 @ServerEndpoint("/messages/{reference}")
-class ChatWSResource {
+class PretndersChatWSResource {
     private val sessions: MutableMap<String, Session> = ConcurrentHashMap()
 
     @Inject
@@ -27,7 +27,7 @@ class ChatWSResource {
 
     @OnOpen
     fun onOpen(session: Session?, @PathParam("reference") reference: String) {
-        sessions.put(reference, session!!)
+        sessions[reference] = session!!
         Log.info(sessions.size)
         Log.info("onOpen> $reference")
     }
@@ -49,14 +49,14 @@ class ChatWSResource {
             val wsMessage = decodeFromString<WsMessage>(message)
             Log.info("onMessage> $reference: ${wsMessage.content}")
             when (wsMessage.action) {
-                WsActions.SEND_MESSAGE -> {
+                WsPretndersChatActions.SEND_MESSAGE -> {
                     if (wsMessage.content.length >= 2) {
                         val messageReference = getNewUUID()
                         val wsMessageResponse = WsMessage(
                             wsMessage.from,
                             wsMessage.to,
                             wsMessage.content,
-                            WsActions.SEND_MESSAGE_RESPONSE,
+                            WsPretndersChatActions.SEND_MESSAGE_RESPONSE,
                             messageReference
                         )
                         wsMessage.metadata = messageReference
@@ -69,19 +69,18 @@ class ChatWSResource {
                             messagesRepository.add(entity)
                         }
                         broadcast(wsMessage.to, Json.encodeToString(wsMessage))
-                        wsMessage.action = WsActions.SEND_MESSAGE_RESPONSE
                         broadcast(wsMessage.from, Json.encodeToString(wsMessageResponse))
                     }
                 }
-                WsActions.DISCONNECT -> {
+                WsPretndersChatActions.DISCONNECT -> {
                     sessions[reference]?.close()
                 }
-                WsActions.REPORT_MESSAGE -> {
+                WsPretndersChatActions.REPORT_MESSAGE -> {
                     Log.info("Reporting message ${wsMessage.metadata}")
                     CompletableFuture.runAsync {
                         messagesRepository.reportMessage(wsMessage.metadata)
                     }
-                    wsMessage.action = WsActions.REPORT_MESSAGE_RESPONSE
+                    wsMessage.action = WsPretndersChatActions.REPORT_MESSAGE_RESPONSE
                     wsMessage.content = "Message reported"
                     broadcast(wsMessage.from, Json.encodeToString(wsMessage))
                 }

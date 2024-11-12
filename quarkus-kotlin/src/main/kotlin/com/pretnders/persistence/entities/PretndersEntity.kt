@@ -38,9 +38,9 @@ class PretndersEntity {
     @Column(name = "account_verified", columnDefinition = "boolean DEFAULT false", nullable = false)
     var accountVerifiedStatus: Boolean? = false
     @OneToOne(mappedBy = "pretndersEntity", fetch = FetchType.EAGER)
-    var pretenderDetails: PretndersDetailsEntity? = null
+    var pretnderDetails: PretndersDetailsEntity? = null
     @OneToMany(mappedBy = "pretnders", fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST])
-    var profilePics: MutableList<ProfilePicsEntity>? = null
+    var profilePictures: MutableList<ProfilePicsEntity>? = null
 
 
 
@@ -62,7 +62,7 @@ class PretndersEntity {
         if (passwordVerificationCode != other.passwordVerificationCode) return false
         if (passwordVerificationTimestamp != other.passwordVerificationTimestamp) return false
         if (accountVerifiedStatus != other.accountVerifiedStatus) return false
-        if (pretenderDetails != other.pretenderDetails) return false
+        if (pretnderDetails != other.pretnderDetails) return false
 
         return true
     }
@@ -82,12 +82,12 @@ class PretndersEntity {
         result = 31 * result + (passwordVerificationCode?.hashCode() ?: 0)
         result = 31 * result + (passwordVerificationTimestamp?.hashCode() ?: 0)
         result = 31 * result + (accountVerifiedStatus?.hashCode() ?: 0)
-        result = 31 * result + (pretenderDetails?.hashCode() ?: 0)
+        result = 31 * result + (pretnderDetails?.hashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "PretndersEntity(id=$id, nickname=$nickname, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretenderDetails, profilePics=$profilePics)"
+        return "PretndersEntity(id=$id, nickname=$nickname, firstName=$firstName, lastName=$lastName, mail=$mail, password=$password, reference=$reference, device=$device, phoneNumber=$phoneNumber, verificationCode=$verificationCode, verificationCodeTimestamp=$verificationCodeTimestamp, passwordVerificationCode=$passwordVerificationCode, passwordVerificationTimestamp=$passwordVerificationTimestamp, accountVerifiedStatus=$accountVerifiedStatus, pretenderDetails=$pretnderDetails, profilePics=$profilePictures)"
     }
 
 

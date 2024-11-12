@@ -227,6 +227,9 @@ alter table profile_pics
 ALTER TABLE profile_pics
 ADD CHECK (pic_order BETWEEN 0 AND 8);
 
+ALTER TABLE pretender_trait_pairs
+    ADD CONSTRAINT uq_reference_ptp UNIQUE(reference);
+
 
 
 
@@ -306,3 +309,28 @@ CREATE TRIGGER after_like_insert
     AFTER INSERT ON likes
     FOR EACH ROW
 EXECUTE FUNCTION check_and_create_match();
+
+
+CREATE OR REPLACE FUNCTION create_pretnder_details()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    -- Insert one entry for each trait pair for the new pretender
+    INSERT INTO pretender_details (id, reference, height, body_type, diet, beliefs, smokes, drinks, social_status,
+                                   biography, city, country, pretender_id)
+    VALUES (
+               nextval('pretenders_details_seq'),
+               REPLACE(uuid_generate_v4()::text, '-', ''), '', 'NORMAL', 'OMNIVORE', 'ATHEIST','NEVER','NEVER',
+               'STUDENT','','PARIS','FRANCE', NEW.ID);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER create_details_after_pretender_insert
+    AFTER INSERT
+    ON pretenders
+    FOR EACH ROW
+EXECUTE FUNCTION create_pretnder_details();
+

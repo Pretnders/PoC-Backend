@@ -1,6 +1,6 @@
-package com.pretnders.application.ws
+package com.pretnders.ws
 
-enum class WsActions {
+enum class WsPretndersChatActions {
     SEND_MESSAGE,
     SEND_MESSAGE_RESPONSE,
     DISCONNECT,
