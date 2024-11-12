@@ -73,10 +73,10 @@ class UpdatePretndersSpi:UpdatePretndersOut {
 
     override fun changePassword(identifier: String, newPassword: String) {
         try {
-            pretendersRepository.update("password = :newPassword WHERE mail =:mail OR phoneNumber = :mail",
+            pretendersRepository.update("password = :newPassword WHERE mail =:identifier OR phoneNumber = :identifier",
                 mapOf(
                     "newPassword" to newPassword,
-                    "mail" to identifier
+                    "identifier" to identifier
                 ))
             Log.debug(String.format("User %s verification code updated", identifier))
         } catch (e: SQLException) {

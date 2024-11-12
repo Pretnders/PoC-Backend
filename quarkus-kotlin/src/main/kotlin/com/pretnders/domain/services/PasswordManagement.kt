@@ -1,9 +1,12 @@
 package com.pretnders.domain.services
 
+import com.pretnders.domain.errors.ApplicationException
+import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.`in`.PasswordManagementIn
 import com.pretnders.domain.ports.out.FindPretendersOut
 import com.pretnders.domain.ports.out.UpdatePretndersOut
 import com.pretnders.domain.services.PasswordUtils.hashWithBCrypt
+import com.pretnders.domain.services.PasswordUtils.verifyPassword
 import com.pretnders.domain.utils.AdminCodeGenerator.generateAdminCode
 import com.pretnders.domain.utils.InputsValidator.hasTimestampExceededTwentyMinutes
 import com.pretnders.domain.utils.InputsValidator.validatePasswordConfirmation
@@ -13,6 +16,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import io.quarkus.logging.Log
+import net.bytebuddy.asm.MemberSubstitution.Current
 import java.sql.Timestamp
 import java.time.Instant
 
@@ -56,11 +60,15 @@ class PasswordManagement : PasswordManagementIn {
     }
 
 
-    override fun changePassword(mail: String, password: String, passwordConfirmation: String) {
-        validatePasswordFormat(password)
-        validatePasswordConfirmation(password, passwordConfirmation)
-        val hashedPw = hashWithBCrypt(password).result
-        updatePretndersOut.changePassword(mail, hashedPw)
+    override fun changePassword(mail: String, currentPassword:String, password: String, passwordConfirmation: String) {
+        val userPassword = findPretendersOut.findByIdentifier(mail).password
+        if(verifyPassword(currentPassword, userPassword)){
+            validatePasswordFormat(password)
+            validatePasswordConfirmation(password, passwordConfirmation)
+            val hashedPw = hashWithBCrypt(password).result
+            return updatePretndersOut.changePassword(mail, hashedPw)
+        }
+        throw ApplicationException(ApplicationExceptionsEnum.USER_INVALID_PASSWORD)
     }
 
 

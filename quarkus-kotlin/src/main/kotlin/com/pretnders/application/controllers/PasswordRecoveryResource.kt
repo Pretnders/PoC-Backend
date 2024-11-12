@@ -24,7 +24,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
-@Path("/password-recovery")
+@Path("/password-management")
 @RequestScoped
 class PasswordRecoveryResource {
 
@@ -76,7 +76,10 @@ class PasswordRecoveryResource {
     fun changePassword(passwordChangeRequest: PasswordChangeRequest): Response {
         Log.info("Starting update password")
         val mail = jwt.claim<String>(Claims.email.name).get()
-        passwordManagementIn.changePassword(mail, passwordChangeRequest.password, passwordChangeRequest.passwordConfirmation)
+        passwordManagementIn.changePassword(mail, passwordChangeRequest.currentPassword, passwordChangeRequest
+            .password,
+            passwordChangeRequest
+            .passwordConfirmation)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         return Response.noContent().cookie(csrfCookie).build()

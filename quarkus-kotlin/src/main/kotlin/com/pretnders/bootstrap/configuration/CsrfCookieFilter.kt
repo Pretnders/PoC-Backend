@@ -25,9 +25,9 @@ private const val CREATE_PRETENDER_PATH = "/create-pretnder"
 private const val HEALTHCHECK_PATH = "/healthcheck"
 
 
-private const val PASSWORD_RECOVERY_INIT_RESET_PATH = "/password-recovery/init-reset"
+private const val PASSWORD_RECOVERY_INIT_RESET_PATH = "/password-management/init-reset"
 
-private const val PASSWORD_RECOVERY_RESET_PATH = "/password-recovery/reset-password"
+private const val PASSWORD_RECOVERY_RESET_PATH = "/password-management/reset-password"
 
 private const val ADMIN_CREATION_PATH = "/admin-creation"
 private const val PP_PATH = "/profile-pictures"
