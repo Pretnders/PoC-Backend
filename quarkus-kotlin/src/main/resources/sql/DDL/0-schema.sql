@@ -232,6 +232,9 @@ ALTER TABLE pretender_trait_pairs
 
 
 
+alter table pretender_trait_pairs
+    add constraint trait_pairs__fk
+        foreign key (trait_pairs_id) references trait_pairs ON DELETE CASCADE;
 
 
 
@@ -334,3 +337,33 @@ CREATE TRIGGER create_details_after_pretender_insert
     FOR EACH ROW
 EXECUTE FUNCTION create_pretnder_details();
 
+CREATE OR REPLACE FUNCTION add_pretender_trait_pairs()
+    RETURNS TRIGGER AS
+$$
+DECLARE
+    pretender_id BIGINT;
+BEGIN
+    -- Loop through each pretender in pretender_trait_pairs
+    FOR pretender_id IN
+        SELECT DISTINCT pretnder_id
+        FROM pretender_trait_pairs
+        LOOP
+            -- Insert a new row for each pretender with the new trait_pair
+            INSERT INTO pretender_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
+            VALUES (nextval('pretnder_trait_pairs_seq'), -- Generate new ID
+                    REPLACE(uuid_generate_v4()::text, '-', ''), -- Use a default or set this based on your logic
+                    NEW.id, -- ID of the new trait_pair from trait_pairs
+                    pretender_id, -- Current pretender's ID
+                    50 -- Default score
+                   );
+        END LOOP;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_add_pretender_trait_pairs
+    AFTER INSERT
+    ON trait_pairs
+    FOR EACH ROW
+EXECUTE FUNCTION add_pretender_trait_pairs();

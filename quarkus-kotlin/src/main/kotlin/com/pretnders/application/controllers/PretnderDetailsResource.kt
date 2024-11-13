@@ -2,6 +2,7 @@ package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.requests.UpdateNicknameRequest
 import com.pretnders.application.utils.CookieUtils
+import com.pretnders.domain.models.pretnders_details.Genders
 import com.pretnders.domain.models.pretnders_details.SexualOrientation
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import com.pretnders.domain.ports.`in`.UpdatePretnderProfileIn
@@ -64,7 +65,7 @@ class PretnderDetailsResource {
         val mail = jwt.claim<String>(Claims.email.name).get()
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        updatePretnderProfileIn.updateNickname(reference, updateNicknameRequest.newNickname)
+        updatePretnderProfileIn.changeNickname(reference, updateNicknameRequest.newNickname)
         return Response.noContent().cookie(csrfCookie).build()
     }
 
@@ -81,7 +82,24 @@ class PretnderDetailsResource {
         val mail = jwt.claim<String>(Claims.email.name).get()
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        updatePretnderProfileIn.updateOrientation(detailsReference, newOrientation)
+        updatePretnderProfileIn.changeOrientation(detailsReference, newOrientation)
+        return Response.noContent().cookie(csrfCookie).build()
+    }
+
+    @PUT
+    @Path("/gender/{detailsReference}/{newGender}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ResponseStatus(NO_CONTENT)
+    @RolesAllowed("PRETNDER")
+    @APIResponses(
+        APIResponse(responseCode = "204", description = "NO_CONTENT")
+    )
+    fun changeGender(@PathParam("detailsReference") detailsReference:String, @PathParam
+        ("newGender") newGender:Genders): Response {
+        val mail = jwt.claim<String>(Claims.email.name).get()
+        val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
+        val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
+        updatePretnderProfileIn.changeGender(detailsReference, newGender)
         return Response.noContent().cookie(csrfCookie).build()
     }
 
