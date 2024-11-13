@@ -1,4 +1,4 @@
-package com.pretnders.application.controllers
+package com.pretnders.application.utils
 
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.ws.rs.core.NewCookie

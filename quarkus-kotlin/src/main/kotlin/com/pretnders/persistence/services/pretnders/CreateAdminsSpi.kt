@@ -1,4 +1,4 @@
-package com.pretnders.persistence.services.users
+package com.pretnders.persistence.services.pretnders
 
 import com.pretnders.domain.models.admins.CreateAdminCommand
 import com.pretnders.domain.ports.out.CreateAdminOut

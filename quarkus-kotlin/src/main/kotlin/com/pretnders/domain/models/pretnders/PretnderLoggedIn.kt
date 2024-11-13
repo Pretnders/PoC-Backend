@@ -11,11 +11,11 @@ data class PretnderLoggedIn(
     val reference: String,
     val jwToken:String,
     val accountVerifiedStatus:Boolean,
-    val profilePictures:List<ProfilePicture> ? = ArrayList(),
-    val pretnderDetails: PretnderDetails
-
+    val pretnderDetails: PretnderDetails,
+    var profilePictures: List<ProfilePicture>? = ArrayList(),
+    var traitPairs: List<PretnderTraitPair>
 ){
     override fun toString(): String {
-        return "PretnderLoggedIn(nickname='$nickname', firstName='$firstName', lastName='$lastName', mail='$mail', phoneNumber='$phoneNumber', reference='$reference', jwToken='$jwToken', accountVerifiedStatus=$accountVerifiedStatus, profilePictures=$profilePictures, pretnderDetails=$pretnderDetails)"
+        return "PretnderLoggedIn(nickname='$nickname', firstName='$firstName', lastName='$lastName', mail='$mail', phoneNumber='$phoneNumber', reference='$reference', jwToken='$jwToken', accountVerifiedStatus=$accountVerifiedStatus, pretnderDetails=$pretnderDetails, profilePictures=$profilePictures, traitPairs=$traitPairs)"
     }
 }

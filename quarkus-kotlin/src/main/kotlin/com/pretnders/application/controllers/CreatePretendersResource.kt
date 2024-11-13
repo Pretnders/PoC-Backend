@@ -3,6 +3,7 @@ package com.pretnders.application.controllers
 import com.pretnders.application.dto.requests.CreatePretenderRequest
 import com.pretnders.application.dto.responses.CreateAccountResponse
 import com.pretnders.application.mappers.PretndersDtoMappers
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.CreatePretendersIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import io.quarkus.logging.Log

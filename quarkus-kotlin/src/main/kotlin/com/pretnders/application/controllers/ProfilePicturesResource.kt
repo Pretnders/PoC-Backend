@@ -1,6 +1,7 @@
 package com.pretnders.application.controllers
 
 import com.pretnders.application.dto.responses.UpdateProfilePictureResponse
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import com.pretnders.domain.ports.`in`.ProfilePicturesIn

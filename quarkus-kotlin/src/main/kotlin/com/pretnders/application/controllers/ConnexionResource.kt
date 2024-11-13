@@ -4,6 +4,7 @@ import com.pretnders.application.dto.requests.LoginRequest
 import com.pretnders.application.dto.responses.PretnderLoginResponse
 import com.pretnders.application.mappers.AdminDtoMapper
 import com.pretnders.application.mappers.PretndersDtoMappers
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import com.pretnders.domain.ports.`in`.LoginIn
 import io.quarkus.logging.Log

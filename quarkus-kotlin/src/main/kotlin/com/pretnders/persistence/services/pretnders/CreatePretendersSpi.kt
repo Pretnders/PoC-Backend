@@ -1,9 +1,9 @@
-package com.pretnders.persistence.services.users
+package com.pretnders.persistence.services.pretnders
 
 import com.pretnders.domain.models.pretnders.CreatePretenderCommand
 import com.pretnders.domain.ports.out.CreatePretendersOut
 import com.pretnders.persistence.mappers.pretnders.PretndersEntityMapper
-import com.pretnders.persistence.repositories.PretendersRepository
+import com.pretnders.persistence.repositories.PretndersRepository
 import com.pretnders.persistence.services.utils.ExceptionsHandler
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
@@ -19,7 +19,7 @@ class CreatePretendersSpi : CreatePretendersOut {
 
     @Inject
     @field:Default
-    private lateinit var pretendersRepository: PretendersRepository
+    private lateinit var pretndersRepository: PretndersRepository
 
     @Inject
     @field:Default
@@ -29,7 +29,7 @@ class CreatePretendersSpi : CreatePretendersOut {
         val userEntity = pretndersEntityMapper.fromCreateCommandToEntity(pretender)
         try {
             Log.debug(userEntity.toString())
-            pretendersRepository.persistAndFlush(userEntity)
+            pretndersRepository.persistAndFlush(userEntity)
         } catch (e: ConstraintViolationException) {
             ExceptionsHandler.handlePersistenceExceptions(e)
         }

@@ -10,10 +10,11 @@ data class PretnderLoginResponse(
     val phoneNumber: String,
     val mail:String,
     val accountVerifiedStatus: Boolean,
-    val pretnderDetails:PretnderDetailsResponse,
-    val profilePictures:List<ProfilePictureResponse>
+    val pretnderDetails: PretnderDetailsResponse,
+    var profilePictures: List<ProfilePictureResponse>? = ArrayList(),
+    var traitPairs: List<PretnderTraitPairResponse>
 ){
     override fun toString(): String {
-        return "PretnderLoginResponse(nickname='$nickname', firstName='$firstName', lastName='$lastName', phoneNumber='$phoneNumber', mail='$mail', accountVerifiedStatus=$accountVerifiedStatus, profilePictures=$profilePictures)"
+        return "PretnderLoginResponse(nickname='$nickname', firstName='$firstName', lastName='$lastName', phoneNumber='$phoneNumber', mail='$mail', accountVerifiedStatus=$accountVerifiedStatus, pretnderDetails=$pretnderDetails, profilePictures=$profilePictures, traitPairs=$traitPairs)"
     }
 }

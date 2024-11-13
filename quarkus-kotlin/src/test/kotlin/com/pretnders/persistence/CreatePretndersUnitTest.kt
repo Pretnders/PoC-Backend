@@ -6,7 +6,7 @@ import com.pretnders.domain.ports.out.CreatePretendersOut
 import com.pretnders.domain.utils.UUIDGenerator.getNewUUID
 import com.pretnders.persistence.entities.PretndersEntity
 import com.pretnders.persistence.mappers.pretnders.PretndersEntityMapper
-import com.pretnders.persistence.repositories.PretendersRepository
+import com.pretnders.persistence.repositories.PretndersRepository
 import io.quarkus.logging.Log
 import io.quarkus.test.InjectMock
 import io.quarkus.test.TestTransaction
@@ -26,7 +26,7 @@ class CreatePretndersUnitTest {
     @Inject
     lateinit var createPretendersOut: CreatePretendersOut
     @InjectMock
-    lateinit var pretendersRepository: PretendersRepository
+    lateinit var pretndersRepository: PretndersRepository
 
     private val pretndersEntityMapper: PretndersEntityMapper = Mockito.mock(PretndersEntityMapper::class.java)
 
@@ -90,12 +90,12 @@ class CreatePretndersUnitTest {
          * Arrange
          */
         whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
-        whenever(pretendersRepository.persistAndFlush(entityToSave)).thenCallRealMethod()
+        whenever(pretndersRepository.persistAndFlush(entityToSave)).thenCallRealMethod()
         createPretendersOut.addPretender(createPretenderCommand)
         /**
          * Verify
          */
-        verify(pretendersRepository).persistAndFlush(pretndersEntityCaptor.capture())
+        verify(pretndersRepository).persistAndFlush(pretndersEntityCaptor.capture())
         assert(createPretenderCommand.firstName == pretndersEntityCaptor.firstValue.firstName)
         assert(createPretenderCommand.lastName == pretndersEntityCaptor.firstValue.lastName)
         assert(createPretenderCommand.reference == pretndersEntityCaptor.firstValue.reference)
@@ -117,7 +117,7 @@ class CreatePretndersUnitTest {
          * Arrange
          */
         whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
-        whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
+        whenever(pretndersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), MAIL_KEY))
         Log.info(createPretenderCommand.toString())
 
@@ -140,7 +140,7 @@ class CreatePretndersUnitTest {
 
         Log.info(entityToSave.toString())
         whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
-        whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
+        whenever(pretndersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), REFERENCE_KEY))
         /**
          * Verify
@@ -159,7 +159,7 @@ class CreatePretndersUnitTest {
 
         Log.info(entityToSave.toString())
         whenever(pretndersEntityMapper.fromCreateCommandToEntity(createPretenderCommand)).doReturn(entityToSave)
-        whenever(pretendersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
+        whenever(pretndersRepository.persistAndFlush(any())).thenThrow(ConstraintViolationException
             ("Exception", SQLException("Exception"), PHONE_KEY))
 
         /**

@@ -57,7 +57,7 @@ class CsrfCookieFilter:ContainerRequestFilter {
             || requestContext.uriInfo.path ==
             PASSWORD_RECOVERY_RESET_PATH
             || requestContext.uriInfo.path ==
-            ADMIN_CREATION_PATH){
+            ADMIN_CREATION_PATH|| requestContext.uriInfo.path.startsWith("/pretnder-profile/nickname")){
             return
         }
         val mail = jwt.claim<String>(Claims.email.name).getOrElse { throw ApplicationException(ApplicationExceptionsEnum.INVALID_TOKEN) }

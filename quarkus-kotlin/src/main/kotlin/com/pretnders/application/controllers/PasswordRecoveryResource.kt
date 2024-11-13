@@ -3,6 +3,7 @@ package com.pretnders.application.controllers
 import com.pretnders.application.dto.requests.InitPasswordRecoveryRequest
 import com.pretnders.application.dto.requests.PasswordChangeRequest
 import com.pretnders.application.dto.requests.PasswordRecoveryRequest
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import com.pretnders.domain.ports.`in`.PasswordManagementIn
 import io.quarkus.logging.Log

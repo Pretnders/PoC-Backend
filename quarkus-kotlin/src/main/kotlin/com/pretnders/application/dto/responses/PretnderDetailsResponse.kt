@@ -4,6 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PretnderDetailsResponse(
+    val reference:String,
+    val gender: String,
+    val orientation: String,
     val height: String,
     val bodyType: String,
     val diet: String,

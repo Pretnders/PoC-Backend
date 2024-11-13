@@ -1,5 +1,6 @@
 package com.pretnders.application.controllers
 
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped

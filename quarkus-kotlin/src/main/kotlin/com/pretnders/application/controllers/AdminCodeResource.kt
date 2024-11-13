@@ -1,5 +1,6 @@
 package com.pretnders.application.controllers
 
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.AdminCodeIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
 import io.quarkus.logging.Log

@@ -48,6 +48,7 @@ class Login(@field:Inject var jwtTokenGenerator: JwtTokenGenerator) : LoginIn {
 
     override fun loginPretnder(identifier: String, password: String): PretnderLoggedIn {
         val user = findPretendersOut.findByIdentifier(identifier)
+        user.traitPairs = user.traitPairs?.filterNotNull()
         if(verifyPassword(password, user.password)) {
             Log.info("Pretnder login successful")
             val jwToken = jwtTokenGenerator.getToken(user.reference, user.phoneNumber, user.mail, UserTypes.PRETNDER

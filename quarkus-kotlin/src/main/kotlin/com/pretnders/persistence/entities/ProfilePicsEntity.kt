@@ -25,9 +25,9 @@ class ProfilePicsEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "pretenders_id", referencedColumnName = "id")
-    var pretnders: PretndersEntity?=null
+    var pretnder: PretndersEntity?=null
 
     override fun toString(): String {
-        return "ProfilePicsEntity(id=$id, url=$url, order=$order, reference=$reference, pretnders=$pretnders)"
+        return "ProfilePicsEntity(id=$id, url=$url, order=$order, reference=$reference, pretnder=$pretnder)"
     }
 }

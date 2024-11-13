@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "pretender_details")
-class PretndersDetailsEntity {
+class PretnderDetailsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretenders_details_generator")
     @SequenceGenerator(name = "pretenders_details_generator", sequenceName = "pretenders_details_seq", allocationSize = 1)
@@ -40,7 +40,7 @@ class PretndersDetailsEntity {
     @OneToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "pretender_id", referencedColumnName = "id", nullable = false, updatable = false)
     @JsonIgnore
-    private val pretndersEntity: PretndersEntity? = null
+    private val pretnder: PretndersEntity? = null
     override fun toString(): String {
         return "PretndersDetailsEntity(country=$country, city=$city, biography=$biography, socialStatus=$socialStatus, drinks=$drinks, smokes=$smokes, beliefs=$beliefs, diet=$diet, bodyType=$bodyType, reference=$reference, height=$height, orientation=$orientation, gender=$gender, id=$id)"
     }

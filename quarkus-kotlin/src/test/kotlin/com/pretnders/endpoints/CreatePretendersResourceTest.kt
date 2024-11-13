@@ -1,7 +1,7 @@
 package com.pretnders.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.pretnders.application.controllers.CookieUtils
+import com.pretnders.application.utils.CookieUtils
 import com.pretnders.application.dto.requests.CreatePretenderRequest
 import com.pretnders.application.mappers.PretndersDtoMappers
 import com.pretnders.domain.errors.ApplicationException

@@ -1,4 +1,4 @@
-package com.pretnders.persistence.services.users
+package com.pretnders.persistence.services.pretnders
 
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum

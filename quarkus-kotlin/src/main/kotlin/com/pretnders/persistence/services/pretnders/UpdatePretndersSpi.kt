@@ -1,9 +1,9 @@
-package com.pretnders.persistence.services.users
+package com.pretnders.persistence.services.pretnders
 
 import com.pretnders.domain.errors.ApplicationException
 import com.pretnders.domain.errors.ApplicationExceptionsEnum
 import com.pretnders.domain.ports.out.UpdatePretndersOut
-import com.pretnders.persistence.repositories.PretendersRepository
+import com.pretnders.persistence.repositories.PretndersRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
@@ -18,11 +18,11 @@ class UpdatePretndersSpi:UpdatePretndersOut {
 
     @Inject
     @field:Default
-    private lateinit var pretendersRepository: PretendersRepository
+    private lateinit var pretndersRepository: PretndersRepository
 
     override fun approveAccount(mail: String) {
         try {
-            pretendersRepository.update("accountVerifiedStatus = true WHERE mail =:mail",  mapOf(
+            pretndersRepository.update("accountVerifiedStatus = true WHERE mail =:mail",  mapOf(
                 "mail" to mail
             ))
             Log.debug(String.format("User %s was approved", mail))
@@ -33,7 +33,7 @@ class UpdatePretndersSpi:UpdatePretndersOut {
 
     override fun changeOtpCode(mail: String, newOtp: String, newOtpTimestamp: Timestamp) {
         try {
-            pretendersRepository.update("verificationCode = :newOtp, verificationCodeTimestamp = :newTimestamp WHERE " +
+            pretndersRepository.update("verificationCode = :newOtp, verificationCodeTimestamp = :newTimestamp WHERE " +
                     "mail" +
                     " =:mail",
                 mapOf(
@@ -54,7 +54,7 @@ class UpdatePretndersSpi:UpdatePretndersOut {
         passwordVerificationTimestamp: Timestamp
     ) {
         try {
-            pretendersRepository.update("passwordVerificationCode = :verificationCode, passwordVerificationTimestamp" +
+            pretndersRepository.update("passwordVerificationCode = :verificationCode, passwordVerificationTimestamp" +
                     " = " +
                     ":newTimestamp " +
                     "WHERE " +
@@ -73,7 +73,7 @@ class UpdatePretndersSpi:UpdatePretndersOut {
 
     override fun changePassword(identifier: String, newPassword: String) {
         try {
-            pretendersRepository.update("password = :newPassword WHERE mail =:identifier OR phoneNumber = :identifier",
+            pretndersRepository.update("password = :newPassword WHERE mail =:identifier OR phoneNumber = :identifier",
                 mapOf(
                     "newPassword" to newPassword,
                     "identifier" to identifier
