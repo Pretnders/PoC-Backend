@@ -15,15 +15,15 @@ enum class BodyTypes(val label: String, val disabled: Boolean) {
     NC("Non connu", true);
 
     companion object {
-        fun getOptions():List<BodyTypesOptions>{
+        fun getOptions():List<BodyTypesOption>{
             return entries.map {
-                BodyTypesOptions(it.label, it.name, it.disabled)
-            }.toList()
+                BodyTypesOption(it.label, it.name, it.disabled)
+            }
         }
     }
 
     @Serializable
-    class BodyTypesOptions : Options {
+    class BodyTypesOption : Options {
         constructor(label: String, name:String, disabled: Boolean) : super(label, name, disabled)
     }
 }

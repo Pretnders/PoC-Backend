@@ -18,15 +18,15 @@ enum class Genders(
     NC("Non connu", false);
 
     companion object {
-        fun getOptions():List<GenderOptions>{
+        fun getOptions():List<GenderOption>{
             return entries.map {
-                GenderOptions(it.label, it.name, it.disabled)
-            }.toList()
+                GenderOption(it.label, it.name, it.disabled)
+            }
         }
     }
 
     @Serializable
-    class GenderOptions : Options {
+    class GenderOption : Options {
         constructor(label: String, name:String, disabled: Boolean) : super(label, name, disabled)
     }
 }
