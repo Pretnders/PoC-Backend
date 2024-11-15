@@ -23,4 +23,13 @@ class ProfilePictures:ProfilePicturesIn {
         profilePicturesOut.addPic(reference, picReference, profilePictureUrl)
         return AddedProfilePicture(picReference, profilePictureUrl)
     }
+
+    override fun swapPicturesOrder(
+        swapperReference: String,
+        swapperOrder: Long,
+        swappedReference: String,
+        swappedOrder: Long
+    ) {
+        profilePicturesOut.swapPicturesOrder(swapperReference, swapperOrder, swappedReference, swappedOrder)
+    }
 }

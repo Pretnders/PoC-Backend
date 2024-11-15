@@ -19,6 +19,7 @@ import jakarta.inject.Inject
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.jboss.resteasy.reactive.multipart.FileUpload
 import io.quarkus.logging.Log
+import java.time.Duration
 
 
 @ApplicationScoped
@@ -99,9 +100,10 @@ class AzureStorage : AzureStorageIn {
 
     override fun addPretnderProfilePicture(phoneNumber: String, file: FileUpload): String {
         val containerName = String.format(FORMATTER, phoneNumber)
-        val fileName = file.name()
+        val fileName = file.fileName()
         try {
             val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
+            containerClient.getBlobClient(fileName).deleteIfExists()
            containerClient.getBlobClient(fileName).uploadFromFile(
                 file.filePath().toString()
             )

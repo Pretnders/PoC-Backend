@@ -1,6 +1,8 @@
 package com.pretnders.domain.ports.out
 
 interface ProfilePicturesOut {
-    fun getNextPicOrder(reference:String):Short
+    fun getNextPicOrder(pretnderId:Long):Long
     fun addPic(pretnderReference:String, pictureReference:String, profilePicUrl:String)
+    fun swapPicturesOrder(swapperReference:String, swapperOrder:Long, swappedReference:String, swappedOrder:Long)
+
 }

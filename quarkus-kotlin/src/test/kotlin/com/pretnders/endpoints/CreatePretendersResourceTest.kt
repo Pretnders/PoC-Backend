@@ -109,7 +109,7 @@ class CreatePretendersResourceTest {
 
         verify(createPretendersIn).createPretender(createPretenderCommandCaptor.capture())
         commonAsserts(createPretenderCommandCaptor, mappedRequest)
-        assertEquals(res.statusCode(), 200)
+        assertEquals(201, res.statusCode())
         assertEquals(res.cookie("csrf-token"), csrfToken)
         assertEquals(res.cookie("Bearer"), jwtToken)
 

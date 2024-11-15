@@ -58,7 +58,7 @@ class AdminCreationResource {
             schema = Schema(implementation = CreateAccountResponse::class)
         )]),
     )
-    fun createPretender(creationRequest: CreateAdminRequest): Response {
+    fun create(creationRequest: CreateAdminRequest): Response {
         Log.info("Creating client")
         val mappedRequest = adminDtoMapper.fromCreationRequest(creationRequest)
         Log.debug("Creating admin ${mappedRequest.nickname}")
@@ -66,6 +66,6 @@ class AdminCreationResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mappedRequest.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok().cookie(bearerCookie).cookie(csrfCookie).build()
+        return Response.status(Response.Status.CREATED).cookie(bearerCookie).cookie(csrfCookie).build()
     }
 }

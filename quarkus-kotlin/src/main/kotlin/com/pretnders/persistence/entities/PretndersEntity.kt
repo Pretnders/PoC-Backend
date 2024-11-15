@@ -40,6 +40,7 @@ class PretndersEntity  {
     @OneToOne(mappedBy = "pretnder",fetch = FetchType.EAGER)
     var pretnderDetails: PretnderDetailsEntity? = null
     @OneToMany(mappedBy = "pretnder", cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
+    @OrderBy("order ASC")
     var profilePictures: MutableList<ProfilePicsEntity>? = null
     @OneToMany(mappedBy = "pretnder", cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     var traitPairs: MutableList<PretnderTraitPairsEntity>? = null

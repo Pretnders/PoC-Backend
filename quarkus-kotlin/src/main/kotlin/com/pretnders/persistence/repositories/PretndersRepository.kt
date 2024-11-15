@@ -28,7 +28,7 @@ class PretndersRepository : PanacheRepository<PretndersEntity?> {
 
     fun findIDByReference(reference: String): Long {
         return find(
-            "id WHERE reference = :reference ", mapOf(
+            "SELECT id FROM PretndersEntity WHERE reference = :reference ", mapOf(
                 "reference" to reference
             )
         ).project(

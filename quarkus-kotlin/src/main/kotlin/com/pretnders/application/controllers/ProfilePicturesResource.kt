@@ -1,6 +1,7 @@
 package com.pretnders.application.controllers
 
-import com.pretnders.application.dto.responses.UpdateProfilePictureResponse
+import com.pretnders.application.dto.requests.SwapPicturesRequest
+import com.pretnders.application.dto.responses.AddProfilePictureResponse
 import com.pretnders.application.utils.CookieUtils
 import com.pretnders.domain.ports.`in`.AzureStorageIn
 import com.pretnders.domain.ports.`in`.CsrfTokenGeneratorIn
@@ -11,6 +12,7 @@ import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.POST
+import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
@@ -27,6 +29,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestForm
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.ACCEPTED
+import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED
 import org.jboss.resteasy.reactive.multipart.FileUpload
 
 @Path("/profile-pictures")
@@ -64,7 +67,7 @@ class ProfilePicturesResource {
             " " +
             "link in db, returns the new url")
     @APIResponses(
-        APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "text/plain",
+        APIResponse(responseCode = "201", description = "OK", content = [Content(mediaType = "text/plain",
             schema = Schema(implementation = String::class)
         )]),
     )
@@ -75,9 +78,9 @@ class ProfilePicturesResource {
     ): Response {
         val userMail = jwt.claim<String>(Claims.email.name).get()
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
-        val profilePicUrl = UpdateProfilePictureResponse(azureStorageIn.updateAdminProfilePicture(
+        val profilePicUrl = azureStorageIn.updateAdminProfilePicture(
             phoneNumber,
-            image))
+            image)
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         return Response.ok(profilePicUrl).cookie(csrfCookie).build()
@@ -86,7 +89,7 @@ class ProfilePicturesResource {
     @POST
     @Path("/pretnders")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @ResponseStatus(ACCEPTED)
+    @ResponseStatus(CREATED)
     @RolesAllowed("PRETNDER")
     @SecurityRequirement(name = "bearer")
     @Operation(summary = "Add pretnder profile picture", description = "Add pretnder profile picture, update " +
@@ -109,9 +112,33 @@ class ProfilePicturesResource {
         val response = profilePicturesIn.addProfilePicture(reference,
             phoneNumber,
             image)
-        val addProfilePicResponse = UpdateProfilePictureResponse(response.profilePictureUrl, response.picReference)
+        val addProfilePicResponse = AddProfilePictureResponse(response.reference, response.url)
         val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(addProfilePicResponse).cookie(csrfCookie).build()
+        return Response.ok(addProfilePicResponse).status(Response.Status.CREATED).cookie(csrfCookie).build()
+    }
+
+    @PUT
+    @Path("/pretnders")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ResponseStatus(CREATED)
+    @RolesAllowed("PRETNDER")
+    @SecurityRequirement(name = "bearer")
+    @Operation(summary = "Add pretnder profile picture", description = "Add pretnder profile picture, update " +
+            "the" +
+            " " +
+            "link in db, returns the new url")
+    @APIResponses(
+        APIResponse(responseCode = "204", description = "NO-CONTENT", content = [Content(mediaType = "text/plain",
+            schema = Schema(implementation = String::class)
+        )]),
+    )
+    fun swapPicturesOrder( swapPicturesRequest: SwapPicturesRequest): Response {
+        val userMail = jwt.claim<String>(Claims.email.name).get()
+        val csrfToken = csrfTokenGeneratorIn.generateToken(userMail)
+        val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
+        profilePicturesIn.swapPicturesOrder(swapPicturesRequest.swapperReference, swapPicturesRequest.swapperOrder,
+            swapPicturesRequest.swappedReference, swapPicturesRequest.swappedOrder,)
+        return Response.status(Response.Status.NO_CONTENT).cookie(csrfCookie).build()
     }
 }

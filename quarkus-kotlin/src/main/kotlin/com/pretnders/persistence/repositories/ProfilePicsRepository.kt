@@ -9,14 +9,11 @@ import jakarta.transaction.Transactional
 @ApplicationScoped
 @Transactional
 class ProfilePicsRepository : PanacheRepository<ProfilePicsEntity?> {
-    fun findNextPicOrder(reference:String):Short {
-        val res =  find("SELECT count(*) FROM ProfilePicsEntity pp WHERE pp.pretnders.id = (SELECT p.id FROM " +
-                "PretndersEntity p " +
-                "WHERE" +
-                " p.reference = :reference LIMIT 1)" , mapOf(
-                    "reference" to reference
+    fun findNextPicOrder(pretnderId:Long):Long {
+        val res =  find("SELECT count(*) FROM ProfilePicsEntity pp WHERE pp.pretnder.id = :id" , mapOf(
+                    "id" to pretnderId
                 )
-        ).project(Short::class.java).firstResult<Short>()
+        ).project(Long::class.java).firstResult<Long>()
         if(res >= 9 || res < 0){
             throw ApplicationException(ApplicationExceptionsEnum.PICTURE_ORDER_OUT_OF_BOUND)
         }

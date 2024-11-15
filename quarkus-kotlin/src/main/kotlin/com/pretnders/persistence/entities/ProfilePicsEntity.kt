@@ -23,7 +23,7 @@ class ProfilePicsEntity {
     @Column(name = "reference", columnDefinition = "bpchar(32)")
     var reference: String? = null
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
     @JoinColumn(name = "pretenders_id", referencedColumnName = "id")
     var pretnder: PretndersEntity?=null
 

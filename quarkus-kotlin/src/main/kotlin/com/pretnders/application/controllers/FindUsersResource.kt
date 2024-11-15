@@ -14,6 +14,7 @@ import io.quarkus.logging.Log
 import org.eclipse.microprofile.jwt.Claims
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.CREATED
+import org.jboss.resteasy.reactive.RestResponse.StatusCode.OK
 
 
 @Path("/users-find")
@@ -27,7 +28,7 @@ class FindUsersResource {
     @GET
     @Path("/me")
     @Consumes(MediaType.APPLICATION_JSON)
-    @ResponseStatus(CREATED)
+    @ResponseStatus(OK)
     @RolesAllowed("LOVER")
     @SecurityRequirement(name = "bearer")
     fun getMe() {
