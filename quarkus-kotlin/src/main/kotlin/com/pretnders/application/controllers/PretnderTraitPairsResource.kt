@@ -33,7 +33,7 @@ class PretnderTraitPairsResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
     @Inject
@@ -57,6 +57,6 @@ class PretnderTraitPairsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderTraitPairIn.updateScore(updateTraitScoreRequest.traitPairReference, updateTraitScoreRequest.score)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 }

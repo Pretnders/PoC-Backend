@@ -33,7 +33,7 @@ class PretnderDetailsOptionsResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
     @Inject
@@ -63,6 +63,6 @@ class PretnderDetailsOptionsResource {
             Genders.getOptions(),
             SexualOrientations.getOptions()
         )
-        return Response.ok(options).cookie(csrfCookie).build()
+        return Response.ok(options).header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 }

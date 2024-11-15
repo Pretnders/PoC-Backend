@@ -46,7 +46,7 @@ class CreatePretendersResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
     @POST
@@ -67,7 +67,7 @@ class CreatePretendersResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", userCreationInformations.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mappedRequest.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.status(Response.Status.CREATED).cookie(bearerCookie).cookie(csrfCookie).build()
+        return Response.status(Response.Status.CREATED).header("x-csrf-token", csrfToken).cookie(bearerCookie).cookie(csrfCookie).build()
     }
 
 }

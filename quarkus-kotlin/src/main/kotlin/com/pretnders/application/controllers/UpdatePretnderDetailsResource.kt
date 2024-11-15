@@ -39,7 +39,7 @@ class UpdatePretnderDetailsResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
     @Inject
@@ -67,7 +67,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeNickname(reference, updateNicknameRequest.newNickname)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -84,7 +84,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeHeight(detailsReference, newHeight)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -101,7 +101,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeBodyType(detailsReference, newBodyType)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -118,7 +118,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeDiet(detailsReference, newDiet)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -135,7 +135,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeBeliefs(detailsReference, newBelief)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -152,7 +152,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeSmokes(detailsReference, newOccurrence)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -169,7 +169,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeDrinks(detailsReference, newOccurrence)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -186,7 +186,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeSocialStatus(detailsReference, newSocialStatus)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -202,7 +202,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeBiography(changeBiographyRequest.reference, changeBiographyRequest.biography)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -218,7 +218,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeCity(detailsReference, newCity)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -235,7 +235,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeCountry(detailsReference, newCountry)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -252,7 +252,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeOrientation(detailsReference, newOrientation)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -269,7 +269,7 @@ class UpdatePretnderDetailsResource {
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
         updatePretnderProfileIn.changeGender(detailsReference, newGender)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @GET
@@ -288,6 +288,6 @@ class UpdatePretnderDetailsResource {
         val mail = jwt.claim<String>(Claims.email.name).get()
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.ok(findNicknameOut.doNicknameExist(reference, desiredNickname)).cookie(csrfCookie).build()
+        return Response.ok(findNicknameOut.doNicknameExist(reference, desiredNickname)).header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 }

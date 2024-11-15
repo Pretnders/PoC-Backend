@@ -1,8 +1,5 @@
 package com.pretnders.bootstrap.configuration
 
-import com.pretnders.domain.errors.ApplicationException
-import com.pretnders.domain.errors.ApplicationExceptionsEnum
-import com.pretnders.domain.services.CsrfTokenCache
 import jakarta.annotation.Priority
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
@@ -10,13 +7,11 @@ import jakarta.ws.rs.container.ContainerRequestContext
 import jakarta.ws.rs.container.ContainerRequestFilter
 import jakarta.ws.rs.core.Response
 import jakarta.ws.rs.ext.Provider
-import org.eclipse.microprofile.jwt.Claims
+import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.JsonWebToken
-import kotlin.jvm.optionals.getOrElse
 
 private const val ADMIN_CODE_PATH = "/admin-code"
 
-private const val CSRF_TOKEN_PATH = "/csrf-token"
 
 private const val CONNEXION_PATH = "/login"
 
@@ -37,20 +32,19 @@ private const val PP_PATH = "/profile-pictures"
 @Priority(1)
 class CsrfCookieFilter:ContainerRequestFilter {
 
-    @Inject
-    @field:Default
-    private lateinit var csrfTokenCache: CsrfTokenCache
+    @ConfigProperty(name = "quarkus.rest.csrf.cookie.name")
+    private lateinit var csrfTokenName:String
 
     @Inject
     @field:Default
     private lateinit var jwt: JsonWebToken
 
     override fun filter(requestContext: ContainerRequestContext) {
-        val csrfCookie = requestContext.cookies["csrf-token"]
+        val csrfCookie = requestContext.cookies[csrfTokenName]
+        val csrfHeader = requestContext.getHeaderString(csrfTokenName)
         if(requestContext.uriInfo.path.startsWith
                 (PP_PATH)||requestContext.uriInfo.path.startsWith
-                (ADMIN_CODE_PATH)|| requestContext.uriInfo.path.startsWith
-                (CSRF_TOKEN_PATH) || requestContext.uriInfo.path.startsWith
+                (ADMIN_CODE_PATH) || requestContext.uriInfo.path.startsWith
                 (CONNEXION_PATH) || requestContext.uriInfo.path.startsWith
                 (CREATE_PRETENDER_PATH)|| requestContext.uriInfo.path.startsWith
                 (HEALTHCHECK_PATH)||  requestContext.uriInfo.path == PASSWORD_RECOVERY_INIT_RESET_PATH
@@ -60,9 +54,8 @@ class CsrfCookieFilter:ContainerRequestFilter {
             ADMIN_CREATION_PATH|| requestContext.uriInfo.path.startsWith("/pretnder-profile/nickname")){
             return
         }
-        val mail = jwt.claim<String>(Claims.email.name).getOrElse { throw ApplicationException(ApplicationExceptionsEnum.INVALID_TOKEN) }
-        if (csrfCookie == null || csrfCookie.value.isEmpty() || csrfCookie.value != csrfTokenCache
-            .getUserToken(mail)) {
+
+        if (csrfCookie == null || csrfCookie.value.isEmpty() || csrfCookie.value != csrfHeader) {
             requestContext.abortWith(
                 Response.status(Response.Status.EXPECTATION_FAILED)
                 .entity("CSRF token error").build())

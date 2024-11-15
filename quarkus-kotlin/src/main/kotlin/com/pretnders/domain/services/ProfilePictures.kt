@@ -32,4 +32,16 @@ class ProfilePictures:ProfilePicturesIn {
     ) {
         profilePicturesOut.swapPicturesOrder(swapperReference, swapperOrder, swappedReference, swappedOrder)
     }
+
+    override fun deleteProfilePicture(reference: String, blobName: String, phoneNumber: String) {
+        azureStorageIn.deleteBlobFromContainer(phoneNumber, blobName)
+        profilePicturesOut.deletePicture(reference)
+    }
+
+    override fun updateProfilePicture(reference: String, blobName: String, file: FileUpload, phoneNumber: String):String {
+        azureStorageIn.deleteBlobFromContainer(phoneNumber, blobName)
+        val url = azureStorageIn.addPretnderProfilePicture(phoneNumber, file)
+        profilePicturesOut.updatePictureUrl(reference, url)
+        return url
+    }
 }

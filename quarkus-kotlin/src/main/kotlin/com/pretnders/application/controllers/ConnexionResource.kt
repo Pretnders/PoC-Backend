@@ -45,7 +45,7 @@ class ConnexionResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
     
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
     @Inject
     @field: Default
@@ -69,7 +69,9 @@ class ConnexionResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", loggedIn.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(loggedIn.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-       return  Response.ok(adminDtoMapper.toAdminResponse(loggedIn)).cookie(bearerCookie).cookie(csrfCookie).build()
+        Log.info(csrfCookie.value)
+        Log.info(csrfToken)
+       return  Response.ok(adminDtoMapper.toAdminResponse(loggedIn)).header("x-csrf-token", csrfToken).cookie(bearerCookie).cookie(csrfCookie).build()
     }
 
     @POST
@@ -90,7 +92,9 @@ class ConnexionResource {
         val bearerCookie = cookieUtils.setUpCookie("Bearer", loggedIn.jwToken)
         val csrfToken = csrfTokenGeneratorIn.generateToken(loggedIn.mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return  Response.ok(pretndersDtoMappers.toLoginResponse(loggedIn)).cookie(bearerCookie).cookie(csrfCookie).build()
+        Log.info(csrfCookie.value)
+        Log.info(csrfToken)
+        return  Response.ok(pretndersDtoMappers.toLoginResponse(loggedIn)).header("x-csrf-token", csrfToken).cookie(bearerCookie).cookie(csrfCookie).build()
     }
 
     @POST

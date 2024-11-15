@@ -37,7 +37,7 @@ class PretnderDetailsEntity {
     var city: String? = null
     @Column(name="country", columnDefinition = "varchar(20)", nullable = false)
     var country: String? = null
-    @OneToOne(cascade = [CascadeType.PERSIST])
+    @OneToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @JoinColumn(name = "pretender_id", referencedColumnName = "id", nullable = false, updatable = false)
     @JsonIgnore
     private val pretnder: PretndersEntity? = null

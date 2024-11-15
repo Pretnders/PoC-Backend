@@ -37,7 +37,7 @@ class PretndersEntity  {
     var passwordVerificationTimestamp: Timestamp? = null
     @Column(name = "account_verified", columnDefinition = "boolean DEFAULT false", nullable = false)
     var accountVerifiedStatus: Boolean? = false
-    @OneToOne(mappedBy = "pretnder",fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "pretnder", fetch = FetchType.LAZY)
     var pretnderDetails: PretnderDetailsEntity? = null
     @OneToMany(mappedBy = "pretnder", cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @OrderBy("order ASC")

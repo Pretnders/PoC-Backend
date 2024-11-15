@@ -94,8 +94,8 @@ class CreatePretendersResourceTest {
                     .build()
             )
         whenever(csrfTokenGeneratorIn.generateToken(adminRequest.mail)).doReturn(csrfToken)
-        whenever(cookieUtils.setUpCookie("csrf-token", csrfToken)).doReturn(
-            NewCookie.Builder("csrf-token").value
+        whenever(cookieUtils.setUpCookie("x-csrf-token", csrfToken)).doReturn(
+            NewCookie.Builder("x-csrf-token").value
                 (csrfToken).maxAge(64800).httpOnly(false).path("/").build()
         )
         val json: String = mapper.writeValueAsString(adminRequest)
@@ -110,7 +110,7 @@ class CreatePretendersResourceTest {
         verify(createPretendersIn).createPretender(createPretenderCommandCaptor.capture())
         commonAsserts(createPretenderCommandCaptor, mappedRequest)
         assertEquals(201, res.statusCode())
-        assertEquals(res.cookie("csrf-token"), csrfToken)
+        assertEquals(res.cookie("x-csrf-token"), csrfToken)
         assertEquals(res.cookie("Bearer"), jwtToken)
 
     }

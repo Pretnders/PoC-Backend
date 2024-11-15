@@ -38,7 +38,7 @@ class AccountVerificationResource {
     @Inject
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
     @PUT
@@ -51,7 +51,7 @@ class AccountVerificationResource {
         verifyAccountsIn.verifyClientAccount(mail, otpRequest.otpCode)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 
     @PUT
@@ -66,6 +66,6 @@ class AccountVerificationResource {
         verifyAccountsIn.generateNewOtpCode(mail)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 }

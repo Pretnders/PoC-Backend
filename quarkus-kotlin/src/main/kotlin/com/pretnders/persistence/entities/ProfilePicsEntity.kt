@@ -1,5 +1,6 @@
 package com.pretnders.persistence.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
@@ -23,8 +24,9 @@ class ProfilePicsEntity {
     @Column(name = "reference", columnDefinition = "bpchar(32)")
     var reference: String? = null
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
+    @ManyToOne(cascade = [CascadeType.DETACH])
     @JoinColumn(name = "pretenders_id", referencedColumnName = "id")
+    @JsonIgnore
     var pretnder: PretndersEntity?=null
 
     override fun toString(): String {

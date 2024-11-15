@@ -41,7 +41,7 @@ class PasswordRecoveryResource {
     @field:Default
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
-    @field:ConfigProperty(name="quarkus.rest-csrf.cookie-name")
+    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
     @Inject
     @field: Default
@@ -83,6 +83,6 @@ class PasswordRecoveryResource {
             .passwordConfirmation)
         val csrfToken = csrfTokenGeneratorIn.generateToken(mail)
         val csrfCookie = cookieUtils.setUpCookie(csrfCookieName, csrfToken)
-        return Response.noContent().cookie(csrfCookie).build()
+        return Response.noContent().header("x-csrf-token", csrfToken).cookie(csrfCookie).build()
     }
 }
