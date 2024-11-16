@@ -1,7 +1,7 @@
 package com.pretnders.bootstrap.interceptors
 
-import com.pretnders.application.dto.responses.ErrorResponse
-import com.pretnders.domain.errors.ApplicationException
+import com.pretnders.shared.errors.ErrorResponse
+import com.pretnders.shared.errors.ApplicationException
 import jakarta.ws.rs.core.Response
 import jakarta.ws.rs.ext.ExceptionMapper
 import jakarta.ws.rs.ext.Provider

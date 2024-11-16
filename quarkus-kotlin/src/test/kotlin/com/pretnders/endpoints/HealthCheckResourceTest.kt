@@ -1,7 +1,7 @@
 package com.pretnders.endpoints
 
-import com.pretnders.domain.models.UserTypes
-import com.pretnders.domain.services.JwtTokenGenerator
+import com.pretnders.shared.utils.shared_models.UserTypes
+import com.pretnders.shared.security.JwtTokenGenerator
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.Cookie

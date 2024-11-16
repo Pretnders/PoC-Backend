@@ -1,8 +1,8 @@
 package com.pretnders.persistence
 
-import com.pretnders.domain.errors.ApplicationException
-import com.pretnders.domain.errors.ApplicationExceptionsEnum
-import com.pretnders.persistence.repositories.ProfilePicsRepository
+import com.pretnders.shared.errors.ApplicationException
+import com.pretnders.shared.errors.ApplicationExceptionsEnum
+import com.pretnders.profile_pictures.persistence.repositories.ProfilePicsRepository
 import io.quarkus.test.InjectMock
 import io.quarkus.test.junit.QuarkusTest
 import org.junit.jupiter.api.DisplayName
@@ -40,7 +40,10 @@ class ProfilePicturesUnitTest {
     @ValueSource(longs = [Long.MIN_VALUE, 9,12,100,Long.MAX_VALUE])
     @Order(1)
     fun shouldThrowErrorCauseTooManyPictures(returnValue:Long) {
-        whenever(profilePicsRepository.findNextPicOrder(pretnderID)).thenThrow(ApplicationException(ApplicationExceptionsEnum.PICTURE_ORDER_OUT_OF_BOUND))
+        whenever(profilePicsRepository.findNextPicOrder(pretnderID)).thenThrow(
+            ApplicationException(
+                ApplicationExceptionsEnum.PICTURE_ORDER_OUT_OF_BOUND)
+        )
         assertThrows<ApplicationException> { profilePicsRepository.findNextPicOrder(pretnderID) }
     }
 

@@ -1,12 +1,12 @@
 package com.pretnders.persistence
 
-import com.pretnders.domain.errors.ApplicationException
-import com.pretnders.domain.models.pretnders.CreatePretenderCommand
-import com.pretnders.domain.ports.out.CreatePretendersOut
-import com.pretnders.domain.utils.UUIDGenerator.getNewUUID
-import com.pretnders.persistence.entities.PretndersEntity
-import com.pretnders.persistence.mappers.pretnders.PretndersEntityMapper
-import com.pretnders.persistence.repositories.PretndersRepository
+import com.pretnders.shared.errors.ApplicationException
+import com.pretnders.pretnders.domain.models.CreatePretenderCommand
+import com.pretnders.pretnders.domain.ports.out.CreatePretendersOut
+import com.pretnders.shared.utils.generators.UUIDGenerator.getNewUUID
+import com.pretnders.pretnders.persistence.entities.PretndersEntity
+import com.pretnders.pretnders.persistence.mappers.PretndersEntityMapper
+import com.pretnders.pretnders.persistence.repositories.PretndersRepository
 import io.quarkus.logging.Log
 import io.quarkus.test.InjectMock
 import io.quarkus.test.TestTransaction
