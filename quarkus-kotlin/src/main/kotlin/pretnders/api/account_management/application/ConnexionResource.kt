@@ -31,23 +31,17 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.OK
 @Path("/login")
 @RequestScoped
 class ConnexionResource {
+
     @Inject
-    @field:Default
     private lateinit var loginIn: LoginIn
+
     @Inject
-    @field:Default
     private lateinit var pretndersDtoMappers: PretndersDtoMappers
+
     @Inject
-    @field:Default
     private lateinit var adminDtoMapper: AdminDtoMapper
+
     @Inject
-    @field:Default
-    private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
-    
-    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
-    private lateinit var csrfCookieName: String
-    @Inject
-    @field: Default
     private lateinit var cookieUtils: CookieUtils
 
     @POST

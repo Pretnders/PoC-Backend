@@ -1,23 +1,10 @@
 package pretnders.api.pretnders.application.controllers
 
-import pretnders.api.pretnders.application.dto.requests.ChangeBiographyRequest
-import pretnders.api.pretnders.application.dto.requests.ChangeNicknameRequest
-import pretnders.api.shared.security.CookieUtils
-import pretnders.api.shared.security.CsrfTokenGeneratorIn
-import pretnders.api.pretnders.domain.ports.`in`.ChangeDetailsIn
-import pretnders.api.pretnders.domain.ports.out.FindNicknameOut
-import pretnders.api.pretnders.domain.models.details_enums.*
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped
-import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
-import jakarta.ws.rs.Consumes
-import jakarta.ws.rs.GET
-import jakarta.ws.rs.PUT
-import jakarta.ws.rs.Path
-import jakarta.ws.rs.PathParam
+import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
-import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.media.Content
 import org.eclipse.microprofile.openapi.annotations.media.Schema
@@ -25,6 +12,11 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
+import pretnders.api.pretnders.application.dto.requests.ChangeBiographyRequest
+import pretnders.api.pretnders.application.dto.requests.ChangeNicknameRequest
+import pretnders.api.pretnders.domain.models.details_enums.*
+import pretnders.api.pretnders.domain.ports.`in`.ChangeDetailsIn
+import pretnders.api.pretnders.domain.ports.out.FindNicknameOut
 
 @Path("/pretnder-profile")
 @RequestScoped
@@ -32,17 +24,6 @@ class ManageDetailsEndpoint {
 
     @Inject
     private lateinit var jwt:JsonWebToken
-
-    @Inject
-    @field:Default
-    private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
-
-    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
-    private lateinit var csrfCookieName: String
-
-    @Inject
-    @field: Default
-    private lateinit var cookieUtils: CookieUtils
 
     @Inject
     private lateinit var changeDetailsIn: ChangeDetailsIn

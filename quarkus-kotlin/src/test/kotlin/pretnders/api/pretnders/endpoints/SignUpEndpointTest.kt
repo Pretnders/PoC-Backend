@@ -52,7 +52,7 @@ class SignUpEndpointTest {
 
     @Test
     @DisplayName("Should create pretender")
-    fun testCreateAdminOkRequest() {
+    fun testCreatePretnderOkRequest() {
         val csrfToken = "ATOKEN"
         val adminRequest = AddPretenderRequest(
             "Nick",
@@ -92,7 +92,7 @@ class SignUpEndpointTest {
                 NewCookie.Builder("Bearer").value(jwtToken).maxAge(64800).httpOnly(true).path("/")
                     .build()
             )
-        whenever(csrfTokenGeneratorIn.generateToken()).doReturn(csrfToken)
+        whenever(csrfTokenGeneratorIn.generateToken()).thenReturn(csrfToken)
         whenever(cookieUtils.setUpCookie("x-csrf-token", csrfToken)).doReturn(
             NewCookie.Builder("x-csrf-token").value
                 (csrfToken).maxAge(64800).httpOnly(false).path("/").build()
@@ -105,18 +105,19 @@ class SignUpEndpointTest {
             .`when`()
             .post("/create-pretnder")
             .then().extract()
+        verify(csrfTokenGeneratorIn).generateToken()
 
         verify(addPretndersIn).createPretender(createPretenderCommandCaptor.capture())
         commonAsserts(createPretenderCommandCaptor, mappedRequest)
         assertEquals(201, res.statusCode())
-        assertEquals(res.cookie("x-csrf-token"), csrfToken)
-        assertEquals(res.cookie("Bearer"), jwtToken)
+        assertEquals(jwtToken, res.cookie("Bearer") )
+        assertEquals(csrfToken, res.cookie("x-csrf-token") )
 
     }
 
     @Test
     @DisplayName("Should get bad request")
-    fun testCreateAdminBadRequest() {
+    fun testCreatePretnderBadRequest() {
         val createPretenderCommandCaptor = argumentCaptor<CreatePretenderCommand>()
         val pretenderRequest = AddPretenderRequest(
             "Nick",
@@ -144,6 +145,8 @@ class SignUpEndpointTest {
             )
         ).doThrow(ApplicationException(ApplicationExceptionsEnum.CREATE_USER_INVALID_PHONE_NUMBER))
         val json: String = mapper.writeValueAsString(pretenderRequest)
+        val token = "123456"
+        whenever(csrfTokenGeneratorIn.generateToken()).thenReturn(token)
 
         val res = RestAssured.given()
             .header("Content-Type", "application/json")

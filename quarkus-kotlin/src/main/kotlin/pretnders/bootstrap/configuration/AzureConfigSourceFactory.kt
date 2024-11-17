@@ -26,7 +26,7 @@ class AzureConfigSourceFactory : ConfigSourceFactory {
 			val vaultUrl = context.getValue("azure.vault.url")?.value
 
 			if (clientId != null && tenantId != null && secret != null && vaultUrl != null) {
-				val secretClient = SecretClientBuilder()
+				/**val secretClient = SecretClientBuilder()
 					.vaultUrl(vaultUrl)
 					.credential(
 						ClientSecretCredentialBuilder()
@@ -35,11 +35,14 @@ class AzureConfigSourceFactory : ConfigSourceFactory {
 							.clientId(clientId)
 							.build()
 					)
-					.buildClient()
+					.buildClient()*/
 
-				conf[API_KEY] = secretClient.getSecret("API-KEY").value
-				conf[CLAIMS] = secretClient.getSecret("CLAIMS-ORIGIN").value
-				conf[ISSUER] = secretClient.getSecret("TOKEN-ISSUER").value
+				conf[API_KEY] = "keykey"
+					//secretClient.getSecret("API-KEY").value
+				conf[CLAIMS] = "oui"
+					//secretClient.getSecret("CLAIMS-ORIGIN").value
+				conf[ISSUER] = "ici"
+					//secretClient.getSecret("TOKEN-ISSUER").value
 			}
 
 			return listOf(PropertiesConfigSource(conf, null, priority))

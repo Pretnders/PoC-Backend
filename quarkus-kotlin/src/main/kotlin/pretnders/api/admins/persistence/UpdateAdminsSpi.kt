@@ -15,11 +15,11 @@ class UpdateAdminsSpi: UpdateAdminsOut {
 
     @Inject
     @field:Default
-    private lateinit var adminsRepository: AdminsRepository
+    private lateinit var adminsCommandsRepository: AdminsCommandsRepository
 
     override fun updateNickname(mail: String, newNickname: String) {
         try {
-            adminsRepository.updateNickname(mail, newNickname)
+            adminsCommandsRepository.updateNickname(mail, newNickname)
             Log.debug(String.format("Admin %s nickname was updated", mail))
         } catch (e: ConstraintViolationException) {
             handlePersistenceExceptions(e)
@@ -28,7 +28,7 @@ class UpdateAdminsSpi: UpdateAdminsOut {
     }
     override fun updateProfilePicture(phoneNumber: String, newProfilePicture:String) {
         try {
-            adminsRepository.updateProfilePicture(phoneNumber, newProfilePicture)
+            adminsCommandsRepository.updateProfilePicture(phoneNumber, newProfilePicture)
             Log.debug(String.format("User %s profile picture was updated", phoneNumber))
         } catch (e: ConstraintViolationException) {
             handlePersistenceExceptions(e)

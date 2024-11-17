@@ -14,11 +14,4 @@ interface PretnderTraitPairsMapper {
     @Mapping(source="score",target="score")
     @Mapping(source="reference",target="reference")
     fun fromEntityToDbModel(entity: PretnderTraitPairsEntity): PretnderTraitPair
-    fun fromEntitiesToDbModels(entities:List<PretnderTraitPairsEntity>): List<PretnderTraitPair>
-    @Mapping(source="trait",target="trait.trait")
-    @Mapping(source="mirrorTrait",target="trait.mirrorTrait")
-    @Mapping(source="description",target="trait.description")
-    @Mapping(source="score",target="score")
-    @Mapping(source="reference",target="reference")
-    fun fromDbModelToEntity(model: PretnderTraitPair): PretnderTraitPairsEntity
 }

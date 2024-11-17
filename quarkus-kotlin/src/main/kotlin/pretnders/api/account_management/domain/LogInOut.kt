@@ -6,5 +6,4 @@ import pretnders.api.pretnders.domain.models.Pretnder
 interface LogInOut {
     fun findAdminByIdentifier(identifier:String) : Admin
     fun findPretnderByIdentifier(identifier:String) : Pretnder
-
 }

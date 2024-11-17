@@ -32,9 +32,6 @@ import pretnders.api.shared.security.CsrfTokenGeneratorIn
 @RequestScoped
 class ProfilePicturesResource {
     @Inject
-    @field: Default
-    private lateinit var cookieUtils: CookieUtils
-    @Inject
     @field:Default
     private lateinit var jwt: JsonWebToken
 
@@ -45,13 +42,6 @@ class ProfilePicturesResource {
     @Inject
     @field:Default
     private lateinit var handleProfilePicturesIn: HandleProfilePicturesIn
-
-    @Inject
-    @field:Default
-    private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
-
-    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
-    private lateinit var csrfCookieName: String
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -113,10 +103,7 @@ class ProfilePicturesResource {
     @ResponseStatus(NO_CONTENT)
     @RolesAllowed("PRETNDER")
     @SecurityRequirement(name = "bearer")
-    @Operation(summary = "Add pretnder profile picture", description = "Add pretnder profile picture, update " +
-            "the" +
-            " " +
-            "link in db, returns the new url")
+    @Operation(summary = "Swap pictures", description = "Swap 2 pretnder profile picture order")
     @APIResponses(
         APIResponse(responseCode = "204", description = "NO-CONTENT", content = [Content(mediaType = "text/plain",
             schema = Schema(implementation = String::class)

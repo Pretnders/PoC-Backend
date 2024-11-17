@@ -6,7 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
 @Entity
-@Table(name = "pretender_trait_pairs")
+@Table(name = "pretnder_trait_pairs")
 class PretnderTraitPairsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretender_trait_pairs_generator")

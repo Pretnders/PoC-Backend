@@ -1,5 +1,6 @@
 package pretnders.api.profile_pictures.domain.services
 
+import io.quarkus.logging.Log
 import pretnders.api.profile_pictures.domain.models.AddedProfilePicture
 import pretnders.api.azure.domain.ports.out.StorageClientOut
 import pretnders.api.profile_pictures.domain.ports.`in`.HandleProfilePicturesIn
@@ -21,6 +22,7 @@ class HandleProfilePictures: HandleProfilePicturesIn {
         val profilePictureUrl = storageClientOut.addPretnderProfilePicture(phoneNumber, file)
         val picReference = getNewUUID()
         profilePicturesOut.addPic(reference, picReference, profilePictureUrl)
+        Log.info("nani ?")
         return AddedProfilePicture(picReference, profilePictureUrl)
     }
 

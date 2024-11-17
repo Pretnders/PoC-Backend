@@ -1,4 +1,4 @@
-package pretnders.bootstrap.interceptors
+package pretnders.bootstrap.exceptions_handler
 
 import pretnders.api.shared.errors.ErrorResponse
 import pretnders.api.shared.errors.ApplicationException

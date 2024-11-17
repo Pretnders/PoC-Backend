@@ -1,7 +1,6 @@
 package pretnders.bootstrap.configuration.filters.`in`
 
-import pretnders.bootstrap.configuration.filters.NoCsrfRequiredPaths
-import jakarta.annotation.Priority
+import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.ws.rs.container.ContainerRequestContext
@@ -16,10 +15,10 @@ import org.eclipse.microprofile.jwt.JsonWebToken
 private val noCsrfRequiredPaths = NoCsrfRequiredPaths.getOptions()
 
 @Provider
-@Priority(1)
+@ApplicationScoped
 class CsrfRequestFilter:ContainerRequestFilter {
 
-    @ConfigProperty(name = "quarkus.rest.csrf.cookie.name")
+    @ConfigProperty(name = "rest.csrf.cookie.name")
     private lateinit var csrfTokenName:String
 
     @Inject

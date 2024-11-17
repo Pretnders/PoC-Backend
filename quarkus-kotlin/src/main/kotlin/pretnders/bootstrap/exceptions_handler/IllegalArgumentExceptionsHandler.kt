@@ -1,4 +1,4 @@
-package pretnders.bootstrap.interceptors
+package pretnders.bootstrap.exceptions_handler
 
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType

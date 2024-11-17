@@ -30,6 +30,6 @@ class FindPretndersSpi: FindPretndersOut {
     }
 
     override fun findIDByReference(reference: String): Long {
-        return pretndersQueryRepository.findIDByReference(reference)
+        return pretndersQueryRepository.findIDByReference(reference)!!
     }
 }

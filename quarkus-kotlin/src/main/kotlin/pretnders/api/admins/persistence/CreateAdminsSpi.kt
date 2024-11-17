@@ -15,12 +15,12 @@ class CreateAdminsSpi: CreateAdminOut {
     private lateinit var adminsEntityMapper: AdminsEntityMapper
 
     @Inject
-    private lateinit var adminsRepository: AdminsRepository
+    private lateinit var adminsQueryRepository: AdminsQueryRepository
     override fun addAdmin(createAdminCommand: CreateAdminCommand) {
         val entity = adminsEntityMapper.fomAdminCommandToEntity(createAdminCommand)
         try {
             Log.debug(entity.toString())
-            adminsRepository.persistAndFlush(entity)
+            adminsQueryRepository.persistAndFlush(entity)
         } catch (e: ConstraintViolationException) {
             handlePersistenceExceptions(e)
         }

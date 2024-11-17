@@ -18,6 +18,6 @@ class FindNicknamesSpi : FindNicknameOut {
                 "nickname" to newNickname,
                 "reference" to reference
             )
-        ).project(Boolean::class.java).firstResult()
+        ).project(Boolean::class.java).firstResult()!!
     }
 }

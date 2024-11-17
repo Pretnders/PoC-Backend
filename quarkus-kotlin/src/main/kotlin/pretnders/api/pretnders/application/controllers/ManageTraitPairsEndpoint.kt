@@ -14,8 +14,6 @@ import jakarta.ws.rs.PUT
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
-import org.eclipse.microprofile.config.inject.ConfigProperty
-import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.jboss.resteasy.reactive.ResponseStatus
@@ -26,20 +24,8 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 class ManageTraitPairsEndpoint {
 
     @Inject
-    private lateinit var jwt: JsonWebToken
-    @Inject
-    @field:Default
-    private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
-
-    @field:ConfigProperty(name="quarkus.rest.csrf.cookie.name")
-    private lateinit var csrfCookieName: String
-
-    @Inject
-    @field: Default
-    private lateinit var cookieUtils: CookieUtils
-
-    @Inject
     private lateinit var changeTraitScoreIn: ChangeTraitScoreIn
+
     @PUT
     @Path("/update-score")
     @Consumes(MediaType.APPLICATION_JSON)

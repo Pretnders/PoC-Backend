@@ -1,13 +1,13 @@
 package pretnders.api.pretnders.persistence.repositories
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import pretnders.api.pretnders.persistence.entities.PretnderDetailsEntity
-import io.quarkus.hibernate.orm.panache.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 
 @ApplicationScoped
 @Transactional
-class PretnderDetailsCommandsRepository: PanacheRepository<PretnderDetailsEntity?> {
+class PretnderDetailsCommandsRepository: PanacheRepository<PretnderDetailsEntity> {
 
     fun changeHeight(reference:String, height:String){
         update("SET height = :height WHERE reference = :reference",

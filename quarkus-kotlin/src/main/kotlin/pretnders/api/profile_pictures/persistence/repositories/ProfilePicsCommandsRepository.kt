@@ -1,13 +1,13 @@
 package pretnders.api.profile_pictures.persistence.repositories
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import pretnders.api.profile_pictures.persistence.entities.ProfilePicsEntity
-import io.quarkus.hibernate.orm.panache.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 
 @ApplicationScoped
 @Transactional
-class ManageProfilePicsRepository : PanacheRepository<ProfilePicsEntity?> {
+class ProfilePicsCommandsRepository : PanacheRepository<ProfilePicsEntity> {
 
     fun swapPicturesOrder(
         swapperReference: String,

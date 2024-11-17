@@ -4,8 +4,8 @@ import pretnders.api.profile_pictures.domain.ports.out.HandleProfilePicturesOut
 import pretnders.api.pretnders.persistence.entities.PretndersEntity
 import pretnders.api.pretnders.persistence.repositories.PretndersQueryRepository
 import pretnders.api.profile_pictures.persistence.entities.ProfilePicsEntity
-import pretnders.api.profile_pictures.persistence.repositories.FindProfilePicsRepository
-import pretnders.api.profile_pictures.persistence.repositories.ManageProfilePicsRepository
+import pretnders.api.profile_pictures.persistence.repositories.ProfilePicsQueryRepository
+import pretnders.api.profile_pictures.persistence.repositories.ProfilePicsCommandsRepository
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
@@ -14,14 +14,14 @@ import jakarta.transaction.Transactional
 @ApplicationScoped
 class ProfilePicsHandler : HandleProfilePicturesOut {
     @Inject
-    private lateinit var manageProfilePicsRepository: ManageProfilePicsRepository
+    private lateinit var profilePicsCommandsRepository: ProfilePicsCommandsRepository
     @Inject
-    private lateinit var findProfilePicsRepository: FindProfilePicsRepository
+    private lateinit var profilePicsQueryRepository: ProfilePicsQueryRepository
     @Inject
     private lateinit var pretndersQueryRepository: PretndersQueryRepository
 
     override fun getNextPicOrder(pretnderId: Long): Long {
-        return findProfilePicsRepository.findNextPicOrder(pretnderId)
+        return profilePicsQueryRepository.findNextPicOrder(pretnderId)
     }
 
     @Transactional
@@ -32,10 +32,10 @@ class ProfilePicsHandler : HandleProfilePicturesOut {
         pretndersEntity.id = pretnderID
         val newProfilePicEntity = ProfilePicsEntity()
         newProfilePicEntity.reference = pictureReference
-        newProfilePicEntity.order = getNextPicOrder(pretnderID).toShort()
+        newProfilePicEntity.order = pretnderID?.toShort()
         newProfilePicEntity.url = profilePicUrl
         newProfilePicEntity.pretnder = pretndersEntity
-        manageProfilePicsRepository.persistAndFlush(newProfilePicEntity)
+        profilePicsCommandsRepository.persistAndFlush(newProfilePicEntity)
     }
 
     @Transactional
@@ -45,25 +45,25 @@ class ProfilePicsHandler : HandleProfilePicturesOut {
         swappedReference: String,
         swappedOrder: Long
     ) {
-        manageProfilePicsRepository.swapPicturesOrder(swapperReference, swapperOrder, swappedReference, swappedOrder)
+        profilePicsCommandsRepository.swapPicturesOrder(swapperReference, swapperOrder, swappedReference, swappedOrder)
     }
 
     @Transactional
     override fun deletePicture(pictureReference: String) {
-        val picturesInDb = findProfilePicsRepository.findPretnderPictureListByPictureReference(pictureReference)
+        val picturesInDb = profilePicsQueryRepository.findPretnderPictureListByPictureReference(pictureReference)
         val toRemove = picturesInDb.find { item -> item.reference == pictureReference }
         val removedPicOrder = toRemove?.order!!
         for(profilePicEntity in picturesInDb) {
             if(profilePicEntity.order > removedPicOrder){
                 profilePicEntity.order = (profilePicEntity.order - 1).toShort()
-                manageProfilePicsRepository.setPictureOrderById(profilePicEntity.order, profilePicEntity.id)
+                profilePicsCommandsRepository.setPictureOrderById(profilePicEntity.order, profilePicEntity.id)
             }
         }
-        manageProfilePicsRepository.deleteById(toRemove.id)
+        profilePicsCommandsRepository.deleteById(toRemove.id)
     }
 
     @Transactional
     override fun updatePictureUrl(pictureReference: String, newUrl: String) {
-        manageProfilePicsRepository.changePictureUrl(pictureReference,newUrl)
+        profilePicsCommandsRepository.changePictureUrl(pictureReference,newUrl)
     }
 }

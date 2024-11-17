@@ -13,19 +13,18 @@ class FindAdminsSpi: FindAdminsOut {
 
     @Inject
     @field:Default
-    private lateinit var adminsRepository: AdminsRepository
+    private lateinit var adminsQueryRepository: AdminsQueryRepository
 
     @Inject
     @field:Default
     private lateinit var adminsEntityMapper: AdminsEntityMapper
 
     override fun findByIdentifier(identifier: String): Admin {
-        val adminInDb = adminsRepository.findByIdentifier(identifier).orElseThrow { ApplicationException(
-            ApplicationExceptionsEnum.LOGIN_USER_NOT_FOUND) }
+        val adminInDb = adminsQueryRepository.findByIdentifier(identifier) ?: throw ApplicationException(ApplicationExceptionsEnum.LOGIN_USER_NOT_FOUND)
         return adminsEntityMapper.fromEntityToModel(adminInDb)
     }
 
     override fun findIDByReference(reference: String): Long {
-        return adminsRepository.findIDByReference(reference)
+        return adminsQueryRepository.findIDByReference(reference)!!
     }
 }

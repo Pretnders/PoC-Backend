@@ -69,12 +69,12 @@ class StorageClient : StorageClientOut {
             .buildClient()
     }
 
-    override fun updateAdminProfilePicture(phoneNumber:String, file: FileUpload): String {
+    override fun updateAdminProfilePicture(phoneNumber: String, file: FileUpload): String {
         val containerName = String.format(ADMIN_FORMATTER, phoneNumber)
         val fileName = file.name()
         try {
             val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
-            containerClient.listBlobs().forEach{ blob ->
+            containerClient.listBlobs().forEach { blob ->
                 containerClient.getBlobClient(blob.name).delete()
             }
             val client: BlobClient = containerClient.getBlobClient(fileName)
@@ -90,7 +90,8 @@ class StorageClient : StorageClientOut {
             throw ApplicationException(ApplicationExceptionsEnum.ERROR)
         }
     }
-    override fun deleteBlobFromContainer(phoneNumber:String, fileName:String) {
+
+    override fun deleteBlobFromContainer(phoneNumber: String, fileName: String) {
         val containerName = String.format(FORMATTER, phoneNumber)
         val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
         Log.debug("Deleting file $fileName from container $containerName")
@@ -99,18 +100,19 @@ class StorageClient : StorageClientOut {
 
     override fun addPretnderProfilePicture(phoneNumber: String, file: FileUpload): String {
         val containerName = String.format(FORMATTER, phoneNumber)
+        Log.info(containerName)
         val fileName = file.fileName()
         try {
             val containerClient: BlobContainerClient = blobServiceClient!!.getBlobContainerClient(containerName)
             containerClient.getBlobClient(fileName).deleteIfExists()
-           containerClient.getBlobClient(fileName).uploadFromFile(
+            containerClient.getBlobClient(fileName).uploadFromFile(
                 file.filePath().toString()
             )
             val profilePictureUrl = containerClient.getBlobClient(fileName).blobUrl
-            Log.info("Profile picture updated : $profilePictureUrl")
+            Log.info("Profile picture uploaded : $profilePictureUrl")
             return profilePictureUrl
         } catch (e: Exception) {
-            Log.debug(e.toString())
+            Log.info(e.toString())
             throw ApplicationException(ApplicationExceptionsEnum.ERROR)
         }
     }

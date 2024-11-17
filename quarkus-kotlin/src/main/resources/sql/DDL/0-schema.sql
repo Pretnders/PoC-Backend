@@ -35,7 +35,7 @@ CREATE SEQUENCE IF NOT EXISTS pretenders_seq
 CREATE TABLE IF NOT EXISTS profile_pics
 (
     id            bigint       NOT NULL,
-    pretenders_id BIGINT          NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
+    pretenders_id BIGINT          NOT NULL REFERENCES pretnders (id) ON DELETE CASCADE,
     url           varchar(200) NOT NULL,
     pic_order     SMALLINT     NOT NULL,
     constraint profile_pics_pk
@@ -53,8 +53,8 @@ CREATE SEQUENCE IF NOT EXISTS profile_pics_seq
 CREATE TABLE IF NOT EXISTS likes
 (
     id         bigint NOT NULL,
-    liker_id   INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
-    liked_id   INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
+    liker_id   INT    NOT NULL REFERENCES pretnders (id) ON DELETE CASCADE,
+    liked_id   INT    NOT NULL REFERENCES pretnders (id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     constraint like_pk
         primary key (id),
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS matches
 (
     id             BIGINT NOT NULL,
     reference bpchar(32) NOT NULL,
-    pretenders1_id INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
-    pretenders2_id INT    NOT NULL REFERENCES pretenders (id) ON DELETE CASCADE,
+    pretenders1_id INT    NOT NULL REFERENCES pretnders (id) ON DELETE CASCADE,
+    pretenders2_id INT    NOT NULL REFERENCES pretnders (id) ON DELETE CASCADE,
     matched_at     TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     is_blocked BOOLEAN DEFAULT false,
     status         VARCHAR(20) DEFAULT 'ACTIVE',
@@ -145,8 +145,8 @@ CREATE TABLE IF NOT EXISTS pretender_details (
                                           body_type VARCHAR(12) NOT NULL,
                                           diet VARCHAR(20) NOT NULL,
                                           beliefs VARCHAR(20) NOT NULL,
-                                          smokes VARCHAR(12) NOT NULL,
-                                          drinks VARCHAR(12) NOT NULL,
+                                          smokes VARCHAR(30) NOT NULL,
+                                          drinks VARCHAR(30) NOT NULL,
                                           social_status VARCHAR(12) NOT NULL,
                                           biography TEXT NOT NULL,
                                           city VARCHAR(45) NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS pretender_details (
                                           constraint pret_det_pk
                                               primary key (id),
                                           constraint pret_fk
-                                              FOREIGN KEY (pretender_id) REFERENCES pretenders(id)
+                                              FOREIGN KEY (pretender_id) REFERENCES pretnders(id)
 );
 CREATE SEQUENCE IF NOT EXISTS pretenders_details_seq
     START 1
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS pretender_trait_pairs(
                                                     constraint trait_pairs_fk
                                                         FOREIGN KEY(trait_pairs_id) references trait_pairs(id),
                                                     constraint pretnder_trait_pairs_fk
-                                                        FOREIGN KEY(pretnder_id) references pretenders(id)
+                                                        FOREIGN KEY(pretnder_id) references pretnders(id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS pretnder_trait_pairs_seq
@@ -208,14 +208,14 @@ alter table messages
     add constraint uq_reference_message
         unique (reference);
 
-alter table pretender_details
+alter table pretnder_details
     add constraint uq_reference_pd
         unique (reference);
 
-alter table pretender_details
+alter table pretnder_details
     ADD COLUMN gender VARCHAR(20) NOT NULL DEFAULT 'NC';
 
-alter table pretender_details
+alter table pretnder_details
     ADD COLUMN sexual_orientation VARCHAR(35) NOT NULL DEFAULT 'NC';
 
 alter table profile_pics
@@ -227,14 +227,43 @@ alter table profile_pics
 ALTER TABLE profile_pics
 ADD CHECK (pic_order BETWEEN 0 AND 8);
 
-ALTER TABLE pretender_trait_pairs
+ALTER TABLE pretnder_trait_pairs
     ADD CONSTRAINT uq_reference_ptp UNIQUE(reference);
 
 
 
-alter table pretender_trait_pairs
+alter table pretnder_trait_pairs
     add constraint trait_pairs__fk
         foreign key (trait_pairs_id) references trait_pairs ON DELETE CASCADE;
+
+ALTER TABLE pretnder_details
+    ADD CONSTRAINT uq_details_pretnder UNIQUE (pretender_id);
+
+ALTER TABLE pretnder_details
+    ADD COLUMN relationship_search_type VARCHAR(30)[] default '{Non Renseigné}';
+
+ALTER TABLE pretnder_details
+    ADD COLUMN has_pets BOOLEAN NOT NULL DEFAULT false;
+
+ALTER TABLE pretnder_details
+    ADD COLUMN pets_types VARCHAR(30)[] NOT NULL default '{}';
+
+ALTER TABLE profile_pics
+    ADD COLUMN private BOOLEAN default false;
+
+ALTER TABLE pretnder_details
+    ADD COLUMN birthdate DATE NOT NULL
+        CHECK (birthdate < CURRENT_TIMESTAMP)
+        DEFAULT CURRENT_TIMESTAMP - interval '18 years';
+
+ALTER TABLE pretnder_details
+    ADD COLUMN is_birthdate_editable BOOLEAN NOT NULL
+        DEFAULT FALSE;
+
+ALTER TABLE pretnder_details
+    ADD COLUMN red_flags varchar(255)[] default '{}';
+
+
 
 
 
@@ -257,7 +286,7 @@ CREATE OR REPLACE FUNCTION create_pretender_trait_pairs()
     RETURNS TRIGGER AS $$
 BEGIN
     -- Insert one entry for each trait pair for the new pretender
-    INSERT INTO pretender_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
+    INSERT INTO pretnder_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
     SELECT nextval('pretnder_trait_pairs_seq'), REPLACE(uuid_generate_v4()::text, '-', ''), id, NEW.id, 50  -- Set
     -- default score to 50
     FROM trait_pairs;
@@ -268,7 +297,7 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE TRIGGER after_pretender_insert
-    AFTER INSERT ON pretenders
+    AFTER INSERT ON pretnders
     FOR EACH ROW
 EXECUTE FUNCTION create_pretender_trait_pairs();
 
@@ -319,10 +348,10 @@ CREATE OR REPLACE FUNCTION create_pretnder_details()
 $$
 BEGIN
     -- Insert one entry for each trait pair for the new pretender
-    INSERT INTO pretender_details (id, reference, height, body_type, diet, beliefs, smokes, drinks, social_status,
+    INSERT INTO pretnder_details (id, reference, height, body_type, diet, beliefs, smokes, drinks, social_status,
                                    biography, city, country, pretender_id)
     VALUES (
-               nextval('pretenders_details_seq'),
+               nextval('pretnders_details_seq'),
                REPLACE(uuid_generate_v4()::text, '-', ''), '', 'NORMAL', 'OMNIVORE', 'ATHEIST','NEVER','NEVER',
                'STUDENT','','PARIS','FRANCE', NEW.ID);
 
@@ -333,7 +362,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER create_details_after_pretender_insert
     AFTER INSERT
-    ON pretenders
+    ON pretnders
     FOR EACH ROW
 EXECUTE FUNCTION create_pretnder_details();
 
@@ -346,10 +375,10 @@ BEGIN
     -- Loop through each pretender in pretender_trait_pairs
     FOR pretender_id IN
         SELECT DISTINCT pretnder_id
-        FROM pretender_trait_pairs
+        FROM pretnder_trait_pairs
         LOOP
             -- Insert a new row for each pretender with the new trait_pair
-            INSERT INTO pretender_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
+            INSERT INTO pretnder_trait_pairs (id, reference, trait_pairs_id, pretnder_id, score)
             VALUES (nextval('pretnder_trait_pairs_seq'), -- Generate new ID
                     REPLACE(uuid_generate_v4()::text, '-', ''), -- Use a default or set this based on your logic
                     NEW.id, -- ID of the new trait_pair from trait_pairs

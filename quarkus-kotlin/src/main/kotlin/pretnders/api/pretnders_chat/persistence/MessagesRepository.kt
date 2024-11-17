@@ -5,7 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
 
 @ApplicationScoped
-class MessagesRepository:PanacheRepository<MessagesEntity> {
+class MessagesRepository: PanacheRepository<MessagesEntity> {
     @Transactional
     fun add(toPersist: MessagesEntity) {
         persistAndFlush(toPersist)

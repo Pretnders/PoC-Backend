@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "pretender_details")
+@Table(name = "pretnder_details")
 class PretnderDetailsEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretenders_details_generator")
-    @SequenceGenerator(name = "pretenders_details_generator", sequenceName = "pretenders_details_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pretnders_details_generator")
+    @SequenceGenerator(name = "pretnders_details_generator", sequenceName = "pretnders_details_seq", allocationSize = 1)
     @Column(name = "id", updatable = false)
     var id: Long? = null
     @Column(name="gender", columnDefinition = "varchar(20)", nullable = false)

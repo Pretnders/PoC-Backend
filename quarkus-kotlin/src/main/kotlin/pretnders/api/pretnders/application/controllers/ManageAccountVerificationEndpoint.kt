@@ -25,7 +25,8 @@ class ManageAccountVerificationEndpoint {
     private lateinit var verifyAccountsIn: VerifyAccountsIn
 
     @Inject
-    private lateinit var jwt: JsonWebToken
+    @field:Default
+    private lateinit var jsonWebToken: JsonWebToken
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -33,7 +34,7 @@ class ManageAccountVerificationEndpoint {
     @RolesAllowed("PRETNDER")
     fun verifyClientAccount(otpRequest: OtpRequest) {
         Log.info("Verifying user account")
-        val mail = jwt.claim<String>(Claims.email.name).get()
+        val mail = jsonWebToken.claim<String>(Claims.email.name).get()
         verifyAccountsIn.verifyPretnderAccount(mail, otpRequest.otpCode)
     }
 
@@ -44,7 +45,7 @@ class ManageAccountVerificationEndpoint {
     @RolesAllowed("PRETNDER")
     fun generateNewOtpCode() {
         Log.info("Initiating new OTP")
-        val mail = jwt.claim<String>(Claims.email.name).get()
+        val mail = jsonWebToken.claim<String>(Claims.email.name).get()
         verifyAccountsIn.generateNewOtpCode(mail)
     }
 }

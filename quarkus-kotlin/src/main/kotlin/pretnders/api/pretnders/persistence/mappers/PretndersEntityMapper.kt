@@ -19,12 +19,8 @@ interface PretndersEntityMapper {
     @Mapping(target = "accountVerifiedStatus", ignore = true)
     @Mapping(target = "pretnderDetails", ignore = true)
     @Mapping(target = "profilePictures", ignore = true)
+    @Mapping(target = "traitPairs", ignore = true)
     fun fromCreateCommandToEntity(createPretenderCommand: CreatePretenderCommand): PretndersEntity
 
     fun fromEntityToModel(pretndersEntity: PretndersEntity): Pretnder
-
-    @Mapping(target = "pretnderDetails", ignore = true)
-    fun fromPretnderToEntity(pretnder: Pretnder): PretndersEntity
-
-    fun fromPretnderToEntityWithDetails(pretnder: Pretnder): PretndersEntity
 }

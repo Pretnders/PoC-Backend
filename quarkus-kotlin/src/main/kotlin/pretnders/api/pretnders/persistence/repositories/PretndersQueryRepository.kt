@@ -1,15 +1,15 @@
 package pretnders.api.pretnders.persistence.repositories
 
-import pretnders.api.pretnders.persistence.entities.PretndersEntity
-import io.quarkus.hibernate.orm.panache.PanacheRepository
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import jakarta.enterprise.context.ApplicationScoped
-import java.util.*
+import pretnders.api.pretnders.persistence.entities.PretndersEntity
+import java.util.Optional
 
 @ApplicationScoped
-class PretndersQueryRepository : PanacheRepository<PretndersEntity?> {
+class PretndersQueryRepository : PanacheRepository<PretndersEntity> {
 
     fun findByIdentifier(identifier: String): Optional<PretndersEntity> {
-        return find("LEFT JOIN FETCH traitPairs tp "+
+        return Optional.ofNullable(find("LEFT JOIN FETCH traitPairs tp "+
                 "LEFT JOIN FETCH tp.trait tpt "+
                 "LEFT JOIN FETCH pretnderDetails pd "+
             "WHERE (mail =:mail OR phoneNumber = :phoneNumber) ORDER BY tpt.trait ASC",
@@ -17,11 +17,10 @@ class PretndersQueryRepository : PanacheRepository<PretndersEntity?> {
                 "mail" to identifier,
                 "phoneNumber" to identifier
             )
-        )
-            .firstResultOptional<PretndersEntity>()
+        ).firstResult())
     }
 
-    fun findIDByReference(reference: String): Long {
+    fun findIDByReference(reference: String): Long? {
         return find(
             "SELECT id FROM PretndersEntity WHERE reference = :reference ", mapOf(
                 "reference" to reference
