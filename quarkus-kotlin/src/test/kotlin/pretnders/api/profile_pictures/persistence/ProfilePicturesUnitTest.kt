@@ -1,4 +1,4 @@
-package pretnders.api.pretnders.persistence
+package pretnders.api.profile_pictures.persistence
 
 import io.quarkus.test.InjectMock
 import io.quarkus.test.junit.QuarkusTest

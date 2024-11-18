@@ -11,11 +11,10 @@ import org.hibernate.exception.ConstraintViolationException
 
 @ApplicationScoped
 @Transactional
-class UpdateAdminsSpi: UpdateAdminsOut {
+class UpdateAdminsSpi(
+    private val adminsCommandsRepository: AdminsCommandsRepository
+): UpdateAdminsOut {
 
-    @Inject
-    @field:Default
-    private lateinit var adminsCommandsRepository: AdminsCommandsRepository
 
     override fun updateNickname(mail: String, newNickname: String) {
         try {

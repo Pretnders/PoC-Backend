@@ -22,7 +22,7 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 @ApplicationScoped
-class DatasourceConfigurator @Inject constructor(
+class DatasourceConfigurator (
     private val transactionManager: TransactionManager,
     private val transactionSynchronizationRegistry: TransactionSynchronizationRegistry
 ) :

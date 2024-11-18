@@ -13,7 +13,7 @@ enum class Beliefs (val label: String, val disabled: Boolean) {
 
     companion object {
         fun getOptions():List<BeliefsOption>{
-            return entries.map {
+            return Beliefs.entries.map {
                 BeliefsOption(it.label, it.name, it.disabled)
             }
         }
@@ -21,6 +21,6 @@ enum class Beliefs (val label: String, val disabled: Boolean) {
 
     @Serializable
     class BeliefsOption : Options {
-        constructor(label: String, name:String, disabled: Boolean) : super(label, name, disabled)
+        constructor(label: String, key:String, disabled: Boolean) : super(label, key, disabled)
     }
 }

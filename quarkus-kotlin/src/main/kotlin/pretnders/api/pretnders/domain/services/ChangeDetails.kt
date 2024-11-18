@@ -8,10 +8,10 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 
 @ApplicationScoped
-class ChangeDetails: ChangeDetailsIn {
+class ChangeDetails(
+    private val updatePretenderProfileOut: ChangeDetailsOut
+): ChangeDetailsIn {
 
-    @Inject
-    private lateinit var updatePretenderProfileOut: ChangeDetailsOut
 
     override fun changeNickname(reference: String, nickname: String) {
         updatePretenderProfileOut.changeNickname(reference, nickname)
@@ -22,8 +22,6 @@ class ChangeDetails: ChangeDetailsIn {
     }
 
     override fun changeGender(reference: String, gender: Genders) {
-        Log.info(BodyTypes.getOptions())
-
         updatePretenderProfileOut.changeGender(reference, gender.name)
     }
 

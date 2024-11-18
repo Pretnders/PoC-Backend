@@ -30,7 +30,7 @@ class QueryDetailOptionsEndpoint {
             )]),
     )
     fun findAllOptions(): FindDetailsOptionsResponse {
-        val options = FindDetailsOptionsResponse(
+        return  FindDetailsOptionsResponse(
             Beliefs.getOptions(),
             BodyTypes.getOptions(),
             Diets.getOptions(),
@@ -39,6 +39,5 @@ class QueryDetailOptionsEndpoint {
             Genders.getOptions(),
             SexualOrientations.getOptions()
         )
-        return options
     }
 }

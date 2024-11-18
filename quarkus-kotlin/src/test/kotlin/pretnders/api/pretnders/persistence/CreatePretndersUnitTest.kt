@@ -15,16 +15,17 @@ import pretnders.api.pretnders.persistence.entities.PretndersEntity
 import pretnders.api.pretnders.persistence.mappers.PretndersEntityMapper
 import pretnders.api.pretnders.persistence.repositories.PretndersQueryRepository
 import pretnders.api.shared.errors.ApplicationException
-import pretnders.api.shared.utils.generators.UUIDGenerator.getNewUUID
+import pretnders.api.shared.utils.generators.UUIDGenerator
 import java.sql.SQLException
 import java.sql.Timestamp
 import java.time.Instant
 
 @QuarkusTest
 @DisplayName("Add Pretenders persistence UT \n")
-class CreatePretndersUnitTest {
+class CreatePretndersUnitTest{
+    @Inject private lateinit var addPretndersOut: AddPretndersOut
+
     @Inject
-    lateinit var addPretndersOut: AddPretndersOut
     @InjectMock
     lateinit var pretndersQueryRepository: PretndersQueryRepository
 
@@ -37,7 +38,7 @@ class CreatePretndersUnitTest {
         "sa.benn@gmail.com",
         "SomePPassw0rd!",
         "0712121212",
-        getNewUUID(),
+        "45678945612315649879",
         "132456789",
         Timestamp.from(Instant.now()),
         false

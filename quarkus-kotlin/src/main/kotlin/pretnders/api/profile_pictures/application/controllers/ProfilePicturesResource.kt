@@ -2,11 +2,8 @@ package pretnders.api.profile_pictures.application.controllers
 
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped
-import jakarta.enterprise.inject.Default
-import jakarta.inject.Inject
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
-import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.Claims
 import org.eclipse.microprofile.jwt.JsonWebToken
 import org.eclipse.microprofile.openapi.annotations.Operation
@@ -24,24 +21,18 @@ import pretnders.api.azure.domain.ports.out.StorageClientOut
 import pretnders.api.profile_pictures.application.dto.requests.DeletePictureRequest
 import pretnders.api.profile_pictures.application.dto.requests.SwapPicturesRequest
 import pretnders.api.profile_pictures.application.dto.responses.AddProfilePictureResponse
+import pretnders.api.profile_pictures.domain.ports.`in`.RemoveProfilePictureCommand
 import pretnders.api.profile_pictures.domain.ports.`in`.HandleProfilePicturesIn
-import pretnders.api.shared.security.CookieUtils
-import pretnders.api.shared.security.CsrfTokenGeneratorIn
+import pretnders.api.profile_pictures.domain.ports.`in`.SwapProfilePictureCommand
+import pretnders.api.profile_pictures.domain.ports.`in`.ChangeProfilePictureCommand
 
 @Path("/profile-pictures")
 @RequestScoped
-class ProfilePicturesResource {
-    @Inject
-    @field:Default
-    private lateinit var jwt: JsonWebToken
-
-    @Inject
-    @field:Default
-    private lateinit var storageClientOut: StorageClientOut
-
-    @Inject
-    @field:Default
-    private lateinit var handleProfilePicturesIn: HandleProfilePicturesIn
+class ProfilePicturesResource (
+    private val jwt: JsonWebToken,
+    private val storageClientOut: StorageClientOut,
+    private val handleProfilePicturesIn: HandleProfilePicturesIn
+){
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -110,8 +101,11 @@ class ProfilePicturesResource {
         )]),
     )
     fun swapPicturesOrder( swapPicturesRequest: SwapPicturesRequest) {
-        handleProfilePicturesIn.swapPicturesOrder(swapPicturesRequest.swapperReference, swapPicturesRequest.swapperOrder,
-            swapPicturesRequest.swappedReference, swapPicturesRequest.swappedOrder,)
+        val command = SwapProfilePictureCommand(
+            swapPicturesRequest.swapperReference, swapPicturesRequest.swapperOrder,
+            swapPicturesRequest.swappedReference, swapPicturesRequest.swappedOrder
+        )
+        handleProfilePicturesIn.swapPicturesOrder(command)
     }
 
 
@@ -132,7 +126,12 @@ class ProfilePicturesResource {
     )
     fun deletePicture( deletePictureRequest: DeletePictureRequest) {
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
-        handleProfilePicturesIn.deleteProfilePicture(deletePictureRequest.reference, deletePictureRequest.blobName, phoneNumber)
+        val command = RemoveProfilePictureCommand(
+            deletePictureRequest.reference,
+            deletePictureRequest.blobName,
+            phoneNumber
+        )
+        handleProfilePicturesIn.removeProfilePicture(command)
     }
 
     @PUT
@@ -155,6 +154,12 @@ class ProfilePicturesResource {
                       @RestForm("image") image: FileUpload):
     String {
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
-        return handleProfilePicturesIn.updateProfilePicture(pictureReference, blobName, image, phoneNumber)
+        val command = ChangeProfilePictureCommand(
+            pictureReference,
+            blobName,
+            image,
+            phoneNumber
+        )
+        return handleProfilePicturesIn.changeProfilePicture(command)
     }
 }

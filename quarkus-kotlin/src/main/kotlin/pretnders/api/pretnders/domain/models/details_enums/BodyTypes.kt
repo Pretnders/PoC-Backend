@@ -24,6 +24,6 @@ enum class BodyTypes(val label: String, val disabled: Boolean) {
 
     @Serializable
     class BodyTypesOption : Options {
-        constructor(label: String, name:String, disabled: Boolean) : super(label, name, disabled)
+        constructor(label: String, key:String, disabled: Boolean) : super(label, key, disabled)
     }
 }

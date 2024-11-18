@@ -12,13 +12,11 @@ import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 
 @ApplicationScoped
-class ProfilePicsHandler : HandleProfilePicturesOut {
-    @Inject
-    private lateinit var profilePicsCommandsRepository: ProfilePicsCommandsRepository
-    @Inject
-    private lateinit var profilePicsQueryRepository: ProfilePicsQueryRepository
-    @Inject
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
+class ProfilePicsHandler (
+    private val profilePicsCommandsRepository: ProfilePicsCommandsRepository,
+    private val profilePicsQueryRepository: ProfilePicsQueryRepository,
+    private val pretndersQueryRepository: PretndersQueryRepository
+) : HandleProfilePicturesOut {
 
     override fun getNextPicOrder(pretnderId: Long): Long {
         return profilePicsQueryRepository.findNextPicOrder(pretnderId)
@@ -27,7 +25,6 @@ class ProfilePicsHandler : HandleProfilePicturesOut {
     @Transactional
     override fun addPic(pretnderReference: String, pictureReference: String, profilePicUrl: String) {
         val pretnderID = pretndersQueryRepository.findIDByReference(pretnderReference)
-        Log.info(pretnderID.toString())
         val pretndersEntity = PretndersEntity()
         pretndersEntity.id = pretnderID
         val newProfilePicEntity = ProfilePicsEntity()

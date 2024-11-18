@@ -1,44 +1,33 @@
 package pretnders.api.account_management.domain
 
+import io.quarkus.logging.Log
+import jakarta.enterprise.context.ApplicationScoped
+import pretnders.api.pretnders.domain.ports.out.ChangePretndersOut
+import pretnders.api.pretnders.domain.ports.out.FindPretndersOut
 import pretnders.api.shared.errors.ApplicationException
 import pretnders.api.shared.errors.ApplicationExceptionsEnum
-import pretnders.api.pretnders.domain.ports.out.FindPretndersOut
-import pretnders.api.pretnders.domain.ports.out.ChangePretndersOut
-import pretnders.api.shared.utils.validators.PasswordUtils.hashWithBCrypt
-import pretnders.api.shared.utils.validators.PasswordUtils.verifyPassword
 import pretnders.api.shared.utils.generators.AdminCodeGenerator.generateAdminCode
 import pretnders.api.shared.utils.mailer.Mailer
 import pretnders.api.shared.utils.validators.InputsValidator.hasTimestampExceededTwentyMinutes
 import pretnders.api.shared.utils.validators.InputsValidator.validatePasswordConfirmation
 import pretnders.api.shared.utils.validators.InputsValidator.validatePasswordFormat
 import pretnders.api.shared.utils.validators.InputsValidator.validatePasswordHash
-import jakarta.enterprise.context.ApplicationScoped
-import jakarta.enterprise.inject.Default
-import jakarta.inject.Inject
-import io.quarkus.logging.Log
+import pretnders.api.shared.utils.validators.PasswordUtils.hashWithBCrypt
+import pretnders.api.shared.utils.validators.PasswordUtils.verifyPassword
 import java.sql.Timestamp
 import java.time.Instant
 
 @ApplicationScoped
-class PasswordManagement : PasswordManagementIn {
-
-    @Inject
-    @field:Default
-    private lateinit var mailer: Mailer
-
-    @Inject
-    @field:Default
-    private lateinit var changePretndersOut: ChangePretndersOut
-
-    @Inject
-    @field:Default
-    private lateinit var findPretndersOut: FindPretndersOut
+class PasswordManagement (
+    private val mailer: Mailer,
+    private val changePretndersOut: ChangePretndersOut,
+    private val findPretndersOut: FindPretndersOut
+) : PasswordManagementIn {
 
     override fun initPasswordRecovery(identifier: String) {
         val user = findPretndersOut.findByIdentifier(identifier)
         val mail = user.mail
         val token = generateAdminCode()
-        Log.info(token)
         val mailContent = mailer.generatePasswordRecoveryEmail(token)
         val safeToken = hashWithBCrypt(token).result
         val tokenTimestamp = Timestamp.from(Instant.now())

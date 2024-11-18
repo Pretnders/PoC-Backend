@@ -1,24 +1,20 @@
-package pretnders.api.pretnders.endpoints
+package pretnders.api.healthcheck
 
-import pretnders.api.shared.utils.shared_models.UserTypes
 import pretnders.api.shared.security.JwtTokenGenerator
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.Cookie
-import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.hamcrest.Matchers.equalTo
+import pretnders.api.shared.utils.shared_models.UserTypes
+
 @QuarkusTest
-class HealthCheckResourceTest {
-
+class HealthCheckResourceTest{
+    @Inject private lateinit var jwtTokenGenerator: JwtTokenGenerator
     var cookie : Cookie? = null
-
-    @Inject
-    @field:Default
-    private lateinit var jwtTokenGenerator: JwtTokenGenerator
 
     @BeforeEach
     fun before() {

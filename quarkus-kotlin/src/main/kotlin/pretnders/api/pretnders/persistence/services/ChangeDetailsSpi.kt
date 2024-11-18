@@ -1,18 +1,16 @@
 package pretnders.api.pretnders.persistence.services
 
+import jakarta.enterprise.context.ApplicationScoped
 import pretnders.api.pretnders.domain.ports.out.ChangeDetailsOut
 import pretnders.api.pretnders.persistence.repositories.PretnderDetailsCommandsRepository
 import pretnders.api.pretnders.persistence.repositories.PretndersCommandsRepository
-import jakarta.enterprise.context.ApplicationScoped
-import jakarta.inject.Inject
 
 @ApplicationScoped
-class ChangeDetailsSpi: ChangeDetailsOut {
+class ChangeDetailsSpi(
+    private val pretndersCommandsRepository: PretndersCommandsRepository,
+    private val pretnderDetailsCommandsRepository: PretnderDetailsCommandsRepository
+): ChangeDetailsOut {
 
-    @Inject
-    private lateinit var pretndersCommandsRepository: PretndersCommandsRepository
-    @Inject
-    private lateinit var pretnderDetailsCommandsRepository: PretnderDetailsCommandsRepository
 
     override fun changeHeight(reference: String, newHeight: String) {
         pretnderDetailsCommandsRepository.changeHeight(reference, newHeight)

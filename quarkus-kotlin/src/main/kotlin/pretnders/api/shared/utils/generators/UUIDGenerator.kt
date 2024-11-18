@@ -1,8 +1,10 @@
 package pretnders.api.shared.utils.generators
 import io.quarkus.logging.Log
+import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
 
-object UUIDGenerator {
+@ApplicationScoped
+class UUIDGenerator {
 
     private fun generateUUID(): UUID {
         Log.info("Generating UUID reference.")

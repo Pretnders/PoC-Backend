@@ -3,12 +3,11 @@ package pretnders.api.pretnders.persistence.services
 import pretnders.api.pretnders.domain.ports.out.FindNicknameOut
 import pretnders.api.pretnders.persistence.repositories.PretndersQueryRepository
 import jakarta.enterprise.context.RequestScoped
-import jakarta.inject.Inject
 
 @RequestScoped
-class FindNicknamesSpi : FindNicknameOut {
-    @Inject
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
+class FindNicknamesSpi (
+    private val pretndersQueryRepository: PretndersQueryRepository
+) : FindNicknameOut {
 
     override fun doNicknameExist(reference:String, newNickname: String): Boolean {
         return pretndersQueryRepository.find(

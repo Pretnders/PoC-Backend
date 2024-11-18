@@ -19,16 +19,9 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.OK
 
 @Path("/admin-code")
 @RequestScoped
-class AdminCodeResource {
-
-    @Inject
-    @field:Default
-    private lateinit var adminCodeIn: AdminCodeIn
-
-    @Inject
-    @field:Default
-    private lateinit var jwt: JsonWebToken
-
+class AdminCodeResource (
+    private val adminCodeIn: AdminCodeIn
+) {
 
     @GET
     @ResponseStatus(OK)

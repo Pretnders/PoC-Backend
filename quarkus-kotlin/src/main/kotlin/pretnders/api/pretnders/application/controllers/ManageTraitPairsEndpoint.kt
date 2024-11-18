@@ -21,10 +21,9 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
 @Path("/pretnder-traits")
 @RequestScoped
-class ManageTraitPairsEndpoint {
-
-    @Inject
-    private lateinit var changeTraitScoreIn: ChangeTraitScoreIn
+class ManageTraitPairsEndpoint (
+    private val changeTraitScoreIn: ChangeTraitScoreIn
+) {
 
     @PUT
     @Path("/update-score")

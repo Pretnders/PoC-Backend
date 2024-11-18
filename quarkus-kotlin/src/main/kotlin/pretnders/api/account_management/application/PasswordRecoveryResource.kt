@@ -20,16 +20,10 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
 @Path("/password-management")
 @RequestScoped
-class PasswordRecoveryResource {
-
-    @Inject
-    @field:Default
-    private lateinit var passwordManagementIn: PasswordManagementIn
-
-    @Inject
-    @field:Default
-    private lateinit var jwt:JsonWebToken
-
+class PasswordRecoveryResource(
+    private val jwt:JsonWebToken,
+    private val passwordManagementIn: PasswordManagementIn
+) {
 
     @PUT
     @Path("/init-reset")

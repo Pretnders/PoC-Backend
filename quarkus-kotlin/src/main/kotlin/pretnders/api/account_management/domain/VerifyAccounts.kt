@@ -17,19 +17,11 @@ import java.time.Instant
 
 
 @ApplicationScoped
-class VerifyAccounts: VerifyAccountsIn {
-    @Inject
-    @field:Default
-    private lateinit var findPretndersOut: FindPretndersOut
-
-    @Inject
-    @field:Default
-    private lateinit var changePretndersOut: ChangePretndersOut
-
-    @Inject
-    @field:Default
-    private lateinit var mailer: Mailer
-
+class VerifyAccounts (
+    private val findPretndersOut: FindPretndersOut,
+    private val changePretndersOut: ChangePretndersOut,
+    private val mailer: Mailer
+): VerifyAccountsIn {
 
     override fun verifyPretnderAccount(mail: String, otp: String) {
         val user = findPretndersOut.findByIdentifier(mail)

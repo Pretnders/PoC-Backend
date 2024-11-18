@@ -30,19 +30,13 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.OK
 
 @Path("/login")
 @RequestScoped
-class ConnexionResource {
+class ConnexionResource(
+    private val loginIn: LoginIn,
+    private val pretndersDtoMappers: PretndersDtoMappers,
+    private val cookieUtils: CookieUtils,
+    private val adminDtoMapper: AdminDtoMapper
 
-    @Inject
-    private lateinit var loginIn: LoginIn
-
-    @Inject
-    private lateinit var pretndersDtoMappers: PretndersDtoMappers
-
-    @Inject
-    private lateinit var adminDtoMapper: AdminDtoMapper
-
-    @Inject
-    private lateinit var cookieUtils: CookieUtils
+) {
 
     @POST
     @Path("/admin")
@@ -52,9 +46,7 @@ class ConnexionResource {
     @PermitAll
     @Operation(summary = "Logs an admin", description = "Logs in an admin")
     @APIResponses(
-        APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
-            schema = Schema(implementation = LoginResponse::class)
-        )]),
+        APIResponse(responseCode = "200", description = "OK"),
     )
     fun adminLogin(loginRequest: LoginRequest): Response {
         Log.debug(String.format("Logging admin %s", loginRequest.identifier))
@@ -70,11 +62,9 @@ class ConnexionResource {
     @ResponseStatus(OK)
     @PermitAll
     @Operation(summary = "Logs a pretnder", description = "Logs in a pretnder")
-    @APIResponses(
-        APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
-            schema = Schema(implementation = LoginResponse::class)
-        )]),
-    )
+    @APIResponse(responseCode = "200", description = "OK", content = [Content(mediaType = "application/json",
+          schema = Schema(implementation = LoginResponse::class)
+        )])
     fun pretenderLogin(loginRequest: LoginRequest): Response {
         Log.debug(String.format("Logging user %s", loginRequest.identifier))
         val loggedIn = loginIn.loginPretnder(loginRequest.identifier, loginRequest.password)

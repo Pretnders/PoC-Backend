@@ -20,16 +20,12 @@ import pretnders.api.pretnders.domain.ports.out.FindNicknameOut
 
 @Path("/pretnder-profile")
 @RequestScoped
-class ManageDetailsEndpoint {
+class ManageDetailsEndpoint (
+    private val jwt:JsonWebToken,
+    private val changeDetailsIn: ChangeDetailsIn,
+    private val findNicknameOut: FindNicknameOut
+) {
 
-    @Inject
-    private lateinit var jwt:JsonWebToken
-
-    @Inject
-    private lateinit var changeDetailsIn: ChangeDetailsIn
-
-    @Inject
-    private lateinit var findNicknameOut: FindNicknameOut
 
 
     @PUT

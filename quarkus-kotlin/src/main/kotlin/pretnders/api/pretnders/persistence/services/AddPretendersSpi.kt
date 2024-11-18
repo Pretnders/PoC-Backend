@@ -14,16 +14,14 @@ import org.hibernate.exception.ConstraintViolationException
 
 @Transactional
 @ApplicationScoped
-class AddPretendersSpi : AddPretndersOut {
+class AddPretendersSpi (
+    private val pretndersQueryRepository: PretndersQueryRepository,
+    private val pretndersEntityMapper: PretndersEntityMapper
+
+): AddPretndersOut {
 
 
-    @Inject
-    @field:Default
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
 
-    @Inject
-    @field:Default
-    private lateinit var pretndersEntityMapper: PretndersEntityMapper
 
     override fun addPretender(pretender: CreatePretenderCommand) {
         val userEntity = pretndersEntityMapper.fromCreateCommandToEntity(pretender)

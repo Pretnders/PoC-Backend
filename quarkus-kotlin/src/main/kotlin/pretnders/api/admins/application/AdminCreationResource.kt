@@ -20,20 +20,12 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
 @Path("/admin-creation")
 @RequestScoped
-class AdminCreationResource {
+class AdminCreationResource (
+    private val createAdminIn: CreateAdminIn,
+    private val cookieUtils: CookieUtils,
+    private val adminDtoMapper: AdminDtoMapper
 
-    @Inject
-    @field: Default
-    private lateinit var createAdminIn: CreateAdminIn
-
-    @Inject
-    @field: Default
-    private lateinit var cookieUtils: CookieUtils
-
-    @Inject
-    @field: Default
-    private lateinit var adminDtoMapper: AdminDtoMapper
-
+){
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

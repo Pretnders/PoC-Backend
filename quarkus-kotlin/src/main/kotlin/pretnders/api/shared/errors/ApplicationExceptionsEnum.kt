@@ -8,6 +8,10 @@ enum class ApplicationExceptionsEnum(val message: String,val errorCode: Int,val 
         ErrorOriginEnum.PERSISTENCE
         .name),
     INVALID_TOKEN("Invalid token", StatusCode.UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),
+    INVALID_FILE_TYPE("Type de fichier invalide, seuls les images PNG et JPG sont autorisées.", StatusCode
+        .UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),
+    INVALID_FILE_SIZE("Fichier trop volumineux, taille maximale autorisée : 5mo.", StatusCode
+        .UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),
     PASSWORDS_NO_MATCH("Les mots de passe ne correspondent pas", StatusCode.BAD_REQUEST, ErrorOriginEnum.DOMAIN
         .name),
     ADMIN_VERIFICATION_CODE_NO_MATCH("Le code spécial admin n'est pas valide", StatusCode.BAD_REQUEST, ErrorOriginEnum.DOMAIN.name),

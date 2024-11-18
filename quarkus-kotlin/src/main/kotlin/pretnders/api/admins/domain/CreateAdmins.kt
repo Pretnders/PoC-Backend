@@ -10,33 +10,25 @@ import pretnders.api.shared.utils.validators.PasswordUtils.hashWithBCrypt
 import pretnders.api.shared.utils.generators.AdminCodeGenerator.generateAdminCode
 import pretnders.api.shared.security.JwtTokenGenerator
 import pretnders.api.shared.utils.validators.InputsValidator
-import pretnders.api.shared.utils.generators.UUIDGenerator.getNewUUID
 import pretnders.api.shared.utils.mailer.Mailer
 import jakarta.enterprise.context.RequestScoped
-import jakarta.inject.Inject
+import pretnders.api.shared.utils.generators.UUIDGenerator
 
 @RequestScoped
-class CreateAdmins: CreateAdminIn {
-    @Inject
-    private lateinit var secretsClientOut: SecretsClientOut
-
-
-    @Inject
-    private lateinit var storageClientOut: StorageClientOut
-    @Inject
-    private lateinit var createAdminOut: CreateAdminOut
-
-    @Inject
-    private lateinit var jwtTokenGenerator: JwtTokenGenerator
-
-    @Inject
-    private lateinit var mailer: Mailer
+class CreateAdmins (
+    private val secretsClientOut: SecretsClientOut,
+    private val uuidGenerator: UUIDGenerator,
+    private val createAdminOut: CreateAdminOut,
+    private val storageClientOut: StorageClientOut,
+    private val jwtTokenGenerator: JwtTokenGenerator,
+    private val mailer: Mailer
+): CreateAdminIn {
 
     override fun createAdmin(createAdminCommand: CreateAdminCommand): UserBasicInformations {
         InputsValidator.validatePasswordFormat(createAdminCommand.password)
         InputsValidator.validatePhoneNumberFormat(createAdminCommand.phoneNumber)
         if(createAdminCommand.adminCode == secretsClientOut.getCurrentAdminCreationCode() ){
-            val reference = getNewUUID()
+            val reference = uuidGenerator.getNewUUID()
             secretsClientOut.updateAdminCode(generateAdminCode())
             val jwToken = jwtTokenGenerator.getToken(reference, createAdminCommand.phoneNumber, createAdminCommand
                 .mail, UserTypes

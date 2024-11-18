@@ -6,29 +6,25 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.PublicAccessType
-import pretnders.api.shared.errors.ApplicationException
-import pretnders.api.shared.errors.ApplicationExceptionsEnum
-import pretnders.api.azure.domain.ports.out.StorageClientOut
-import pretnders.api.profile_pictures.domain.ports.`in`.HandleProfilePicturesIn
-import pretnders.api.admins.domain.UpdateAdminsOut
-import pretnders.api.pretnders.domain.ports.out.ChangePretndersOut
+import io.quarkus.logging.Log
 import jakarta.annotation.PostConstruct
 import jakarta.enterprise.context.ApplicationScoped
-import jakarta.enterprise.inject.Default
-import jakarta.inject.Inject
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.jboss.resteasy.reactive.multipart.FileUpload
-import io.quarkus.logging.Log
+import pretnders.api.admins.domain.UpdateAdminsOut
+import pretnders.api.azure.domain.ports.out.StorageClientOut
+import pretnders.api.shared.errors.ApplicationException
+import pretnders.api.shared.errors.ApplicationExceptionsEnum
 
 
 @ApplicationScoped
-class StorageClient : StorageClientOut {
+class StorageClient (
+    private var updateAdminsOut: UpdateAdminsOut
+): StorageClientOut {
     companion object {
         const val FORMATTER: String = "pretender-%s"
         const val ADMIN_FORMATTER: String = "admin-%s"
-
     }
-
 
     @field:ConfigProperty(name = "azure.client-id")
     private lateinit var clientId: String
@@ -41,18 +37,6 @@ class StorageClient : StorageClientOut {
 
     @field:ConfigProperty(name = "azure.store.endpoint")
     private lateinit var endpoint: String
-
-    @Inject
-    @field:Default
-    private lateinit var changePretndersOut: ChangePretndersOut
-
-    @Inject
-    @field:Default
-    private lateinit var updateAdminsOut: UpdateAdminsOut
-
-    @Inject
-    @field:Default
-    private lateinit var handleProfilePicturesIn: HandleProfilePicturesIn
 
     var blobServiceClient: BlobServiceClient? = null
 

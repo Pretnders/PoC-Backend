@@ -23,19 +23,12 @@ import pretnders.api.shared.security.CookieUtils
 
 @Path("/create-pretnder")
 @RequestScoped
-class SignUpEndpoint {
+class SignUpEndpoint (
+    private val addPretndersIn: AddPretndersIn,
+    private val cookieUtils: CookieUtils,
+    private val pretndersDtoMappers: PretndersDtoMappers
+) {
 
-    @Inject
-    @field: Default
-    private lateinit var addPretndersIn: AddPretndersIn
-
-    @Inject
-    @field: Default
-    private lateinit var cookieUtils: CookieUtils
-
-    @Inject
-    @field: Default
-    private lateinit var pretndersDtoMappers: PretndersDtoMappers
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

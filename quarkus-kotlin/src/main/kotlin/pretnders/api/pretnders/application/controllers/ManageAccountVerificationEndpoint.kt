@@ -18,15 +18,11 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT
 
 @Path("/verify-account")
 @RequestScoped
-class ManageAccountVerificationEndpoint {
+class ManageAccountVerificationEndpoint (
+    private val verifyAccountsIn: VerifyAccountsIn,
+    private val jsonWebToken: JsonWebToken
+) {
 
-    @Inject
-    @field:Default
-    private lateinit var verifyAccountsIn: VerifyAccountsIn
-
-    @Inject
-    @field:Default
-    private lateinit var jsonWebToken: JsonWebToken
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

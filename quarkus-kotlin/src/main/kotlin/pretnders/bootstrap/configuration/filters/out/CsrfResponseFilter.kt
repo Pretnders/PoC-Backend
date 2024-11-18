@@ -16,17 +16,14 @@ private val noCsrfGivenPaths = NoCsrfGivenPaths.getOptions()
 
 @Provider
 @ApplicationScoped
-class CsrfResponseFilter : ContainerResponseFilter {
-    @Inject
-    @field:Default
-    private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
+class CsrfResponseFilter (
+    private var csrfTokenGeneratorIn: CsrfTokenGeneratorIn,
+    private var cookieUtils: CookieUtils
+): ContainerResponseFilter {
 
     @field:ConfigProperty(name = "rest.csrf.cookie.name")
     private lateinit var csrfCookieName: String
 
-    @Inject
-    @field:Default
-    private lateinit var cookieUtils: CookieUtils
 
     override fun filter(
         requestContext: ContainerRequestContext,

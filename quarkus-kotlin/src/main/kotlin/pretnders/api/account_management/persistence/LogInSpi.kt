@@ -13,19 +13,12 @@ import pretnders.api.shared.errors.ApplicationException
 import pretnders.api.shared.errors.ApplicationExceptionsEnum
 
 @ApplicationScoped
-class LogInSpi:LogInOut {
-
-    @Inject
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
-
-    @Inject
-    private lateinit var adminsQueryRepository: AdminsQueryRepository
-
-    @Inject
-    private lateinit var pretndersEntityMapper: PretndersEntityMapper
-
-    @Inject
-    private lateinit var adminsEntityMapper: AdminsEntityMapper
+class LogInSpi(
+    private  val pretndersQueryRepository: PretndersQueryRepository,
+    private val adminsQueryRepository: AdminsQueryRepository,
+    private val pretndersEntityMapper: PretndersEntityMapper,
+    private val adminsEntityMapper: AdminsEntityMapper
+):LogInOut {
 
     override fun findAdminByIdentifier(identifier: String): Admin {
         return adminsEntityMapper.fromEntityToModel(

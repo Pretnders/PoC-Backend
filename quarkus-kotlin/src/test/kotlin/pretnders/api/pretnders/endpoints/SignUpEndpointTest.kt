@@ -29,16 +29,15 @@ import org.mockito.kotlin.*
 @QuarkusTest
 @DisplayName("Create pretenders endpoint")
 @ExtendWith(MockitoExtension::class)
-class SignUpEndpointTest {
+class SignUpEndpointTest{
 
+    @Inject lateinit var jwtTokenGenerator: JwtTokenGenerator
     @InjectMock
     private lateinit var csrfTokenGeneratorIn: CsrfTokenGeneratorIn
 
     @InjectMock
     private lateinit var cookieUtils: CookieUtils
 
-    @Inject
-    private lateinit var jwtTokenGenerator: JwtTokenGenerator
 
     private val pretndersDtoMappers: PretndersDtoMappers = Mockito.mock(PretndersDtoMappers::class.java)
 

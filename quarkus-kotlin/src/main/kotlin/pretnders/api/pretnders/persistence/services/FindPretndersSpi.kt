@@ -1,27 +1,20 @@
 package pretnders.api.pretnders.persistence.services
 
-import pretnders.api.shared.errors.ApplicationException
-import pretnders.api.shared.errors.ApplicationExceptionsEnum
+import jakarta.enterprise.context.ApplicationScoped
 import pretnders.api.pretnders.domain.models.Pretnder
 import pretnders.api.pretnders.domain.ports.out.FindPretndersOut
 import pretnders.api.pretnders.persistence.mappers.PretndersEntityMapper
 import pretnders.api.pretnders.persistence.repositories.PretndersQueryRepository
-import jakarta.enterprise.context.ApplicationScoped
-import jakarta.enterprise.inject.Default
-import jakarta.inject.Inject
+import pretnders.api.shared.errors.ApplicationException
+import pretnders.api.shared.errors.ApplicationExceptionsEnum
 
 @ApplicationScoped
-class FindPretndersSpi: FindPretndersOut {
+class FindPretndersSpi(
+    private val pretndersQueryRepository: PretndersQueryRepository,
+    private val pretndersEntityMapper: PretndersEntityMapper
+): FindPretndersOut {
 
-    //TODO Unit test this shit
 
-    @Inject
-    @field:Default
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
-
-    @Inject
-    @field:Default
-    private lateinit var pretndersEntityMapper: PretndersEntityMapper
 
     override fun findByIdentifier(identifier: String): Pretnder {
         val userInDb = pretndersQueryRepository.findByIdentifier(identifier).orElseThrow { ApplicationException(

@@ -1,45 +1,33 @@
 package pretnders.api.pretnders.domain.services
 
-import pretnders.api.shared.errors.ApplicationException
-import pretnders.api.shared.errors.ApplicationExceptionsEnum
-import pretnders.api.shared.utils.shared_models.UserTypes
-import pretnders.api.pretnders.domain.models.CreatePretenderCommand
-import pretnders.api.shared.utils.shared_models.UserBasicInformations
-import pretnders.api.azure.domain.ports.out.StorageClientOut
-import pretnders.api.azure.domain.ports.out.SecretsClientOut
-import pretnders.api.shared.security.JwtTokenGenerator
-import pretnders.api.shared.utils.mailer.Mailer
-import pretnders.api.shared.utils.validators.PasswordUtils.hashWithBCrypt
-import pretnders.api.pretnders.domain.ports.`in`.AddPretndersIn
-import pretnders.api.pretnders.domain.ports.out.AddPretndersOut
-import pretnders.api.shared.utils.validators.InputsValidator.validatePasswordFormat
-import pretnders.api.shared.utils.validators.InputsValidator.validatePhoneNumberFormat
-import pretnders.api.shared.utils.generators.OtpGenerator
-import pretnders.api.shared.utils.generators.UUIDGenerator.getNewUUID
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
-import jakarta.enterprise.inject.Default
-import jakarta.inject.Inject
+import pretnders.api.azure.domain.ports.out.StorageClientOut
+import pretnders.api.pretnders.domain.models.CreatePretenderCommand
+import pretnders.api.pretnders.domain.ports.`in`.AddPretndersIn
+import pretnders.api.pretnders.domain.ports.out.AddPretndersOut
+import pretnders.api.shared.errors.ApplicationException
+import pretnders.api.shared.errors.ApplicationExceptionsEnum
+import pretnders.api.shared.security.JwtTokenGenerator
+import pretnders.api.shared.utils.generators.OtpGenerator
+import pretnders.api.shared.utils.generators.UUIDGenerator
+import pretnders.api.shared.utils.mailer.Mailer
+import pretnders.api.shared.utils.shared_models.UserBasicInformations
+import pretnders.api.shared.utils.shared_models.UserTypes
+import pretnders.api.shared.utils.validators.InputsValidator.validatePasswordFormat
+import pretnders.api.shared.utils.validators.InputsValidator.validatePhoneNumberFormat
+import pretnders.api.shared.utils.validators.PasswordUtils.hashWithBCrypt
 import java.sql.Timestamp
 
 @ApplicationScoped
-class AddPretnders : AddPretndersIn {
+class AddPretnders (
+    private val jwtTokenGenerator: JwtTokenGenerator,
+    private val mailer: Mailer,
+    private val addPretndersOut: AddPretndersOut,
+    private val storageClientOut: StorageClientOut,
+    private val uuidGenerator: UUIDGenerator
+): AddPretndersIn {
 
-    @Inject
-    @field:Default
-    private lateinit var jwtTokenGenerator: JwtTokenGenerator
-    @Inject
-    @field:Default
-    private lateinit var mailer: Mailer
-    @Inject
-    @field:Default
-    private lateinit var addPretndersOut: AddPretndersOut
-    @Inject
-    @field:Default
-    private lateinit var storageClientOut: StorageClientOut
-    @Inject
-    @field:Default
-    private lateinit var secretsClientOut: SecretsClientOut
 
     override fun createPretender(user: CreatePretenderCommand): UserBasicInformations {
         Log.info("Creating user")
@@ -58,7 +46,7 @@ class AddPretnders : AddPretndersIn {
     fun setUpUserDataAndCheckInputs(
         user: CreatePretenderCommand
     ): String {
-        val userReference = getNewUUID()
+        val userReference = uuidGenerator.getNewUUID()
         val preHashPW = user.password
         val verificationCode = OtpGenerator.generateCode()
         val content = mailer.generateOtpEmail(user.firstName, verificationCode)

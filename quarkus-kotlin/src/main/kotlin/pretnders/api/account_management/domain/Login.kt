@@ -15,19 +15,12 @@ import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 
 @ApplicationScoped
-class Login(@field:Inject var jwtTokenGenerator: JwtTokenGenerator) : LoginIn {
+class Login(private val jwtTokenGenerator: JwtTokenGenerator,
+            private val logInOut: LogInOut,
+            private val pretndersMappers: PretndersMappers,
+            private val adminMapper: AdminMapper
 
-    @Inject
-    @field:Default
-    private lateinit var logInOut: LogInOut
-
-    @Inject
-    @field:Default
-    private lateinit var pretndersMappers: PretndersMappers
-
-    @Inject
-    @field:Default
-    private lateinit var adminMapper: AdminMapper
+    ) : LoginIn {
 
     override fun loginAdmin(identifier: String, password: String): AdminLoggedIn {
         val admin = logInOut.findAdminByIdentifier(identifier)

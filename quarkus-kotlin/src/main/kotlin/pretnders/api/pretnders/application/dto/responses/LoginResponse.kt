@@ -2,8 +2,10 @@ package pretnders.api.pretnders.application.dto.responses
 
 import pretnders.api.profile_pictures.application.dto.responses.ProfilePictureResponse
 import kotlinx.serialization.Serializable
+import org.eclipse.microprofile.openapi.annotations.media.Schema
 
 @Serializable
+@Schema(description = "Login response")
 data class LoginResponse(
     val nickname:String,
     val firstName: String,

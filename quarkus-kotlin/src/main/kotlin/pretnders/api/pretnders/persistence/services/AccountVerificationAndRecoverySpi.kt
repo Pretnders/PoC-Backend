@@ -14,11 +14,10 @@ import java.sql.Timestamp
 
 @ApplicationScoped
 @Transactional
-class AccountVerificationAndRecoverySpi: ChangePretndersOut {
+class AccountVerificationAndRecoverySpi(
+    private val pretndersQueryRepository: PretndersQueryRepository
+): ChangePretndersOut {
 
-    @Inject
-    @field:Default
-    private lateinit var pretndersQueryRepository: PretndersQueryRepository
 
     override fun approveAccount(mail: String) {
         try {
@@ -85,7 +84,7 @@ class AccountVerificationAndRecoverySpi: ChangePretndersOut {
     }
 
     private fun handleExceptions(e: SQLException) {
-        Log.info(e.message)
+        Log.debug(e.message)
         throw ApplicationException(ApplicationExceptionsEnum.ERROR)
     }
 

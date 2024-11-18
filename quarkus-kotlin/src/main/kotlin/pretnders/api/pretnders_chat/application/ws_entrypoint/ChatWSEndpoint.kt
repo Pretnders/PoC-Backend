@@ -1,13 +1,7 @@
 package pretnders.api.pretnders_chat.application.ws_entrypoint
 
-import pretnders.api.shared.utils.generators.UUIDGenerator.getNewUUID
-import pretnders.api.pretnders_chat.persistence.MessagesEntity
-import pretnders.api.pretnders_chat.persistence.MessagesRepository
-import pretnders.api.pretnders_chat.application.dto.WsMessage
-import pretnders.api.pretnders_chat.application.dto.WsPretndersChatActions
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
-import jakarta.inject.Inject
 import jakarta.websocket.*
 import jakarta.websocket.server.PathParam
 import jakarta.websocket.server.ServerEndpoint
@@ -16,27 +10,33 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.jsoup.Jsoup
 import org.jsoup.safety.Safelist
+import pretnders.api.pretnders_chat.application.dto.WsMessage
+import pretnders.api.pretnders_chat.application.dto.WsPretndersChatActions
+import pretnders.api.pretnders_chat.persistence.MessagesEntity
+import pretnders.api.pretnders_chat.persistence.MessagesRepository
+import pretnders.api.shared.utils.generators.UUIDGenerator
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 
 @ApplicationScoped
 @ServerEndpoint("/messages/{reference}")
-class ChatWSEndpoint {
+class ChatWSEndpoint (
+    private val messagesRepository: MessagesRepository,
+    private val uuidGenerator: UUIDGenerator
+) {
+
     private val sessions: MutableMap<String, Session> = ConcurrentHashMap()
 
-    @Inject
-    private lateinit var messagesRepository: MessagesRepository
 
     @OnOpen
     fun onOpen(session: Session?, @PathParam("reference") reference: String) {
+        Log.debug("onOpen> $reference")
         sessions[reference] = session!!
-        Log.info(sessions.size)
-        Log.info("onOpen> $reference")
     }
 
     @OnClose
     fun onClose(@PathParam("reference") reference: String) {
-        Log.info("onClose> $reference")
+        Log.debug("onClose> $reference")
         sessions.remove(reference)
     }
 
@@ -53,7 +53,7 @@ class ChatWSEndpoint {
             when (wsMessage.action) {
                 WsPretndersChatActions.SEND_MESSAGE -> {
                     if (wsMessage.content.length >= 2) {
-                        val messageReference = getNewUUID()
+                        val messageReference = uuidGenerator.getNewUUID()
                         val wsMessageResponse = WsMessage(
                             wsMessage.from,
                             wsMessage.to,
