@@ -4,8 +4,7 @@ import io.quarkus.logging.Log
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Test
-import pretnders.api.pretnders.application.dto.responses.FindDetailsOptionsResponse
-import pretnders.api.shared.errors.ApplicationException
+import pretnders.api.pretnders.application.dto.responses.PretndersDetailsOptionsResponse
 import pretnders.api.shared.errors.ErrorResponse
 
 @QuarkusTest
@@ -24,7 +23,7 @@ class PretnderDetailsOptionsTest {
             .then().extract()
 
         assert(200 == res.statusCode())
-        val options = res.body().`as`( FindDetailsOptionsResponse::class.java)
+        val options = res.body().`as`( PretndersDetailsOptionsResponse::class.java)
         assert(7 == options.occurrences.size)
         assert(8 == options.orientations.size)
         assert(10 == options.bodyTypes.size)

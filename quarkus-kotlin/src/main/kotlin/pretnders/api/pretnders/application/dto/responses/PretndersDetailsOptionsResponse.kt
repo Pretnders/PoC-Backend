@@ -4,7 +4,7 @@ import pretnders.api.pretnders.domain.models.details_enums.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FindDetailsOptionsResponse(
+data class PretndersDetailsOptionsResponse(
     val beliefs: List<Beliefs.BeliefsOption>,
     val bodyTypes: List<BodyTypes.BodyTypesOption>,
     val diets: List<Diets.DietsOption>,

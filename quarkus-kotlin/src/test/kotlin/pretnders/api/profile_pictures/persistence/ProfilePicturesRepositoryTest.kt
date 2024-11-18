@@ -13,11 +13,11 @@ import pretnders.api.profile_pictures.persistence.repositories.ProfilePicsQueryR
 import pretnders.api.shared.errors.ApplicationException
 import pretnders.api.shared.errors.ApplicationExceptionsEnum
 
-val pretnderID = 1L
 
 @QuarkusTest
 @DisplayName("Tests profile pictures functionalities")
-class ProfilePicturesUnitTest {
+class ProfilePicturesRepositoryTest {
+    val pretnderID = 1L
 
     @InjectMock
     private lateinit var profilePicsQueryRepository: ProfilePicsQueryRepository

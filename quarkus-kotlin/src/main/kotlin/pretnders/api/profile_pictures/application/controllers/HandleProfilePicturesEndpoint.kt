@@ -13,6 +13,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
+import org.jboss.resteasy.reactive.PartType
 import org.jboss.resteasy.reactive.ResponseStatus
 import org.jboss.resteasy.reactive.RestForm
 import org.jboss.resteasy.reactive.RestResponse.StatusCode.*
@@ -28,7 +29,7 @@ import pretnders.api.profile_pictures.domain.ports.`in`.ChangeProfilePictureComm
 
 @Path("/profile-pictures")
 @RequestScoped
-class ProfilePicturesResource (
+class HandleProfilePicturesEndpoint (
     private val jwt: JsonWebToken,
     private val storageClientOut: StorageClientOut,
     private val handleProfilePicturesIn: HandleProfilePicturesIn
@@ -60,7 +61,6 @@ class ProfilePicturesResource (
 
     @POST
     @Path("/pretnders")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(CREATED)
     @RolesAllowed("PRETNDER")
@@ -74,10 +74,9 @@ class ProfilePicturesResource (
             schema = Schema(implementation = String::class)
         )]),
     )
-    fun addPretnderProfilePicture( @Schema(type = SchemaType.STRING,
-        format = "binary") @RestForm
-        ("image")  image:
-    FileUpload
+    fun addPretnderProfilePicture(
+        @PartType(MediaType.MULTIPART_FORM_DATA ) @RestForm("image")
+                                  image:FileUpload
     ): AddProfilePictureResponse {
         val reference = jwt.name
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
@@ -138,7 +137,7 @@ class ProfilePicturesResource (
     @Path("/pretnders/change-picture/{pictureReference}/{blobName}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
-    @ResponseStatus(NO_CONTENT)
+    @ResponseStatus(OK)
     @RolesAllowed("PRETNDER")
     @SecurityRequirement(name = "bearer")
     @Operation(summary = "Add pretnder profile picture", description = "Add pretnder profile picture, update " +
@@ -151,7 +150,7 @@ class ProfilePicturesResource (
         )]),
     )
     fun replacePicture(@PathParam("pictureReference") pictureReference:String, @PathParam("blobName") blobName:String,
-                      @RestForm("image") image: FileUpload):
+                       @PartType(MediaType.MULTIPART_FORM_DATA ) @RestForm("image") image: FileUpload):
     String {
         val phoneNumber = jwt.claim<String>(Claims.phone_number.name).get()
         val command = ChangeProfilePictureCommand(

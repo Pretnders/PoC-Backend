@@ -1,7 +1,6 @@
 package pretnders.api.profile_pictures.domain
 
 import io.quarkus.test.InjectMock
-import io.quarkus.test.Mock
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
 import org.jboss.resteasy.reactive.multipart.FileUpload
@@ -23,7 +22,7 @@ import pretnders.api.shared.errors.ApplicationException
 import pretnders.api.shared.utils.generators.UUIDGenerator
 
 @QuarkusTest
-class ProfilePicturesUnitTest {
+class ProfilePicturesServiceTest {
 
     @InjectMock
     private lateinit var uuidGeneratorMock: UUIDGenerator

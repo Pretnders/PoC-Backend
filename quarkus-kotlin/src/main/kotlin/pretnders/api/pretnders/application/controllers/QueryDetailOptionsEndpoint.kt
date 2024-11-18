@@ -1,6 +1,6 @@
 package pretnders.api.pretnders.application.controllers
 
-import pretnders.api.pretnders.application.dto.responses.FindDetailsOptionsResponse
+import pretnders.api.pretnders.application.dto.responses.PretndersDetailsOptionsResponse
 import pretnders.api.pretnders.domain.models.details_enums.*
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped
@@ -26,11 +26,11 @@ class QueryDetailOptionsEndpoint {
     @APIResponses(
         APIResponse(responseCode = "200", description = "Find all pretnder details options",
             content = [Content(mediaType = "text/plain",
-                schema = Schema(implementation = FindDetailsOptionsResponse::class)
+                schema = Schema(implementation = PretndersDetailsOptionsResponse::class)
             )]),
     )
-    fun findAllOptions(): FindDetailsOptionsResponse {
-        return  FindDetailsOptionsResponse(
+    fun findAllOptions(): PretndersDetailsOptionsResponse {
+        return  PretndersDetailsOptionsResponse(
             Beliefs.getOptions(),
             BodyTypes.getOptions(),
             Diets.getOptions(),

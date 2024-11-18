@@ -1,6 +1,5 @@
 package pretnders.api.pretnders.application.dto.responses
 
-import pretnders.api.profile_pictures.application.dto.responses.ProfilePictureResponse
 import kotlinx.serialization.Serializable
 import org.eclipse.microprofile.openapi.annotations.media.Schema
 
@@ -13,9 +12,9 @@ data class LoginResponse(
     val phoneNumber: String,
     val mail:String,
     val accountVerifiedStatus: Boolean,
-    val pretnderDetails: FindDetailsResponse,
-    var profilePictures: List<ProfilePictureResponse>? = ArrayList(),
-    var traitPairs: List<FindTraitScoreResponse>
+    val pretnderDetails: PretnderDetailsResponse,
+    var profilePictures: List<PretnderProfilePictureResponse>? = ArrayList(),
+    var traitPairs: List<PretnderTraitScoreResponse>
 ){
     override fun toString(): String {
         return "PretnderLoginResponse(nickname='$nickname', firstName='$firstName', lastName='$lastName', phoneNumber='$phoneNumber', mail='$mail', accountVerifiedStatus=$accountVerifiedStatus, pretnderDetails=$pretnderDetails, profilePictures=$profilePictures, traitPairs=$traitPairs)"

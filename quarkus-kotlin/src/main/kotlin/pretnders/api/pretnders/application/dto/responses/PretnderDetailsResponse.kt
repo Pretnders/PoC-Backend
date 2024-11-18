@@ -3,7 +3,7 @@ package pretnders.api.pretnders.application.dto.responses
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FindDetailsResponse(
+data class PretnderDetailsResponse(
     val reference:String,
     val gender: String,
     val orientation: String,
