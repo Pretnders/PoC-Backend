@@ -8,6 +8,22 @@ enum class ApplicationExceptionsEnum(val message: String,val errorCode: Int,val 
         ErrorOriginEnum.PERSISTENCE
         .name),
     INVALID_TOKEN("Invalid token", StatusCode.UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),
+    INVALID_HEIGHT_FORMAT("Format de la taille invalide, la taille doit être exprimée en centimètres sur3 chiffres",
+        StatusCode
+        .BAD_REQUEST,
+        ErrorOriginEnum.DOMAIN
+        .name),
+    INVALID_HEIGHT_VALUE("Valeur de la taille invalide, la taille doit être comprise entre 120 et 250 centimètres.",
+        StatusCode
+            .BAD_REQUEST,
+        ErrorOriginEnum.DOMAIN
+            .name),
+    INVALID_TRAIT_PAIR_SCORE_VALUE("Valeur de la taille invalide, la taille doit être comprise entre 120 et 250 " +
+            "centimètres.",
+        StatusCode
+            .BAD_REQUEST,
+        ErrorOriginEnum.DOMAIN
+            .name),
     INVALID_FILE_TYPE("Type de fichier invalide, seuls les images PNG et JPG sont autorisées.", StatusCode
         .UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),
     INVALID_FILE_SIZE("Fichier trop volumineux, taille maximale autorisée : 5mo.", StatusCode

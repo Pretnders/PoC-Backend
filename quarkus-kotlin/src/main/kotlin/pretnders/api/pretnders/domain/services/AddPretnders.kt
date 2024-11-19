@@ -46,22 +46,21 @@ class AddPretnders (
     fun setUpUserDataAndCheckInputs(
         user: CreatePretenderCommand
     ): String {
+        verifyCreateUserInputs(user)
         val userReference = uuidGenerator.getNewUUID()
-        val preHashPW = user.password
         val verificationCode = OtpGenerator.generateCode()
         val content = mailer.generateOtpEmail(user.firstName, verificationCode)
         user.reference = userReference
         mailer.sendHtmlEmail(user.mail, "Vérification de compte", content)
-        verifyCreateUserInputs(preHashPW, user)
-        val hash = hashWithBCrypt(preHashPW)
+        val hash = hashWithBCrypt(user.password)
+        user.password = hash.result
         user.verificationCode = hashWithBCrypt( verificationCode).result
         user.verificationCodeTimestamp = Timestamp(System.currentTimeMillis())
-        user.password = hash.result
         return userReference
     }
 
-    fun verifyCreateUserInputs(preHashPW: String, user: CreatePretenderCommand){
-        validatePasswordFormat(preHashPW)
+    fun verifyCreateUserInputs(user: CreatePretenderCommand){
+        validatePasswordFormat(user.password)
         if(user.lastName.length < 3 || user.firstName.length < 2 ) {
             throw ApplicationException(ApplicationExceptionsEnum.CREATE_USER_INVALID_NAME)
         }

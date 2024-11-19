@@ -37,4 +37,21 @@ object InputsValidator {
 
         }
     }
+
+    fun validateHeight(height: String) {
+        if(!height.matches(Regex("^[1|2]{1}[0-9]{2}\$"))){
+            throw ApplicationException(ApplicationExceptionsEnum.INVALID_HEIGHT_FORMAT)
+        }
+        val toInt = height.toInt()
+        if(toInt < 120 || toInt > 250){
+            throw ApplicationException(ApplicationExceptionsEnum.INVALID_HEIGHT_VALUE)
+        }
+    }
+
+    fun validateScore(score: Short) {
+        if(score < 0 || score > 100){
+            throw ApplicationException(ApplicationExceptionsEnum.INVALID_TRAIT_PAIR_SCORE_VALUE)
+        }
+    }
+
 }

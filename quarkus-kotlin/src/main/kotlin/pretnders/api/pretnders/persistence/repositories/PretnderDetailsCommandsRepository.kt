@@ -1,9 +1,9 @@
 package pretnders.api.pretnders.persistence.repositories
 
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
-import pretnders.api.pretnders.persistence.entities.PretnderDetailsEntity
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.transaction.Transactional
+import pretnders.api.pretnders.persistence.entities.PretnderDetailsEntity
 
 @ApplicationScoped
 @Transactional

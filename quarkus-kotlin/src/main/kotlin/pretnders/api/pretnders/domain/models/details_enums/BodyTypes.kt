@@ -3,8 +3,8 @@ package pretnders.api.pretnders.domain.models.details_enums
 import kotlinx.serialization.Serializable
 
 enum class BodyTypes(val label: String, val disabled: Boolean) {
-    THIN("Fin", false),
     SLIM("Mince", false),
+    THIN("Fin", false),
     ATHLETIC("Athlétique", false),
     LEAN("Svelte", false),
     NORMAL("Normal", false),

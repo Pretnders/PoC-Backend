@@ -11,7 +11,7 @@ enum class Genders(
     FEMALE("Femme", false),
     MALE("Homme", false),
     ANDROGYNE("Androgyne", false),
-    NONBINBARY("Non-binaire", false),
+    NONBINARY("Non-binaire", false),
     TRANSMACULINE("Transmasc", false),
     TRANSFEMININE("Transfem", false),
     GENDERFLUID("Genderfluid", disabled = false),

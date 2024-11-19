@@ -26,7 +26,6 @@ class ManageTraitPairsEndpoint (
 ) {
 
     @PUT
-    @Path("/update-score")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @ResponseStatus(NO_CONTENT)
@@ -34,7 +33,7 @@ class ManageTraitPairsEndpoint (
     @APIResponses(
         APIResponse(responseCode = "204", description = "NO_CONTENT")
     )
-    fun changeNickname(changeTraitScoreRequest: ChangeTraitScoreRequest) {
+    fun changeTraitPairScore(changeTraitScoreRequest: ChangeTraitScoreRequest) {
         Log.info("Updating score for trait pair ${changeTraitScoreRequest.traitPairReference} with new score " +
                 "${changeTraitScoreRequest.score}")
         changeTraitScoreIn.updateScore(changeTraitScoreRequest.traitPairReference, changeTraitScoreRequest.score)

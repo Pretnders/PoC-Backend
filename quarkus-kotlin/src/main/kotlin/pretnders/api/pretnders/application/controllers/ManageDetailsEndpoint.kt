@@ -2,7 +2,6 @@ package pretnders.api.pretnders.application.controllers
 
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.RequestScoped
-import jakarta.inject.Inject
 import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.jwt.JsonWebToken
@@ -16,17 +15,14 @@ import pretnders.api.pretnders.application.dto.requests.ChangeBiographyRequest
 import pretnders.api.pretnders.application.dto.requests.ChangeNicknameRequest
 import pretnders.api.pretnders.domain.models.details_enums.*
 import pretnders.api.pretnders.domain.ports.`in`.ChangeDetailsIn
-import pretnders.api.pretnders.domain.ports.out.FindNicknameOut
+import pretnders.api.pretnders.domain.ports.out.QueryNicknamesOut
 
 @Path("/pretnder-profile")
 @RequestScoped
 class ManageDetailsEndpoint (
     private val jwt:JsonWebToken,
     private val changeDetailsIn: ChangeDetailsIn,
-    private val findNicknameOut: FindNicknameOut
 ) {
-
-
 
     @PUT
     @Path("/nickname")
@@ -202,19 +198,5 @@ class ManageDetailsEndpoint (
         changeDetailsIn.changeGender(detailsReference, newGender)
     }
 
-    @GET
-    @Path("/nickname/{desiredNickname}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @ResponseStatus(NO_CONTENT)
-    @RolesAllowed("PRETNDER")
-    @APIResponses(
-        APIResponse(responseCode = "200", description = "Boolean representing the nickname existence in database",
-            content = [Content(mediaType = "text/plain",
-            schema = Schema(implementation = Boolean::class)
-        )]),
-    )
-    fun find(@PathParam("desiredNickname") desiredNickname:String):Boolean{
-        val reference = jwt.name
-        return findNicknameOut.doNicknameExist(reference, desiredNickname)
-    }
+
 }
