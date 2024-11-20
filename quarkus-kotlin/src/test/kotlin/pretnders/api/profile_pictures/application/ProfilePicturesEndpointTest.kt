@@ -126,8 +126,8 @@ class ProfilePicturesEndpointTest {
 
     @Test
     fun shouldSwapProfilePictures() {
-        val swapperOrder = 5L
-        val swappedOrder = 5L
+        val swapperOrder:Short = 5
+        val swappedOrder:Short = 6
         val swapperReference = "123456789"
         val swappedReference = "987654321"
         val swapPicturesRequest = SwapPicturesRequest(

@@ -26,7 +26,7 @@ data class ChangeProfilePictureCommand(
 
 data class SwapProfilePictureCommand(
     val swapperReference:String,
-    val swapperOrder:Long,
+    val swapperOrder:Short,
     val swappedReference:String,
-    val swappedOrder:Long
+    val swappedOrder:Short
 )

@@ -11,9 +11,9 @@ class ProfilePicsCommandsRepository : PanacheRepository<ProfilePicsEntity> {
 
     fun swapPicturesOrder(
         swapperReference: String,
-        swapperOrder: Long,
+        swapperOrder: Short,
         swappedReference: String,
-        swappedOrder: Long
+        swappedOrder: Short
     ) {
         update(
             "SET order = :swapperOrder WHERE reference = :swappedReference", mapOf(

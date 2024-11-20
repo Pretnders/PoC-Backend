@@ -18,11 +18,15 @@ enum class ApplicationExceptionsEnum(val message: String,val errorCode: Int,val 
             .BAD_REQUEST,
         ErrorOriginEnum.DOMAIN
             .name),
-    INVALID_TRAIT_PAIR_SCORE_VALUE("Valeur de la taille invalide, la taille doit être comprise entre 120 et 250 " +
-            "centimètres.",
+    INVALID_TRAIT_PAIR_SCORE_VALUE("Score invalide, il doit ête compris entre 0 et 100.",
         StatusCode
             .BAD_REQUEST,
         ErrorOriginEnum.DOMAIN
+            .name),
+    UPDATE_TRAIT_SCORE_INVALID_VALUE("Score invalide, il doit ête compris entre 0 et 100.",
+        StatusCode
+            .BAD_REQUEST,
+        ErrorOriginEnum.PERSISTENCE
             .name),
     INVALID_FILE_TYPE("Type de fichier invalide, seuls les images PNG et JPG sont autorisées.", StatusCode
         .UNAUTHORIZED, ErrorOriginEnum.DOMAIN.name),

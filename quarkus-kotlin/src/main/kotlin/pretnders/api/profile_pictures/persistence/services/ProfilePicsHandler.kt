@@ -38,9 +38,9 @@ class ProfilePicsHandler (
     @Transactional
     override fun swapPicturesOrder(
         swapperReference: String,
-        swapperOrder: Long,
+        swapperOrder: Short,
         swappedReference: String,
-        swappedOrder: Long
+        swappedOrder: Short
     ) {
         profilePicsCommandsRepository.swapPicturesOrder(swapperReference, swapperOrder, swappedReference, swappedOrder)
     }

@@ -18,7 +18,7 @@ import java.sql.Timestamp
 import java.time.Instant
 
 @ApplicationScoped
-class PasswordManagement (
+class HandlePasswords (
     private val mailer: Mailer,
     private val commandPretndersAccountsOut: CommandPretndersAccountsOut,
     private val queryPretndersOut: QueryPretndersOut

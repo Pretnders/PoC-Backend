@@ -52,6 +52,7 @@ class AddPretndersUnitTest{
     val entityToReturn = PretndersEntity()
     @BeforeEach
     fun setUp() {
+        entityToSave.nickname = createPretenderCommand.nickname
         entityToSave.firstName = createPretenderCommand.firstName
         entityToSave.lastName = createPretenderCommand.lastName
         entityToSave.password = createPretenderCommand.password
@@ -96,6 +97,7 @@ class AddPretndersUnitTest{
          * Verify
          */
         verify(pretndersQueryRepository).persistAndFlush(pretndersEntityCaptor.capture())
+        assert(createPretenderCommand.nickname == pretndersEntityCaptor.firstValue.nickname)
         assert(createPretenderCommand.firstName == pretndersEntityCaptor.firstValue.firstName)
         assert(createPretenderCommand.lastName == pretndersEntityCaptor.firstValue.lastName)
         assert(createPretenderCommand.reference == pretndersEntityCaptor.firstValue.reference)

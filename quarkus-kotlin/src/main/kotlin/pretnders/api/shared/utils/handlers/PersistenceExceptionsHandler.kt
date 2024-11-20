@@ -14,6 +14,7 @@ object PersistenceExceptionsHandler {
     private const val ADMINS_PHONE_KEY = "uq_admins_phone"
     private const val ADMINS_REFERENCE_KEY = "uq_admins_reference"
     private const val ADMINS_NICKNAME_KEY = "uq_admins_nickname"
+    private const val PRETNDER_TRAIT_PAIR_SCORE_CHECK = "pretender_trait_pairs_score_check"
 
     fun handlePersistenceExceptions(e: ConstraintViolationException): Throws {
         Log.error(String.format("Error while adding entity : %s", e.message))
@@ -39,6 +40,9 @@ object PersistenceExceptionsHandler {
             }
             e.constraintName.equals(ADMINS_NICKNAME_KEY) -> {
                 throw ApplicationException(ApplicationExceptionsEnum.CREATE_ADMIN_DUPLICATE_NICKNAME)
+            }
+            e.constraintName.equals(PRETNDER_TRAIT_PAIR_SCORE_CHECK) -> {
+                throw ApplicationException(ApplicationExceptionsEnum.UPDATE_TRAIT_SCORE_INVALID_VALUE)
             }
             else -> {
                 throw ApplicationException(ApplicationExceptionsEnum.ERROR)

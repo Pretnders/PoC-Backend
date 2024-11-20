@@ -98,8 +98,8 @@ class ProfilePicturesServiceTest {
     @Test
     @DisplayName("Should throw exception if pictures have same order")
     fun shouldThrowApplicationExceptionWhenOrdersAreEquals() {
-        val swapperOrder = 5L
-        val swappedOrder = 5L
+        val swapperOrder:Short = 5
+        val swappedOrder:Short = 6
         val swapperReference = "123456789"
         val swappedReference = "987654321"
         val command = SwapProfilePictureCommand(
@@ -115,8 +115,8 @@ class ProfilePicturesServiceTest {
     @Test
     @DisplayName("Should throw invalid order exception (value too low)")
     fun shouldThrowApplicationExceptionWhenOrdersAreBelowZero() {
-        val swapperOrder = Long.MIN_VALUE
-        val swappedOrder = -5L
+        val swapperOrder = Short.MIN_VALUE
+        val swappedOrder:Short = -5
         val swapperReference = "123456789"
         val swappedReference = "987654321"
         val command = SwapProfilePictureCommand(
@@ -133,8 +133,8 @@ class ProfilePicturesServiceTest {
     @Test
     @DisplayName("Should throw invalid order exception (value too high)")
     fun shouldThrowApplicationExceptionWhenOrdersAreAboveNine() {
-        val swapperOrder = Long.MAX_VALUE
-        val swappedOrder = 12L
+        val swapperOrder:Short = Short.MAX_VALUE
+        val swappedOrder:Short = 12
         val swapperReference = "123456789"
         val swappedReference = "987654321"
         val command = SwapProfilePictureCommand(
@@ -151,8 +151,8 @@ class ProfilePicturesServiceTest {
     @Test
     @DisplayName("Should swap orders")
     fun shouldSwapPicturesOrders() {
-        val swapperOrder = 2L
-        val swappedOrder = 4L
+        val swapperOrder:Short = 2
+        val swappedOrder:Short = 4
         val swapperReference = "123456789"
         val swappedReference = "987654321"
         val command = SwapProfilePictureCommand(
